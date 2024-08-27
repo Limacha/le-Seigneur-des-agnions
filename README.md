@@ -6,3 +6,4 @@ cv cv aller je te laisse je vais geeker
 Ok sinon la prochaine fois verif pour le project (passe le visit adri en done) et finit t'es phrase par "  " (un double espace)  
 
 done  
+trout du cu la partie "(passe le visit adri en done)" t'as pas vu ou pas lu mon con?  

@@ -1,4 +1,6 @@
 # le-Seigneur-des-anions
+idee: https://docs.google.com/document/d/1IGYdbjkkWwF56mXIID1WRfwKocKzPXmnTTcTpXezDRs/edit?pli=1#heading=h.lp5v15k7di4t  
+cahier des charges: https://docs.google.com/document/d/1rLFlBrc5s3OYsHogIqM7L5wV_euFSKbwMWyo5Vz8B4M/edit  
 salue ma couille  
 Salut comment tu va ?  
 ptn on peut pas passez a la ligne sur la previeu sinon sa va et toi?  

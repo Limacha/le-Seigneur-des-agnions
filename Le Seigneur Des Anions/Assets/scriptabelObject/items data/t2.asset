@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632dff6b04be42545ab1612da7db8055, type: 3}
+  m_Name: t2
+  m_EditorClassIdentifier: 
+  id: bee3627a-7030-4b69-a00c-ccd4a0ed8b4c
+  nom: t2
+  description: t2
+  width: 2
+  height: 1
+  listSprite:
+  - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
+  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
+  poids: 0
+  stackable: 0
+  stackLimit: 1
+  refX: 0
+  refY: 0
+  rotate: 0
+  prefab: {fileID: 0}
+  type: 0

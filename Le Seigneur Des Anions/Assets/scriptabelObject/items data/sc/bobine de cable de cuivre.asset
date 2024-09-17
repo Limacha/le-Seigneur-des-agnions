@@ -17,8 +17,17 @@ MonoBehaviour:
   description: une grosse bobine de cable enrouler sur elle meme
   width: 3
   height: 3
+  imgRef: {fileID: 21300000, guid: 676757cf6816cf049bef822d312c4718, type: 3}
   listSprite:
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
   - {fileID: 0}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
   poids: 0
   stackable: 1
   stackLimit: 1000

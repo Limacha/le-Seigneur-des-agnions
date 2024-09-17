@@ -28,6 +28,11 @@ public class ItemDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
                 //Debug.Log("rotate slot");
                 //func.show2DSpriteContent(itemData.patern);
                 itemData.patern = func.rotate2DSprite(itemData.patern);
+                itemData.SetRotate(itemData.rotate - 90);
+                if (itemData.rotate <= 0)
+                {
+                    itemData.SetRotate(360);
+                }
                 refreshDragDropObj();
                 //func.show2DSpriteContent(patern);
             }
@@ -96,6 +101,7 @@ public class ItemDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
                 if (itemData.patern[x, y] != null)
                 {
                     img.sprite = itemData.patern[x, y];
+                    GetComponent<RectTransform>().GetChild(num).GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, itemData.rotate);
                 }
                 else
                 {

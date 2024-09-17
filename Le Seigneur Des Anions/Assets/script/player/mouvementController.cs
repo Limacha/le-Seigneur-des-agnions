@@ -29,7 +29,7 @@ public class mouvementController : MonoBehaviour
     void Update()
     {
         float movez = (Input.GetKey(inputFront)? 1 : 0) - (Input.GetKey(inputBack)? 1 : 0);
-        float movex = (Input.GetKey(inputLeft)? 1 : 0) - (Input.GetKey(inputRight)? 1 : 0);
+        float movex = (Input.GetKey(inputRight) ? 1 : 0) - (Input.GetKey(inputLeft)? 1 : 0);
 
         Vector3 move = new Vector3(movex, 0, movez);
 

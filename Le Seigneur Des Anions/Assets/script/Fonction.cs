@@ -52,5 +52,24 @@ namespace AllFonction
             //show2DSpriteContent(newArray);
             return newArray;
         }
+
+        public void SetLeftRt(RectTransform rt, float left)
+        {
+            rt.offsetMin = new Vector2(left, rt.offsetMin.y);
+        }
+        public void SetRightRt(RectTransform rt, float right)
+        {
+            rt.offsetMax = new Vector2(-right, rt.offsetMax.y);
+        }
+
+        public void SetTopRt(RectTransform rt, float top)
+        {
+            rt.offsetMax = new Vector2(rt.offsetMax.x, -top);
+        }
+
+        public void SetBottomRt(RectTransform rt, float bottom)
+        {
+            rt.offsetMin = new Vector2(rt.offsetMin.x, bottom);
+        }
     }
 }

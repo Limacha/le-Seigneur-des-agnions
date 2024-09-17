@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] private KeyBiding rotateKey; //key pour rotate les item
-    [SerializeField] private ItemData itemData; //item drag
     [SerializeField] private Inventory inventory; //inventory
 
     private CanvasGroup canvasGroup; //canvas group pour gere les interaction
@@ -14,6 +13,7 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
     private GameObject dragItemObj;
     private bool drag = false;
     private bool dragItem = false;
+    private ItemData itemData;
 
     private void Awake()
     {
@@ -32,6 +32,11 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
                     //Debug.Log("rotate slot");
                     //func.show2DSpriteContent(dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern);
                     dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern = func.rotate2DSprite(dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern);
+                    dragItemObj.GetComponent<ItemDragDrop>().GetItem().SetRotate(dragItemObj.GetComponent<ItemDragDrop>().GetItem().rotate - 90);
+                    if (dragItemObj.GetComponent<ItemDragDrop>().GetItem().rotate <= 0)
+                    {
+                        dragItemObj.GetComponent<ItemDragDrop>().GetItem().SetRotate(360);
+                    }
                     refreshDragDropObj();
                     //func.show2DSpriteContent(patern);
                 }
@@ -40,10 +45,6 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
     }
 
     #region get info
-    public ItemData GetItem()
-    {
-        return itemData;
-    }
     public GameObject GetGameObject()
     {
         return dragItemObj;
@@ -51,10 +52,6 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
     #endregion
 
     #region set info
-    public void SetItem(ItemData item)
-    {
-        itemData = item;
-    }
     public void SetRotateKey(KeyBiding key)
     {
         rotateKey = key;
@@ -64,6 +61,7 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
     public void OnBeginDrag(PointerEventData eventData)
     {
         //Debug.Log("OnBeginDrag");
+        itemData = GetComponent<Slot>().GetItem();
         drag = true;
         canvasGroup.alpha = .6f; //transparense de l'image
         canvasGroup.blocksRaycasts = false; //active OnDrop sur itemSlot
@@ -127,11 +125,12 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
         {
             for (int x = 0; x < dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern.GetLength(0); x++)
             {
-                var img = this.dragItemObj.GetComponent<RectTransform>().GetChild(num).GetComponent<Image>();
+                var img = dragItemObj.GetComponent<RectTransform>().GetChild(num).GetComponent<Image>();
                 img.name = $"image{x} {y}";
                 if (dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern[x, y] != null)
                 {
                     img.sprite = dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern[x, y];
+                    dragItemObj.GetComponent<RectTransform>().GetChild(num).GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, dragItemObj.GetComponent<ItemDragDrop>().GetItem().rotate);
                 }
                 else
                 {

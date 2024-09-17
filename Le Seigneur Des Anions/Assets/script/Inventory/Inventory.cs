@@ -4,20 +4,37 @@ using AllFonction;
 
 public class Inventory : MonoBehaviour
 {
+    [Header("inventory panel atribut")]
     [SerializeField] private float slotHeight; //hauteur des slots
-    [SerializeField] private float ySpacing; //espace entre les slots
-    [SerializeField] private ItemData[,] content = new ItemData[4, 5]; //contenu de l'inventaire
-    [SerializeField] private ItemData itemDataSprite; //itemdata qui designe que l'espace est occuper
-    [SerializeField] private KeyBiding rotateKey; //keyBiding pour rotate
+    [SerializeField] private float ySpacing; //espace entre les slots en hauteur
+    [SerializeField] private float slotWidth; //largeur des slots
+    [SerializeField] private float xSpacing; //espace entre les slots en largeur
+    [SerializeField] private Vector3 invetoryPanelPosition; //position du panel de l'inventaire
+    [SerializeField] private float inventoryPanelPadding; //espace entre le bort du panel et le contenu
+    [SerializeField] private int contentWidth; //largeur du contenu
+    [SerializeField] private int contentHeight; //hauteur du contenu
+    [SerializeReference] private ItemData itemDataSprite; //itemdata qui designe que l'espace est occuper
 
     [Header("element list")]
-    [SerializeField] private GameObject inventoryPanel; //panel de l'inventaire
-    [SerializeField] private GameObject inventoryColumnContent; //le containeur des column
-    [SerializeField] private Sprite transImage; //image transparente
-    [SerializeField] private GameObject RowContentPrefab; //prefab du conteneur des slot
-    [SerializeField] private GameObject slotPrefab; //prefab des slot
+    [SerializeReference] private GameObject inventoryPanel; //panel de l'inventaire
+    [SerializeReference] private GameObject inventoryColumnContent; //le containeur des column
+    [SerializeReference] private Sprite transImage; //image transparente
+    [SerializeReference] private GameObject RowContentPrefab; //prefab du conteneur des slot
+    [SerializeReference] private GameObject slotPrefab; //prefab des slot
 
-    private readonly Fonction func = new Fonction();
+    [Header("input")]
+    [SerializeReference] private KeyBiding rotateKey; //keyBiding pour rotate
+
+
+    private ItemData[,] content; //contenu de l'inventaire
+    private readonly Fonction func = new Fonction(); //object fonction
+
+
+    public void Awake()
+    {
+        content = new ItemData[contentWidth, contentHeight];
+    }
+
     void Start()
     {
         //func.show2DItemDataContent(content);
@@ -33,6 +50,7 @@ public class Inventory : MonoBehaviour
             inventoryPanel.SetActive(!inventoryPanel.activeSelf);
         }
     }
+
     #region get info
 
     public ItemData[,] GetContent()
@@ -61,12 +79,12 @@ public class Inventory : MonoBehaviour
 
     public float GetXSpacing()
     {
-        return inventoryColumnContent.GetComponent<GridLayoutGroup>().spacing.x;
+        return xSpacing;
     }
 
     public float GetSlotWidth()
     {
-        return inventoryColumnContent.GetComponent<GridLayoutGroup>().cellSize.x;
+        return slotWidth;
     }
 
     #endregion
@@ -134,6 +152,7 @@ public class Inventory : MonoBehaviour
                     img.raycastTarget = false;
                     img.sprite = transImage;
                 }
+                //img.GetComponent<RectTransform>().transform.rotation = Quaternion.Euler(0, 0, content[x, y].rotate);
                 img.GetComponent<RectTransform>().SetParent(goItem.GetComponent<RectTransform>());
             }
         }
@@ -170,11 +189,19 @@ public class Inventory : MonoBehaviour
         RefreshInventory();
     }
 
+    /// <summary>
+    /// remove un item depuis une position specific
+    /// </summary>
+    /// <param name="item">l'item a remove</param>
+    /// <param name="x">la position de la case gauche de la matrice</param>
+    /// <param name="y">la position de la case haute de la matrice</param>
+    /// <param name="pos">la position de item dans la matrice</param>
     public void RemoveItemFrom(ItemData item , int x, int y, int[] pos)
     {
         //Debug.Log(item);
         //Debug.Log(item.patern.GridSize.x);
         //si oui alors parcour le patern
+        item = content[x, y];
         for (int i = 0; i < item.patern.GetLength(0); i++)
         {
             for (int j = 0; j < item.patern.GetLength(1); j++)
@@ -184,7 +211,9 @@ public class Inventory : MonoBehaviour
                 {
                     //Debug.Log($"del item {content.GetCell(x + i - pos[0], y + j - pos[1])} {x + i - pos[0]} {y + j - pos[1]}");
                     content[x + i - pos[0], y + j - pos[1]] = null;
-                    inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<SlotDragDrop>().SetItem(null);
+                    inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Slot>().SetItem(null);
+
+                    //inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Outline>().enabled = true;
                 }
             }
         }
@@ -237,6 +266,9 @@ public class Inventory : MonoBehaviour
                                     {
                                         //Debug.Log($"cell: x{x + i - pos[0]}: {x} + {i} - {pos[0]} y{y + j - pos[1]}: {y} + {j} - {pos[1]} : {patCells[j, i]}");
                                         inventoryColumnContent.transform.GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetChild(0).GetComponent<Image>().sprite = patCells[i, j];
+                                        //Debug.Log($"{x} {y} {content[x, y].rotate}");
+                                        
+                                        inventoryColumnContent.transform.GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetChild(0).GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, content[x, y].rotate);
                                     }
                                 }
                             }
@@ -320,13 +352,28 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void InitInventory()
     {
+        //Debug.Log(content.GetLength(0));
+        //Debug.Log(slotWidth);
+        //Debug.Log(inventoryPanelPadding * 2);
+        inventoryPanel.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position;
+        inventoryPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(content.GetLength(0) * (slotWidth + xSpacing) - xSpacing + (inventoryPanelPadding * 2), content.GetLength(1) * (slotHeight + ySpacing) - ySpacing + (inventoryPanelPadding * 2));
+        
+        func.SetLeftRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
+        func.SetRightRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
+        func.SetTopRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
+        func.SetBottomRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
+
+        inventoryColumnContent.GetComponent<GridLayoutGroup>().spacing = new Vector2(xSpacing, 0);
         inventoryColumnContent.GetComponent<GridLayoutGroup>().cellSize = new Vector2(slotHeight, content.GetLength(1) * (slotHeight + ySpacing) - ySpacing);
         for (var x = 0; x < content.GetLength(0); x++)
         {
             var row = Instantiate(RowContentPrefab, inventoryColumnContent.transform);
+            row.GetComponent<GridLayoutGroup>().spacing = new Vector2(0, ySpacing);
+            row.GetComponent <GridLayoutGroup>().cellSize = new Vector2(slotWidth, slotHeight);
             for (var y = 0; y < content.GetLength(1); y++)
             {
-                Instantiate(slotPrefab, row.transform);
+                var slot = Instantiate(slotPrefab, row.transform);
+                slot.GetComponent<RectTransform>().GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth , slotHeight);
             }
         }
     }
@@ -358,16 +405,17 @@ public class Inventory : MonoBehaviour
                     if (firstPos[0] == -1 && firstPos[1] == -1)
                     {
                         var instItem = Instantiate(item);
-                        inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<SlotDragDrop>().SetItem(instItem);
+                        inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Slot>().SetItem(instItem);
                         content[x + i - pos[0], y + j - pos[1]] = instItem;
                         //Debug.Log(item.patern);
                         if (item.patern == null)
                         {
-                            content[x + i - pos[0], y + j - pos[1]].SetPatern();
+                            content[x + i - pos[0], y + j - pos[1]].InitPatern();
                         } else
                         {
                             content[x + i - pos[0], y + j - pos[1]].patern = item.patern;
                         }
+                        content[x + i - pos[0], y + j - pos[1]].SetRotate(item.rotate);
                         //Debug.Log(content[x + i - pos[0], y + j - pos[1]]);
                         //Debug.Log(content[x + i - pos[0], y + j - pos[1]].patern);
                         //Debug.Log($"add item {item} {x + i - pos[0]} {y + j - pos[1]}");
@@ -381,10 +429,11 @@ public class Inventory : MonoBehaviour
                         var instItem = Instantiate(itemDataSprite);
                         instItem.refX = firstPos[0];
                         instItem.refY = firstPos[1];
-                        inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<SlotDragDrop>().SetItem(instItem);
+                        inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Slot>().SetItem(instItem);
                         content[x + i - pos[0], y + j - pos[1]] = instItem;
                         //Debug.Log($"add item {itemDataSprite} {x + i} {y + j}");
                     }
+                    //inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Outline>().enabled = false;
                 }
             }
         }

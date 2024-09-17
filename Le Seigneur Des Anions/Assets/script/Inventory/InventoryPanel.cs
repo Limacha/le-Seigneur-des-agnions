@@ -48,6 +48,10 @@ public class InventoryPanel : MonoBehaviour, IDropHandler
                     //Debug.Log($"{paddingLeft}");
                     //Debug.Log($"{paddingTop}");
 
+                    //Debug.Log((canvasRt.position.y - rt.position.y - paddingTop));
+                    //Debug.Log((canvasRt.rect.height - rt.rect.height) / 2);
+                    //Debug.Log(elemRt.position.y);
+
                     //Debug.Log($"x{elemRt.position.x - ((canvasRt.rect.width - rt.rect.width) / 2 - (canvasRt.position.x - rt.position.x - paddingLeft))}");
                     //Debug.Log($"y{elemRt.position.y - ((canvasRt.rect.height - rt.rect.height) / 2 - (canvasRt.position.y - rt.position.y - paddingTop))}");
 
@@ -66,8 +70,6 @@ public class InventoryPanel : MonoBehaviour, IDropHandler
                     //Debug.Log(pos[0] + " " + pos[1]);
                     //Debug.Log(item.patern.GetLength(0) + " " + item.patern.GetLength(1));
 
-                    //Debug.Log((int)Math.Ceiling((decimal)item.patern.GetLength(0) / 2));
-                    //Debug.Log((int)Math.Ceiling((decimal)item.patern.GetLength(1) / 2));
                     //Debug.Log((int)Math.Ceiling((decimal)item.patern.GetLength(0) / 2));
                     //Debug.Log((int)Math.Ceiling((decimal)item.patern.GetLength(1) / 2));
                     #endregion

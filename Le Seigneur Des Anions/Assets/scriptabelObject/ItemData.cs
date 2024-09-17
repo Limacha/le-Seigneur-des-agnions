@@ -10,9 +10,7 @@ public class ItemData : ScriptableObject
     public string description; //description de l'item
     public int width; //larguer de la matrice
     public int height; //hauteur de la matrice
-    /// <summary>
-    /// liste des sprites a mettre dans le patern dabord les y puis les x (0 = x0y0 / 2 = x0y2 / 6 = x2y0)
-    /// </summary>
+    public Sprite imgRef; //image de referance
     public Sprite[] listSprite; //liste des sprites a mettre dans le patern 0 = x0y0 / 2 = x0y2 / 6 = x2y0
     public Sprite[,] patern; //paterne des sprites dans l'inventaire
     public float poids = 0; //poids en gramme (plus tard)
@@ -20,15 +18,22 @@ public class ItemData : ScriptableObject
     public int stackLimit = 1; //nombre ou distance en m
     public int refX; //reference a l'item principal si sprite itemData
     public int refY; //reference a l'item principal si sprite itemData
-    public int rotate; //degrer de rotation
+    public int rotate = 360; //degrer de rotation
 
     public GameObject prefab; //l'item en 3D
 
-    public ItemType type; //type de l'item
+    /// <summary>
+    /// instancie l'item
+    /// </summary>
+    public void init()
+    {
+        InitPatern();
+    }
+
     /// <summary>
     /// instancie le tableau de sprite
     /// </summary>
-    public void SetPatern()
+    public void InitPatern()
     {
         patern = new Sprite[width, height];
         int pos = 0;
@@ -44,16 +49,13 @@ public class ItemData : ScriptableObject
             }
         }
     }
-}
-/// <summary>
-/// enumeration de tout les type possible pour un item
-/// </summary>
-public enum ItemType
-{
-    /// <summary> item sans effet </summary>
-    ressource,
-    /// <summary> item comsomable par l'utilisateur </summary>
-    consomable,
-    /// <summary> block un case de l'inventaire destiner a un item qui prend de la place </summary>
-    sprite
+
+    /// <summary>
+    /// definir la rotation
+    /// </summary>
+    /// <param name="rot">rotation en °</param>
+    public void SetRotate(int rot)
+    {
+        rotate = rot;
+    }
 }

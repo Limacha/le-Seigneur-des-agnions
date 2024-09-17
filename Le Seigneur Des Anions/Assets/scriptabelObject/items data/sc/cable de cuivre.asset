@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 632dff6b04be42545ab1612da7db8055, type: 3}
-  m_Name: cailloux
+  m_Name: cable de cuivre
   m_EditorClassIdentifier: 
-  id: 1
-  nom: cailloux
-  description: une putain de piere banal
+  id: 3
+  nom: cable de cuivre
+  description: un cable en cuivre qui peut faire passer le courent
   width: 1
   height: 1
+  imgRef: {fileID: 21300000, guid: 0c92c328201b9b94e82f157287c1ff35, type: 3}
   listSprite:
-  - {fileID: 21300000, guid: f7111abcf951a1f4398426869d06640b, type: 3}
+  - {fileID: 21300000, guid: 0c92c328201b9b94e82f157287c1ff35, type: 3}
   poids: 0
   stackable: 1
-  stackLimit: 5
+  stackLimit: 1
   refX: 0
   refY: 0
   rotate: 0

@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: test
   m_EditorClassIdentifier: 
   id: 5
-  nom: 
-  description: 
+  nom: test
+  description: un petit test pour test l'inventaire
   width: 3
   height: 3
+  imgRef: {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
   listSprite:
   - {fileID: 0}
   - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
@@ -32,6 +33,6 @@ MonoBehaviour:
   stackLimit: 1
   refX: 0
   refY: 0
-  rotate: 0
+  rotate: 360
   prefab: {fileID: 0}
   type: 0

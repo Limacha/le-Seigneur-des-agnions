@@ -15,6 +15,10 @@ public class MenuAnim : MonoBehaviour
     public string closeTriggerSett = "SettingsClose"; // Animation fermeture
     private bool isOpenSett = false; // si l'ui Play est ouvert ou pas
 
+    public string openTriggerNew = "NewOpen"; // Animation ouverture
+    public string closeTriggerNew = "NewClose"; // Animation fermeture
+    private bool isOpenNew = false; // si l'ui Play est ouvert ou pas
+
 
     public void ToggleAnimationPlay() // lancer l'animation de fermeture ou d'ouverture
     {
@@ -28,20 +32,31 @@ public class MenuAnim : MonoBehaviour
             else
             {
                 if (isOpenSett) {
-                    StartCoroutine(AnimationPlayEndSETT());
-                } else
+                    StartCoroutine(CloseSettOpenPlay());
+                } else if (isOpenNew)
+                {
+                    StartCoroutine(CloseNewOpenPlay());
+                } 
+                else
                 {
                     animator.SetTrigger(openTriggerPlay); // quand Fermer lancer l'animation ouvrir au click
                 }
             }
             isOpenSett = false;
+            isOpenNew = false;
             isOpenPlay = !isOpenPlay;
         }
     }
 
-    IEnumerator AnimationPlayEndSETT()
+    IEnumerator CloseSettOpenPlay()
     {
         animator.SetTrigger(closeTriggerSett); // quand Fermer lancer l'animation ouvrir au click
+        yield return new WaitForSeconds(2); // Attendre que l'animation se termine
+        animator.SetTrigger(openTriggerPlay); // quand Fermer lancer l'animation ouvrir au click
+    }
+    IEnumerator CloseNewOpenPlay()
+    {
+        animator.SetTrigger(closeTriggerNew); // quand Fermer lancer l'animation ouvrir au click
         yield return new WaitForSeconds(2); // Attendre que l'animation se termine
         animator.SetTrigger(openTriggerPlay); // quand Fermer lancer l'animation ouvrir au click
     }
@@ -59,7 +74,10 @@ public class MenuAnim : MonoBehaviour
 
                 if (isOpenPlay)
                 {
-                    StartCoroutine(AnimationSettEndPLAY()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
+                    StartCoroutine(ClosePlayOpenSett()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
+                } else if (isOpenNew)
+                {
+                    StartCoroutine(CloseNewOpenSett()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
                 }
                 else
                 {
@@ -67,14 +85,63 @@ public class MenuAnim : MonoBehaviour
                 }
             }
             isOpenPlay = false;
+            isOpenNew = false;
             isOpenSett = !isOpenSett;
         }
     }
 
-    IEnumerator AnimationSettEndPLAY()
+    IEnumerator ClosePlayOpenSett()
     {
         animator.SetTrigger(closeTriggerPlay); // quand Fermer lancer l'animation ouvrir au click
         yield return new WaitForSeconds(2); // Attendre que l'animation se termine
         animator.SetTrigger(openTriggerSett); // quand Fermer lancer l'animation ouvrir au click
+    }
+    IEnumerator CloseNewOpenSett()
+    {
+        animator.SetTrigger(closeTriggerNew); // quand Fermer lancer l'animation ouvrir au click
+        yield return new WaitForSeconds(2); // Attendre que l'animation se termine
+        animator.SetTrigger(openTriggerSett); // quand Fermer lancer l'animation ouvrir au click
+    }
+
+    public void ToggleAnimationNew() // lancer l'animation de fermeture ou d'ouverture
+    {
+        if (animator != null) // vérifie si ya un animator
+        {
+            if (isOpenNew)
+            {
+                animator.SetTrigger(closeTriggerNew); // quand ouvert lancer l'animation fermer au click
+            }
+            else
+            {
+
+                if (isOpenPlay)
+                {
+                    StartCoroutine(ClosePlayOpenNew()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
+                } else if (isOpenSett)
+                {
+                    StartCoroutine(CloseSettOpenNew()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
+                }
+                else
+                {
+                    animator.SetTrigger(openTriggerNew); // quand Fermer lancer l'animation ouvrir au click
+                }
+            }
+            isOpenSett = false;
+            isOpenPlay = false;
+            isOpenNew = !isOpenNew;
+        }
+    }
+
+    IEnumerator ClosePlayOpenNew()
+    {
+        animator.SetTrigger(closeTriggerPlay); // quand Fermer lancer l'animation ouvrir au click
+        yield return new WaitForSeconds(2); // Attendre que l'animation se termine
+        animator.SetTrigger(openTriggerNew); // quand Fermer lancer l'animation ouvrir au click
+    }
+    IEnumerator CloseSettOpenNew()
+    {
+        animator.SetTrigger(closeTriggerSett); // quand Fermer lancer l'animation ouvrir au click
+        yield return new WaitForSeconds(2); // Attendre que l'animation se termine
+        animator.SetTrigger(openTriggerNew); // quand Fermer lancer l'animation ouvrir au click
     }
 }

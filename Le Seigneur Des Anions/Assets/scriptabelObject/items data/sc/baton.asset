@@ -17,14 +17,15 @@ MonoBehaviour:
   description: un putain de bout de bois mon con
   width: 1
   height: 2
+  imgRef: {fileID: 0}
   listSprite:
   - {fileID: 21300000, guid: 14eaaad4db20fca40a5570e650400a8c, type: 3}
   - {fileID: 21300000, guid: 14eaaad4db20fca40a5570e650400a8c, type: 3}
   poids: 3.5
   stackable: 1
   stackLimit: 5
+  stack: 1
   refX: 0
   refY: 0
   rotate: 0
   prefab: {fileID: 0}
-  type: 0

@@ -23,8 +23,8 @@ MonoBehaviour:
   poids: 0
   stackable: 1
   stackLimit: 5
+  stack: 1
   refX: 0
   refY: 0
   rotate: 0
   prefab: {fileID: 0}
-  type: 0

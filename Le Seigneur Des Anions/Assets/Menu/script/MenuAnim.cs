@@ -13,11 +13,21 @@ public class MenuAnim : MonoBehaviour
 
     public string openTriggerSett = "SettingsOpen"; // Animation ouverture
     public string closeTriggerSett = "SettingsClose"; // Animation fermeture
-    private bool isOpenSett = false; // si l'ui Play est ouvert ou pas
+    private bool isOpenSett = false; // si l'ui Sett est ouvert ou pas
+
+    public string openTriggerGraph = "GraphMenOpen"; // Animation ouverture
+    public string openTriggerAudio = "AudioMenOpen"; // Animation ouverture
+    public string openTriggerTouches = "TouchesMenOpen"; // Animation ouverture
+    public string closeTriggerGraph = "GraphMenClose"; // Animation fermeture
+    public string closeTriggerAudio = "AudioMenClose"; // Animation fermeture
+    public string closeTriggerTouches = "TouchesMenClose"; // Animation fermeture
+    private bool isOpenSettGraph = false; // si l'ui SettGrap est ouvert ou pas
+    private bool isOpenSettAudio = false; // si l'ui SettAudio est ouvert ou pas
+    private bool isOpenSettTouches = false; // si l'ui SettTouches est ouvert ou pas
 
     public string openTriggerNew = "NewOpen"; // Animation ouverture
     public string closeTriggerNew = "NewClose"; // Animation fermeture
-    private bool isOpenNew = false; // si l'ui Play est ouvert ou pas
+    private bool isOpenNew = false; // si l'ui New est ouvert ou pas
 
 
     public void ToggleAnimationPlay() // lancer l'animation de fermeture ou d'ouverture
@@ -50,6 +60,7 @@ public class MenuAnim : MonoBehaviour
 
     IEnumerator CloseSettOpenPlay()
     {
+        StartCoroutine(CloseSettSettALL()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
         animator.SetTrigger(closeTriggerSett); // quand Fermer lancer l'animation ouvrir au click
         yield return new WaitForSeconds(2); // Attendre que l'animation se termine
         animator.SetTrigger(openTriggerPlay); // quand Fermer lancer l'animation ouvrir au click
@@ -67,11 +78,11 @@ public class MenuAnim : MonoBehaviour
         {
             if (isOpenSett)
             {
+                StartCoroutine(CloseSettSettALL()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
                 animator.SetTrigger(closeTriggerSett); // quand ouvert lancer l'animation fermer au click
             }
             else
             {
-
                 if (isOpenPlay)
                 {
                     StartCoroutine(ClosePlayOpenSett()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
@@ -113,7 +124,6 @@ public class MenuAnim : MonoBehaviour
             }
             else
             {
-
                 if (isOpenPlay)
                 {
                     StartCoroutine(ClosePlayOpenNew()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
@@ -140,8 +150,81 @@ public class MenuAnim : MonoBehaviour
     }
     IEnumerator CloseSettOpenNew()
     {
+        StartCoroutine(CloseSettSettALL()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
         animator.SetTrigger(closeTriggerSett); // quand Fermer lancer l'animation ouvrir au click
         yield return new WaitForSeconds(2); // Attendre que l'animation se termine
         animator.SetTrigger(openTriggerNew); // quand Fermer lancer l'animation ouvrir au click
+    }
+
+    public void ToggleAnimationSettGraph() // lancer l'animation de fermeture ou d'ouverture
+    {
+
+        if (animator != null) // v�rifie si ya un animator
+        {
+            if (isOpenSett)
+            {
+                StartCoroutine(CloseSettSettALL()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
+                animator.SetTrigger(openTriggerGraph); // Si menu paramètre ouvert ouvrir parametre graphiques
+            }
+            isOpenSettGraph = !isOpenSettGraph;
+        }
+    }
+    public void ToggleAnimationSettAudio() // lancer l'animation de fermeture ou d'ouverture
+    {
+
+        if (animator != null) // v�rifie si ya un animator
+        {
+            if (isOpenSett)
+            {
+                StartCoroutine(CloseSettSettALL()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
+                animator.SetTrigger(openTriggerAudio); // Si menu paramètre ouvert ouvrir parametre audio
+            }
+            isOpenSettAudio = !isOpenSettAudio;
+        }
+    }
+    public void ToggleAnimationSettTouches() // lancer l'animation de fermeture ou d'ouverture
+    {
+
+        if (animator != null) // v�rifie si ya un animator
+        {
+            if (isOpenSett)
+            {
+                StartCoroutine(CloseSettSettALL()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
+                animator.SetTrigger(openTriggerTouches); // Si menu paramètre ouvert ouvrir parametre touches
+            }
+            isOpenSettTouches = !isOpenSettTouches;
+        }
+    }
+    public void ToggleAnimationSettLeave() // lancer l'animation de fermeture ou d'ouverture
+    {
+
+        if (animator != null) // v�rifie si ya un animator
+        {
+            if (isOpenSett)
+            {
+                StartCoroutine(CloseSettSettALL()); // Lance une Coroutine pour pouvoir faire le WaitForSecondes, Un void ne peut le faire.
+            }
+        }
+    }
+    IEnumerator CloseSettSettALL()
+    {
+        if (isOpenSettGraph)
+        {
+            animator.SetTrigger(closeTriggerGraph); // Si menu paramètre ouvert fermer parametre graphiques
+            yield return new WaitForSeconds(1); // Attendre que l'animation se termine
+        }
+        if (isOpenSettAudio)
+        {
+            animator.SetTrigger(closeTriggerAudio); // Si menu paramètre ouvert fermer parametre audio
+            yield return new WaitForSeconds(1); // Attendre que l'animation se termine
+        }
+        if (isOpenSettTouches)
+        {
+            animator.SetTrigger(closeTriggerTouches); // Si menu paramètre ouvert fermer parametre touches
+            yield return new WaitForSeconds(1); // Attendre que l'animation se termine
+        }
+        isOpenSettGraph = false;
+        isOpenSettAudio = false;
+        isOpenSettTouches = false;
     }
 }

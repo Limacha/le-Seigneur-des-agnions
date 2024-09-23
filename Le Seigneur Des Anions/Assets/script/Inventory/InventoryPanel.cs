@@ -4,7 +4,7 @@ using System;
 
 public class InventoryPanel : MonoBehaviour, IDropHandler
 {
-    [SerializeField] private Inventory inventory;
+    [SerializeReference] private Inventory inventory;
     public void OnDrop(PointerEventData eventData)
     {
         //Debug.Log("onDrop");
@@ -15,7 +15,7 @@ public class InventoryPanel : MonoBehaviour, IDropHandler
         {            
             if (elem.TryGetComponent<SlotDragDrop>(out var component))
             {
-                elem = component.GetGameObject();
+                elem = component.DragItemObj;
             }
 
             if (elem != null)
@@ -27,16 +27,16 @@ public class InventoryPanel : MonoBehaviour, IDropHandler
 
                 if (elem.GetComponent<ItemDragDrop>() != null)
                 {
-                    ItemData item = elem.GetComponent<ItemDragDrop>().GetItem(); //item en ItemData
+                    ItemData item = elem.GetComponent<ItemDragDrop>().ItemData; //item en ItemData
                                                                                  //Debug.Log(elem);
                                                                                  //Debug.Log(item);
 
-                    float spacingWidth = inventory.GetXSpacing(); //l'espacement des case en horizontal
-                    float spacingHeight = inventory.GetYSpacing(); //l'espacement des case en vertical
-                    float slotWidth = inventory.GetSlotWidth(); //la largeur de slot
-                    float slotHeight = inventory.GetSlotHeight(); //la hauteur des slot
+                    float spacingWidth = inventory.XSpacing; //l'espacement des case en horizontal
+                    float spacingHeight = inventory.YSpacing; //l'espacement des case en vertical
+                    float slotWidth = inventory.SlotWidth; //la largeur de slot
+                    float slotHeight = inventory.SlotHeight; //la hauteur des slot
                     int[] pos = inventory.GetPosInPatern(item.patern);
-                    ItemData[,] content = inventory.GetContent(); //contenu de l'inventaire
+                    ItemData[,] content = inventory.Content; //contenu de l'inventaire
 
                     float decalX = (item.patern.GetLength(0) % 2 == 0) ? 50 : 25; //decalage de la grille en x
                     float decalY = (item.patern.GetLength(1) % 2 == 0) ? 50 : 25; //decalage de la grille en y

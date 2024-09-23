@@ -5,4 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "scriptabelObject/items data/consomable", menuName = "Items/New item/consomable")]
 public class ConsomableData : ItemData
 {
+
 }

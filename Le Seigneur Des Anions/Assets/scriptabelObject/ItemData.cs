@@ -16,6 +16,7 @@ public class ItemData : ScriptableObject
     public float poids = 0; //poids en gramme (plus tard)
     public bool stackable = false; //si il peut se stack
     public int stackLimit = 1; //nombre ou distance en m
+    public int stack = 1;
     public int refX; //reference a l'item principal si sprite itemData
     public int refY; //reference a l'item principal si sprite itemData
     public int rotate = 360; //degrer de rotation
@@ -25,7 +26,7 @@ public class ItemData : ScriptableObject
     /// <summary>
     /// instancie l'item
     /// </summary>
-    public void init()
+    public void Init()
     {
         InitPatern();
     }
@@ -44,18 +45,9 @@ public class ItemData : ScriptableObject
                 if (pos < listSprite.Length)
                 {
                     patern[x, y] = listSprite[pos++];
-                    //Debug.Log($"{listSprite[pos - 1]} pos{pos} y{y} x{x}");
+                    Debug.Log($"{nom} {listSprite[pos - 1]} pos{pos} y{y} x{x}");
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// definir la rotation
-    /// </summary>
-    /// <param name="rot">rotation en °</param>
-    public void SetRotate(int rot)
-    {
-        rotate = rot;
     }
 }

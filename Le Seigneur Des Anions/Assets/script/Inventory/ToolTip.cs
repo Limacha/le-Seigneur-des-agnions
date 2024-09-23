@@ -7,6 +7,8 @@ public class ToolTip : MonoBehaviour
 {
     [SerializeReference] private TMP_Text nom;
     [SerializeReference] private TMP_Text description;
+    [SerializeReference] private TMP_Text stack;
+    [SerializeReference] private TMP_Text poids;
     Inventory inventory;
     public void Start()
     {
@@ -22,9 +24,14 @@ public class ToolTip : MonoBehaviour
     }
     public void SetInfo(ItemData item)
     {
-        item.imgRef = (item.imgRef != null) ? item.imgRef : inventory.GetTransImage();
+        item.imgRef = (item.imgRef != null) ? item.imgRef : inventory.TransImage;
         GetComponent<RectTransform>().GetChild(0).GetComponent<Image>().sprite = item.imgRef;
         nom.SetText(item.nom);
         description.SetText(item.description);
+        if (item.stackable)
+        {
+            stack.SetText(item.stack.ToString() + "/" + item.stackLimit.ToString());
+        }
+        poids.SetText("Poids: " + item.poids.ToString());
     }
 }

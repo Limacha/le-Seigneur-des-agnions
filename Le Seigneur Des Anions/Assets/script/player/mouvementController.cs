@@ -17,9 +17,6 @@ public class mouvementController : MonoBehaviour
     CapsuleCollider playerCollider;
     Rigidbody rigidBody;
 
-
-
-
     void Start()
     {
         rigidBody = gameObject.GetComponent<Rigidbody>();

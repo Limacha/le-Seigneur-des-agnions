@@ -13,6 +13,9 @@ public class ItemDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
     private readonly Fonction func = new Fonction(); //fonctionpour debuger et rotate
     private bool drag;
 
+    public ItemData ItemData {  get { return itemData; } set { itemData = value; } }
+    public KeyBiding RotateKey { get { return rotateKey; } set { rotateKey = value; } }
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -28,34 +31,16 @@ public class ItemDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
                 //Debug.Log("rotate slot");
                 //func.show2DSpriteContent(itemData.patern);
                 itemData.patern = func.rotate2DSprite(itemData.patern);
-                itemData.SetRotate(itemData.rotate - 90);
+                itemData.rotate = itemData.rotate - 90;
                 if (itemData.rotate <= 0)
                 {
-                    itemData.SetRotate(360);
+                    itemData.rotate = 360;
                 }
                 refreshDragDropObj();
                 //func.show2DSpriteContent(patern);
             }
         }
     }
-
-    #region get info
-    public ItemData GetItem()
-    {
-        return itemData;
-    }
-    #endregion
-
-    #region set info
-    public void SetItem(ItemData item)
-    {
-        itemData = item;
-    }
-    public void SetRotateKey(KeyBiding key)
-    {
-        rotateKey =  key;
-    }
-    #endregion
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -87,11 +72,11 @@ public class ItemDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
         var GLG = GetComponent<GridLayoutGroup>();
         GetComponent<CanvasGroup>();
 
-        GetComponent<RectTransform>().sizeDelta = new Vector2(itemData.patern.GetLength(0) * (inventory.GetSlotWidth() + inventory.GetXSpacing()), itemData.patern.GetLength(1) * (inventory.GetSlotHeight() + inventory.GetYSpacing()));
-        GetComponent<ItemDragDrop>().SetItem(itemData);
-        GetComponent<ItemDragDrop>().SetRotateKey(rotateKey);
-        GLG.cellSize = new Vector2(inventory.GetSlotWidth(), inventory.GetSlotHeight());
-        GLG.spacing = new Vector2(inventory.GetXSpacing(), inventory.GetYSpacing());
+        GetComponent<RectTransform>().sizeDelta = new Vector2(itemData.patern.GetLength(0) * (inventory.SlotWidth + inventory.XSpacing), itemData.patern.GetLength(1) * (inventory.SlotHeight + inventory.YSpacing));
+        GetComponent<ItemDragDrop>().ItemData = itemData;
+        GetComponent<ItemDragDrop>().RotateKey = rotateKey;
+        GLG.cellSize = new Vector2(inventory.SlotWidth, inventory.SlotHeight);
+        GLG.spacing = new Vector2(inventory.XSpacing, inventory.YSpacing);
         for (int y = 0; y < itemData.patern.GetLength(1); y++)
         {
             for (int x = 0; x < itemData.patern.GetLength(0); x++)
@@ -106,7 +91,7 @@ public class ItemDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
                 else
                 {
                     img.raycastTarget = false;
-                    img.sprite = inventory.GetTransImage();
+                    img.sprite = inventory.TransImage;
                 }
                 num++;
             }

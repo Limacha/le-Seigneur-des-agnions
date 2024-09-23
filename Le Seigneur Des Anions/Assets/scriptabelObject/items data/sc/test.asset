@@ -22,17 +22,17 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
   - {fileID: 0}
-  - {fileID: 21300000, guid: 4f0397e4803643e4090dc1a5201c56a3, type: 3}
-  - {fileID: 21300000, guid: 4f0397e4803643e4090dc1a5201c56a3, type: 3}
+  - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
+  - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
   - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
   - {fileID: 0}
   - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
   - {fileID: 0}
-  poids: 0
+  poids: 150
   stackable: 0
   stackLimit: 1
+  stack: 1
   refX: 0
   refY: 0
   rotate: 360
   prefab: {fileID: 0}
-  type: 0

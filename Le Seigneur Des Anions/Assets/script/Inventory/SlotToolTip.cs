@@ -14,16 +14,16 @@ public class SlotToolTip : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (toolTip != null && GetComponent<Slot>().GetItem() != null)
+        if (toolTip != null && GetComponent<Slot>().ItemData != null)
         {
             toolTip.Show();
-            if(GetComponent<Slot>().GetItem().id == inventory.GetItemDataSprite().id)
+            if(GetComponent<Slot>().ItemData.id == inventory.ItemDataSprite.id)
             {
-                toolTip.SetInfo(inventory.GetContent()[GetComponent<Slot>().GetItem().refX, GetComponent<Slot>().GetItem().refY]);
+                toolTip.SetInfo(inventory.Content[GetComponent<Slot>().ItemData.refX, GetComponent<Slot>().ItemData.refY]);
             }
             else
             {
-                toolTip.SetInfo(GetComponent<Slot>().GetItem());
+                toolTip.SetInfo(GetComponent<Slot>().ItemData);
             }
         }
     }

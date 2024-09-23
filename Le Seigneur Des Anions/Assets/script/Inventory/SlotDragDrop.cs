@@ -15,6 +15,8 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
     private bool dragItem = false;
     private ItemData itemData;
 
+    public GameObject DragItemObj { get { return dragItemObj; } }
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -30,12 +32,12 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
                 if (Input.GetKeyDown(rotateKey.key.ToLower()))
                 {
                     //Debug.Log("rotate slot");
-                    //func.show2DSpriteContent(dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern);
-                    dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern = func.rotate2DSprite(dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern);
-                    dragItemObj.GetComponent<ItemDragDrop>().GetItem().SetRotate(dragItemObj.GetComponent<ItemDragDrop>().GetItem().rotate - 90);
-                    if (dragItemObj.GetComponent<ItemDragDrop>().GetItem().rotate <= 0)
+                    //func.show2DSpriteContent(dragItemObj.GetComponent<ItemDragDrop>().ItemData.patern);
+                    dragItemObj.GetComponent<ItemDragDrop>().ItemData.patern = func.rotate2DSprite(dragItemObj.GetComponent<ItemDragDrop>().ItemData.patern);
+                    dragItemObj.GetComponent<ItemDragDrop>().ItemData.rotate = dragItemObj.GetComponent<ItemDragDrop>().ItemData.rotate - 90;
+                    if (dragItemObj.GetComponent<ItemDragDrop>().ItemData.rotate <= 0)
                     {
-                        dragItemObj.GetComponent<ItemDragDrop>().GetItem().SetRotate(360);
+                        dragItemObj.GetComponent<ItemDragDrop>().ItemData.rotate = 360;
                     }
                     refreshDragDropObj();
                     //func.show2DSpriteContent(patern);
@@ -44,24 +46,10 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
         }
     }
 
-    #region get info
-    public GameObject GetGameObject()
-    {
-        return dragItemObj;
-    }
-    #endregion
-
-    #region set info
-    public void SetRotateKey(KeyBiding key)
-    {
-        rotateKey = key;
-    }
-    #endregion
-
     public void OnBeginDrag(PointerEventData eventData)
     {
         //Debug.Log("OnBeginDrag");
-        itemData = GetComponent<Slot>().GetItem();
+        itemData = GetComponent<Slot>().ItemData;
         drag = true;
         canvasGroup.alpha = .6f; //transparense de l'image
         canvasGroup.blocksRaycasts = false; //active OnDrop sur itemSlot
@@ -69,9 +57,9 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
         //Debug.Log(itemData);
         if (itemData != null)
         {
-            if (itemData.id == inventory.GetItemDataSprite().id)
+            if (itemData.id == inventory.ItemDataSprite.id)
             {
-                itemData = inventory.GetContent()[itemData.refX, itemData.refY];
+                itemData = inventory.Content[itemData.refX, itemData.refY];
             }
             //Debug.Log(itemData.refX + " " + itemData.refY);
             if (itemData != null)
@@ -79,7 +67,7 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
                 //Debug.Log(itemData);
                 dragItem = true;
                 dragItemObj = inventory.CreateItem(itemData);
-                dragItemObj.GetComponent<ItemDragDrop>().SetItem(itemData);
+                dragItemObj.GetComponent<ItemDragDrop>().ItemData = itemData;
 
                 inventory.RemoveItemFrom(itemData, itemData.refX, itemData.refY, inventory.GetPosInPatern(itemData.patern));
                 inventory.RefreshInventory();
@@ -116,26 +104,26 @@ public class SlotDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IB
         var GLG = dragItemObj.GetComponent<GridLayoutGroup>();
         dragItemObj.GetComponent<CanvasGroup>();
 
-        dragItemObj.GetComponent<RectTransform>().sizeDelta = new Vector2(dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern.GetLength(0) * (inventory.GetSlotWidth() + inventory.GetXSpacing()), dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern.GetLength(1) * (inventory.GetSlotHeight() + inventory.GetYSpacing()));
-        dragItemObj.GetComponent<ItemDragDrop>().SetItem(dragItemObj.GetComponent<ItemDragDrop>().GetItem());
-        dragItemObj.GetComponent<ItemDragDrop>().SetRotateKey(rotateKey);
-        GLG.cellSize = new Vector2(inventory.GetSlotWidth(), inventory.GetSlotHeight());
-        GLG.spacing = new Vector2(inventory.GetXSpacing(), inventory.GetYSpacing());
-        for (int y = 0; y < dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern.GetLength(1); y++)
+        dragItemObj.GetComponent<RectTransform>().sizeDelta = new Vector2(dragItemObj.GetComponent<ItemDragDrop>().ItemData.patern.GetLength(0) * (inventory.SlotWidth + inventory.XSpacing), dragItemObj.GetComponent<ItemDragDrop>().ItemData.patern.GetLength(1) * (inventory.SlotHeight + inventory.YSpacing));
+        dragItemObj.GetComponent<ItemDragDrop>().ItemData = dragItemObj.GetComponent<ItemDragDrop>().ItemData;
+        dragItemObj.GetComponent<ItemDragDrop>().RotateKey = rotateKey;
+        GLG.cellSize = new Vector2(inventory.SlotWidth, inventory.SlotHeight);
+        GLG.spacing = new Vector2(inventory.XSpacing, inventory.YSpacing);
+        for (int y = 0; y < dragItemObj.GetComponent<ItemDragDrop>().ItemData.patern.GetLength(1); y++)
         {
-            for (int x = 0; x < dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern.GetLength(0); x++)
+            for (int x = 0; x < dragItemObj.GetComponent<ItemDragDrop>().ItemData.patern.GetLength(0); x++)
             {
                 var img = dragItemObj.GetComponent<RectTransform>().GetChild(num).GetComponent<Image>();
                 img.name = $"image{x} {y}";
-                if (dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern[x, y] != null)
+                if (dragItemObj.GetComponent<ItemDragDrop>().ItemData.patern[x, y] != null)
                 {
-                    img.sprite = dragItemObj.GetComponent<ItemDragDrop>().GetItem().patern[x, y];
-                    dragItemObj.GetComponent<RectTransform>().GetChild(num).GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, dragItemObj.GetComponent<ItemDragDrop>().GetItem().rotate);
+                    img.sprite = dragItemObj.GetComponent<ItemDragDrop>().ItemData.patern[x, y];
+                    dragItemObj.GetComponent<RectTransform>().GetChild(num).GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, dragItemObj.GetComponent<ItemDragDrop>().ItemData.rotate);
                 }
                 else
                 {
                     img.raycastTarget = false;
-                    img.sprite = inventory.GetTransImage();
+                    img.sprite = inventory.TransImage;
                 }
                 num++;
             }

@@ -45,7 +45,7 @@ public class ItemData : ScriptableObject
                 if (pos < listSprite.Length)
                 {
                     patern[x, y] = listSprite[pos++];
-                    Debug.Log($"{nom} {listSprite[pos - 1]} pos{pos} y{y} x{x}");
+                    //Debug.Log($"{nom} {listSprite[pos - 1]} pos{pos} y{y} x{x}");
                 }
             }
         }

@@ -12,8 +12,10 @@ public class Inventory : MonoBehaviour
     [SerializeField] private float xSpacing; //espace entre les slots en largeur
     [SerializeField] private Vector3 invetoryPanelPosition; //position du panel de l'inventaire
     [SerializeField] private float inventoryPanelPadding; //espace entre le bort du panel et le contenu
+
     [SerializeField] private int contentWidth; //largeur du contenu
     [SerializeField] private int contentHeight; //hauteur du contenu
+    
     [SerializeReference] private ItemData itemDataSprite; //itemdata qui designe que l'espace est occuper
 
     [Header("element list")]
@@ -23,9 +25,11 @@ public class Inventory : MonoBehaviour
     [SerializeReference] private GameObject rowContentPrefab; //prefab du conteneur des slot
     [SerializeReference] private GameObject slotPrefab; //prefab des slot
     [SerializeReference] private GameObject textPoids; //text qui affiche le poids
+    [SerializeReference] private GameObject gameManager; //game manager
 
     [Header("input")]
     [SerializeReference] private KeyBiding rotateKey; //keyBiding pour rotate
+    [SerializeReference] private KeyBiding openKey; //keyBiding pour ouvrir l'inventaire
 
     private float poids = 0;
     private ItemData[,] content; //contenu de l'inventaire
@@ -56,7 +60,7 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
-        //func.show2DItemDataContent(content);
+        //init l'inventaire et l'affiche
         InitInventory();
         RefreshInventory();
     }
@@ -64,10 +68,69 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(openKey.key)) //ouvre ou ferme l'inventaire
         {
             inventoryPanel.SetActive(!inventoryPanel.activeSelf);
         }
+    }
+    /// <summary>
+    /// savegarde cet inventaire
+    /// </summary>
+    public void SaveInventory()
+    {
+        SaveSystem.SaveInventory(this);
+    }
+    /// <summary>
+    /// charge l'inventaire depuis le fichier de save
+    /// </summary>
+    public void LoadInventory()
+    {
+        InventorySaveData inventorySaveData = SaveSystem.LoadInventory(this);
+        ResetInventory(); //reset de l'inventaire
+        if (inventorySaveData != null) //si sa a charger qq chose
+        {
+            for (int i = 0; i < inventorySaveData.itemSaveDatas.Length; i++) //parcour le tableau
+            {
+                if (inventorySaveData.itemSaveDatas[i] != null) //si l'item n'est pas null
+                {
+                    ItemData defItem = null;
+                    for (int j = 0; j < gameManager.GetComponent<ItemDataManager>().itemList.Count; j++) //parcour les items charger
+                    {
+                        if (inventorySaveData.itemSaveDatas[i].id == gameManager.GetComponent<ItemDataManager>().itemList[j].id) //si les id son les meme
+                        {
+                            //creation d'un item par default
+                            defItem = gameManager.GetComponent<ItemDataManager>().itemList[j];
+                            defItem.stack = inventorySaveData.itemSaveDatas[i].stack;
+                            //choix si un type particulier
+                            if (inventorySaveData.itemSaveDatas[i].GetType() == typeof(RessourceSaveData))
+                            {
+                                //ajout des variable special
+                                RessourceData item = defItem as RessourceData; 
+                                item.source = ((RessourceSaveData)inventorySaveData.itemSaveDatas[i]).source;
+
+                                //ajout de l'item
+                                PlaceItemInInventory(item, inventorySaveData.itemSaveDatas[i].refX, inventorySaveData.itemSaveDatas[i].refY);
+                            }
+                            else if (inventorySaveData.itemSaveDatas[i].GetType() == typeof(RessourceSaveData))
+                            {
+                                //ajout des variable special
+                                ConsomableData item = defItem as ConsomableData;
+                                item.source = ((ConsomableSaveData)inventorySaveData.itemSaveDatas[i]).source;
+
+                                //ajout de l'item
+                                PlaceItemInInventory(item, inventorySaveData.itemSaveDatas[i].refX, inventorySaveData.itemSaveDatas[i].refY);
+                            }
+                            else
+                            {
+                                //ajout de l'item
+                                PlaceItemInInventory(defItem, inventorySaveData.itemSaveDatas[i].refX, inventorySaveData.itemSaveDatas[i].refY);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        RefreshInventory(); //affiche l'inventaire
     }
 
     /// <summary>
@@ -97,7 +160,7 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-        RefreshInventory();
+        RefreshInventory(); //affiche l'inventaire
     }
 
     /// <summary>
@@ -161,13 +224,13 @@ public class Inventory : MonoBehaviour
                     //verifier si la case est l'item
                     if (content[x, y].id == item.id)
                     {
-                        RemoveItemFrom(item, x, y, pos);
+                        RemoveItemFrom(item, x, y, pos); //retire l'inventaire
                         delete = true;
                     }
                 }
             }
         }
-        RefreshInventory();
+        RefreshInventory(); //affiche l'inventaire
     }
 
     /// <summary>
@@ -181,19 +244,19 @@ public class Inventory : MonoBehaviour
     {
         //Debug.Log(item);
         //Debug.Log(item.patern.GridSize.x);
-        //si oui alors parcour le patern
-        poids -= item.poids;
+        poids -= item.poids * item.stack;
         item = content[x, y];
+        //parcour le patern
         for (int i = 0; i < item.patern.GetLength(0); i++)
         {
             for (int j = 0; j < item.patern.GetLength(1); j++)
             {
-                if (item.patern[i, j] != null)
+                if (item.patern[i, j] != null) //si la case est rempli
                 {
                     //Debug.Log($"del item {content.GetCell(x + i - pos[0], y + j - pos[1])} {x + i - pos[0]} {y + j - pos[1]}");
+                    //suprime le contenu et reactive la bordure
                     content[x + i - pos[0], y + j - pos[1]] = null;
                     inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Slot>().ItemData = null;
-
                     inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Outline>().enabled = true;
                 }
             }
@@ -222,6 +285,7 @@ public class Inventory : MonoBehaviour
     public void RefreshInventory()
     {
         textPoids.GetComponent<TMP_Text>().SetText("poids: " + poids);
+        //parcour l'inventaire
         for (var y = 0; y < content.GetLength(1); y++)
         {
             for (var x = 0; x < content.GetLength(0); x++)
@@ -232,24 +296,32 @@ public class Inventory : MonoBehaviour
                     // si itemDataSprite alors on fait rien car l'affichage se fait autre par
                     if (content[x, y].id != itemDataSprite.id)
                     {
-                        //Debug.Log(content[x, y].patern[0, 0]);
+                        //definir de sont type si ressource data
+                        if (content[x, y].GetType() == typeof(RessourceData))
+                        {
+                            RessourceData t = content[x, y] as RessourceData;
+                            //Debug.Log(t.Source);
+                        }
+
+
                         var patCells = content[x, y].patern;
                         var pos = GetPosInPatern(patCells);
                         //Debug.Log(pos[0] + " " + pos[1]);
+                        //si les position dans le patern sont correct
                         if (pos[0] >= 0 && pos[1] >= 0)
                         {
-                            // si bon affichage du patern de l'item
+                            //parcour le patern
                             for (var i = 0; i < patCells.GetLength(0); i++)
                             {
                                 for (var j = 0; j < patCells.GetLength(1); j++)
                                 {
-                                    if (patCells[i, j] != null)
+                                    if (patCells[i, j] != null) //si le patern est rempli
                                     {
                                         //func.show2DSpriteContent(itemDataSprite.patern);
                                         //Debug.Log($"cell: x{x + i - pos[0]}: {x} + {i} - {pos[0]} y{y + j - pos[1]}: {y} + {j} - {pos[1]} : {patCells[i, j]}");
+
+                                        //affiche le contenu et le rotate
                                         inventoryColumnContent.transform.GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetChild(0).GetComponent<Image>().sprite = patCells[i, j];
-                                        //Debug.Log($"{x} {y} {content[x, y].rotate}");
-                                        
                                         inventoryColumnContent.transform.GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetChild(0).GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, content[x, y].rotate);
                                     }
                                 }
@@ -259,6 +331,7 @@ public class Inventory : MonoBehaviour
                 }
                 else
                 {
+                    //sinon image transparente
                     inventoryColumnContent.transform.GetChild(x).GetChild(y).GetChild(0).GetComponent<Image>().sprite = transImage;
                 }
             }
@@ -271,12 +344,12 @@ public class Inventory : MonoBehaviour
     /// <returns>true si full</returns>
     public bool IsFull()
     {
-
+        //parcour l'inventaire
         for (var y = 0; y < content.GetLength(1); y++)
         {
             for (var x = 0; x < content.GetLength(0); x++)
             {
-                if (content[x, y] == null)
+                if (content[x, y] == null) //si le contenu est plein alors return false
                 {
 
                     return false;
@@ -291,12 +364,12 @@ public class Inventory : MonoBehaviour
     /// </summary>
     public void DebugInvContent()
     {
-
+        //parcour l'inventaire
         for (var y = 0; y < content.GetLength(1); y++)
         {
             for (var x = 0; x < content.GetLength(0); x++)
             {
-                Debug.Log($"item in {content[x, y]}({x}, {y})");
+                Debug.Log($"item in {content[x, y]}({x}, {y})"); //affiche le contenu dans le debug
             }
         }
     }
@@ -311,11 +384,13 @@ public class Inventory : MonoBehaviour
         int[] pos = new int[2];
         pos[0] = -1;
         pos[1] = -1;
+        //parcour le patern
         for (var x = 0; x < patern.GetLength(0); x++)
         {
             for (var y = 0; y < patern.GetLength(1); y++)
             {
                 //Debug.Log($"p {patern[x, y]} {x} {y}");
+                //si la case est rempli alors return sa position
                 if (patern[x, y] != null && patern[x, y] != itemDataSprite)
                 {
                     pos[0] = x;
@@ -337,47 +412,55 @@ public class Inventory : MonoBehaviour
         //Debug.Log(content.GetLength(0));
         //Debug.Log(slotWidth);
         //Debug.Log(inventoryPanelPadding * 2);
+        //positionement de l'inventaire
         inventoryPanel.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position;
+        //position text poids
         textPoids.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position - new Vector3(0, inventoryPanel.GetComponent<RectTransform>().rect.height/2 + inventoryPanelPadding/4, 0);
+        //espace sur les coter
         textPoids.GetComponent<TMP_Text>().margin = new Vector4(0, 0, 0, 0);
+        //taille du texte
         textPoids.GetComponent<RectTransform>().sizeDelta = new Vector2(content.GetLength(0) * (slotWidth + xSpacing) - xSpacing, inventoryPanelPadding / 2);
+        //taille de la police
         textPoids.GetComponent<TMP_Text>().fontSize = inventoryPanelPadding/2;
-
+        //taille du panel
         inventoryPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(content.GetLength(0) * (slotWidth + xSpacing) - xSpacing + (inventoryPanelPadding * 2), content.GetLength(1) * (slotHeight + ySpacing) - ySpacing + (inventoryPanelPadding * 2));
-        
+        //definition du padding
         func.SetLeftRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
         func.SetRightRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
         func.SetTopRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
         func.SetBottomRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
-
+        //spacing + taille des cellule du conteneur de column
         inventoryColumnContent.GetComponent<GridLayoutGroup>().spacing = new Vector2(xSpacing, 0);
         inventoryColumnContent.GetComponent<GridLayoutGroup>().cellSize = new Vector2(slotHeight, content.GetLength(1) * (slotHeight + ySpacing) - ySpacing);
+        //parcour le contenu en x
         for (var x = 0; x < content.GetLength(0); x++)
         {
-            var row = Instantiate(RowContentPrefab, inventoryColumnContent.transform);
+            var row = Instantiate(RowContentPrefab, inventoryColumnContent.transform); //instance de ligne
+            //spacing et taille des case
             row.GetComponent<GridLayoutGroup>().spacing = new Vector2(0, ySpacing);
             row.GetComponent <GridLayoutGroup>().cellSize = new Vector2(slotWidth, slotHeight);
+            //parcour en y le contenu
             for (var y = 0; y < content.GetLength(1); y++)
             {
-                var slot = Instantiate(slotPrefab, row.transform);
+                var slot = Instantiate(slotPrefab, row.transform); //instance des slot
                 slot.GetComponent<RectTransform>().GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth , slotHeight);
             }
         }
     }
 
     /// <summary>
-    /// place un item dans l'inventaire avec les possition x et y haut gauche en fonction du patern
+    /// place un item dans l'inventaire avec les possition x et y haut gauche + la position dans le patern
     /// </summary>
     /// <param name="item">l'item a placer dans l'inventaire</param>
-    /// <param name="x">la position en x</param>
-    /// <param name="y">la position en y</param>
+    /// <param name="x">la position en x en fonction du patern</param>
+    /// <param name="y">la position en y en fonction du patern</param>
     /// <returns>true si il a reusit a le posser</returns>
     public bool PlaceItemInInventory(ItemData item, int x, int y)
     {
         int[] firstPos = new int[2];
         firstPos[0] = -1;
         firstPos[1] = -1;
-        poids += item.poids;
+        poids += item.poids * item.stack;
 
         int[] pos = GetPosInPatern(item.patern);
         //parcour le patern
@@ -392,10 +475,12 @@ public class Inventory : MonoBehaviour
                     //si premier element deja placer ou non
                     if (firstPos[0] == -1 && firstPos[1] == -1)
                     {
-                        var instItem = Instantiate(item);
+                        var instItem = Instantiate(item); //instancie l'objet
+                        //ajoute de l'item instancier
                         inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Slot>().ItemData = instItem;
                         content[x + i - pos[0], y + j - pos[1]] = instItem;
                         //Debug.Log(item.patern[0,0]);
+                        //si pas de patern alors on l'init
                         if (item.patern == null)
                         {
                             content[x + i - pos[0], y + j - pos[1]].InitPatern();
@@ -403,10 +488,9 @@ public class Inventory : MonoBehaviour
                         {
                             content[x + i - pos[0], y + j - pos[1]].patern = item.patern;
                         }
+
                         content[x + i - pos[0], y + j - pos[1]].rotate = item.rotate;
-                        //Debug.Log(content[x + i - pos[0], y + j - pos[1]]);
-                        //Debug.Log(content[x + i - pos[0], y + j - pos[1]].patern);
-                        //Debug.Log($"add item {item} {x + i - pos[0]} {y + j - pos[1]}");
+                        //position de l'item de ref
                         firstPos[0] = x + i - pos[0];
                         firstPos[1] = y + j - pos[1];
                         instItem.refX = firstPos[0];
@@ -414,13 +498,15 @@ public class Inventory : MonoBehaviour
                     }
                     else
                     {
-                        var instItem = Instantiate(itemDataSprite);
+                        var instItem = Instantiate(itemDataSprite); //instantiation de l'item
+                        //ajout des reference
                         instItem.refX = firstPos[0];
                         instItem.refY = firstPos[1];
                         inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Slot>().ItemData = instItem;
                         content[x + i - pos[0], y + j - pos[1]] = instItem;
                         //Debug.Log($"add item {itemDataSprite} {x + i} {y + j}");
                     }
+                    //desactivation des bordure
                     inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Outline>().enabled = false;
                 }
             }
@@ -439,7 +525,7 @@ public class Inventory : MonoBehaviour
     public bool VerifPlace(ItemData item, int x, int y)
     {
         int[] pos = GetPosInPatern(item.patern);
-
+        //parcour le patern
         for (int i = 0; i < item.patern.GetLength(0); i++)
         {
             for (int j = 0; j < item.patern.GetLength(1); j++)
@@ -466,5 +552,22 @@ public class Inventory : MonoBehaviour
             }
         }
         return true;
+    }
+    /// <summary>
+    /// reset l'inventaire a 0
+    /// </summary>
+    public void ResetInventory()
+    {
+        //parcour l'inventaire
+        for (int i = 0; i < contentWidth; i++)
+        {
+            for (int j = 0; j < contentHeight; j++)
+            {
+                if(content[i, j] != null) //si plein
+                {
+                    RemoveItemFrom(content[i, j], content[i, j].refX, content[i, j].refY, GetPosInPatern(content[i, j].patern));//retire le contenu
+                }
+            }
+        }
     }
 }

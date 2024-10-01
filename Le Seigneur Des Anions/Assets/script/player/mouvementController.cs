@@ -4,16 +4,17 @@ using UnityEngine;
 public class mouvementController : MonoBehaviour
 {
     //vitesse de déplacement
-    public float walkSpeed;
-    public float runSpeed;
+    public float walkSpeed; //vitese du jouer
+    public float runSpeed; //vitesse lors de la course
 
     //Imputs
-    public string inputFront;
-    public string inputBack;
-    public string inputLeft;
-    public string inputRight;
+    public KeyBiding inputFront; //touche avancer
+    public KeyBiding inputBack; //touche reculer
+    public KeyBiding inputLeft; //touche vers la gauche
+    public KeyBiding inputRight; //touche vers la droite
 
-    public Vector3 jumSpeed;
+    public Vector3 jumSpeed; //direction du saut
+
     CapsuleCollider playerCollider;
     Rigidbody rigidBody;
 
@@ -25,14 +26,14 @@ public class mouvementController : MonoBehaviour
 
     void Update()
     {
-        float movez = (Input.GetKey(inputFront)? 1 : 0) - (Input.GetKey(inputBack)? 1 : 0);
-        float movex = (Input.GetKey(inputRight) ? 1 : 0) - (Input.GetKey(inputLeft)? 1 : 0);
+        float movez = (Input.GetKey(inputFront.key)? 1 : 0) - (Input.GetKey(inputBack.key) ? 1 : 0);
+        float movex = (Input.GetKey(inputRight.key) ? 1 : 0) - (Input.GetKey(inputLeft.key) ? 1 : 0);
 
         Vector3 move = new Vector3(movex, 0, movez);
 
         if (move != new Vector3(0, 0, 0))
         {
-            rigidBody.MovePosition(rigidBody.position + move.normalized * walkSpeed * Time.deltaTime);
+            rigidBody.MovePosition(rigidBody.position + move.normalized * walkSpeed * Time.deltaTime); //deplacement du jouer
         }
 
         /*

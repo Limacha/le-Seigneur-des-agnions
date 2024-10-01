@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "scriptabelObject/items data", menuName = "Items/New item")]
-[System.Serializable]
 public class ItemData : ScriptableObject
 {
     public string id = Guid.NewGuid().ToString(); //id unique

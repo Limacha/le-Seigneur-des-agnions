@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c92732a4ebea9b4c87056c4a081e810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemData: {fileID: 0}
 --- !u!114 &1800803976106403582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,7 +209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateKey: {fileID: 11400000, guid: 71976488ca5863342a09a28cfc42c7df, type: 2}
-  itemData: {fileID: 0}
   inventory: {fileID: 0}
 --- !u!114 &6891395251354318524
 MonoBehaviour:

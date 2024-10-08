@@ -1,5 +1,3 @@
-using UnityEditor.Build.Content;
-
 [System.Serializable]
 public class InventorySaveData
 {

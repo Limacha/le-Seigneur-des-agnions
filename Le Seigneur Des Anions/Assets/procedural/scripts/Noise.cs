@@ -4,29 +4,74 @@ using UnityEngine;
 
 public static class Noise
 {
-    // fonction de génération de la grid de la noise map
-    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, float scale) // scale est égal a  valeur du bruit (blanc, noir, gris,...)
+    // fonction de gï¿½nï¿½ration de la grid de la noise map
+    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset) // scale est ï¿½gal a  valeur du bruit (blanc, noir, gris,...)
     {
         float[,] noiseMap = new float[mapWidth, mapHeight]; // la noisemap
 
+        // crï¿½e la seed (prng = pseudo random number generator)
+        System.Random prng = new System.Random(seed);
+        Vector2[] octaveOffsets = new Vector2[octaves];
+        for(int i = 0; i < octaves; i++)
+        {
+            float offsetX = prng.Next(-100000, 100000) + offset.x;
+            float offsetY = prng.Next(-100000, 100000) + offset.y;
+            octaveOffsets[i] = new Vector2(offsetX, offsetY);
+        }
+
         if(scale <= 0)
         {
-            scale = 0.0001f; // Pour éviter de se tromper si scale est inférieur a 0
+            scale = 0.0001f; // Pour ï¿½viter de se tromper si scale est infï¿½rieur a 0
         }
+
+        float maxNoiseHeight = float.MinValue;
+        float minNoiseHeight = float.MaxValue;
+
+        // pour que la taille se change par le millieu
+        float halfWidth = mapWidth / 2f;
+        float halfHeight = mapHeight / 2f;
 
         for (int y = 0; y < mapHeight; y++)
         {
             for (int x = 0; x < mapWidth; x++)
             {
-                float sampleX = x / scale; // pour passer les variable int des for en float
-                float sampleY = y / scale; // pareil
+                float amplitude = 1; // ajouter des dï¿½tailles de moins en moins importants
+                float frequency = 1; // + frequency ï¿½levï¿½e plus la hauteur de la map changeras rapidement
+                float noiseHeight = 0;
 
-                // algorythme de perlin
-                float perlinValue = Mathf.PerlinNoise(sampleX, sampleY);
-                noiseMap[x,y] = perlinValue;
+                for(int i = 0; i < octaves; i++)
+                {
+                    float sampleX = (x - halfWidth) / scale * frequency + octaveOffsets[i].x; // pour passer les variable int des for en float
+                    float sampleY = (y - halfHeight) / scale * frequency + octaveOffsets[i].y; // pareil
+
+                    // algorythme de perlin
+                    float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
+                    noiseHeight += perlinValue * amplitude;
+                    amplitude *= persistance; // augmenter l'amplitude
+                    frequency *= lacunarity; // pareil mais pour frequency
+                }
+
+                // mettre toutes les valeurs entre 0 et 1
+                if (noiseHeight > maxNoiseHeight)
+                {
+                    maxNoiseHeight = noiseHeight;
+                } else if (noiseHeight < minNoiseHeight)
+                {
+                    minNoiseHeight = noiseHeight;
+                }
+
+                noiseMap[x, y] = noiseHeight; // crï¿½e la noiseMap
             }
         }
 
+        //envoie de rï¿½ponses entre 0 & 1
+        for (int y = 0; y < mapHeight; y++)
+        {
+            for (int x = 0; x < mapWidth; x++)
+            {
+                noiseMap[x, y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, noiseMap[x, y]);
+            }
+        }
         return noiseMap;
     }
 }

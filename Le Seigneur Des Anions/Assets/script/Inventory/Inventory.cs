@@ -15,7 +15,7 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] private int contentWidth; //largeur du contenu
     [SerializeField] private int contentHeight; //hauteur du contenu
-    
+
     [SerializeReference] private ItemData itemDataSprite; //itemdata qui designe que l'espace est occuper
 
     [Header("element list")]
@@ -36,20 +36,20 @@ public class Inventory : MonoBehaviour
     private readonly Fonction func = new Fonction(); //object fonction
 
     #region proprieter
-    public float SlotHeight {  get { return slotHeight; } }
+    public float SlotHeight { get { return slotHeight; } }
     public float YSpacing { get { return ySpacing; } }
     public float SlotWidth { get { return slotWidth; } }
     public float XSpacing { get { return xSpacing; } }
     public int ContentWidth { get { return contentWidth; } }
     public int ContentHeight { get { return contentHeight; } }
-    public ItemData[,] Content { get {  return content; } }
-    public ItemData ItemDataSprite { get { return itemDataSprite;} }
+    public ItemData[,] Content { get { return content; } }
+    public ItemData ItemDataSprite { get { return itemDataSprite; } }
     public GameObject InventoryPanel { get { return inventoryPanel; } }
     public GameObject RowContentPrefab { get { return rowContentPrefab; } }
     public GameObject SlotContentPrefab { get { return SlotContentPrefab; } }
     public GameObject ItemContentPrefab { get { return ItemContentPrefab; } }
     public Sprite TransImage { get { return transImage; } }
-    public float Poids {  get { return poids; } }
+    public float Poids { get { return poids; } }
     #endregion
 
 
@@ -105,7 +105,7 @@ public class Inventory : MonoBehaviour
                             if (inventorySaveData.itemSaveDatas[i].GetType() == typeof(RessourceSaveData))
                             {
                                 //ajout des variable special
-                                RessourceData item = defItem as RessourceData; 
+                                RessourceData item = defItem as RessourceData;
                                 item.source = ((RessourceSaveData)inventorySaveData.itemSaveDatas[i]).source;
 
                                 //ajout de l'item
@@ -145,7 +145,7 @@ public class Inventory : MonoBehaviour
         //parcourt l'inventaire
         for (int y = 0; y < content.GetLength(1) && !find; y++)
         {
-            for(int x = 0; x < content.GetLength(0) && !find; x++)
+            for (int x = 0; x < content.GetLength(0) && !find; x++)
             {
                 //Debug.Log($"no item {content[x, y] == null} {x} {y}");
                 //verifier si la case contient qq chose
@@ -240,7 +240,7 @@ public class Inventory : MonoBehaviour
     /// <param name="x">la position de la case gauche de la matrice</param>
     /// <param name="y">la position de la case haute de la matrice</param>
     /// <param name="pos">la position de item dans la matrice</param>
-    public void RemoveItemFrom(ItemData item , int x, int y, int[] pos)
+    public void RemoveItemFrom(ItemData item, int x, int y, int[] pos)
     {
         //Debug.Log(item);
         //Debug.Log(item.patern.GridSize.x);
@@ -257,7 +257,8 @@ public class Inventory : MonoBehaviour
                     //suprime le contenu et reactive la bordure
                     content[x + i - pos[0], y + j - pos[1]] = null;
                     inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Slot>().ItemData = null;
-                    inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Outline>().enabled = true;
+                    //inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Outline>().enabled = true;
+                    SetBorder(false, inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).gameObject, item, i, j);
                 }
             }
         }
@@ -415,13 +416,13 @@ public class Inventory : MonoBehaviour
         //positionement de l'inventaire
         inventoryPanel.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position;
         //position text poids
-        textPoids.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position - new Vector3(0, inventoryPanel.GetComponent<RectTransform>().rect.height/2 + inventoryPanelPadding/4, 0);
+        textPoids.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position - new Vector3(0, inventoryPanel.GetComponent<RectTransform>().rect.height / 2 + inventoryPanelPadding / 4, 0);
         //espace sur les coter
         textPoids.GetComponent<TMP_Text>().margin = new Vector4(0, 0, 0, 0);
         //taille du texte
         textPoids.GetComponent<RectTransform>().sizeDelta = new Vector2(content.GetLength(0) * (slotWidth + xSpacing) - xSpacing, inventoryPanelPadding / 2);
         //taille de la police
-        textPoids.GetComponent<TMP_Text>().fontSize = inventoryPanelPadding/2;
+        textPoids.GetComponent<TMP_Text>().fontSize = inventoryPanelPadding / 2;
         //taille du panel
         inventoryPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(content.GetLength(0) * (slotWidth + xSpacing) - xSpacing + (inventoryPanelPadding * 2), content.GetLength(1) * (slotHeight + ySpacing) - ySpacing + (inventoryPanelPadding * 2));
         //definition du padding
@@ -438,12 +439,12 @@ public class Inventory : MonoBehaviour
             var row = Instantiate(RowContentPrefab, inventoryColumnContent.transform); //instance de ligne
             //spacing et taille des case
             row.GetComponent<GridLayoutGroup>().spacing = new Vector2(0, ySpacing);
-            row.GetComponent <GridLayoutGroup>().cellSize = new Vector2(slotWidth, slotHeight);
+            row.GetComponent<GridLayoutGroup>().cellSize = new Vector2(slotWidth, slotHeight);
             //parcour en y le contenu
             for (var y = 0; y < content.GetLength(1); y++)
             {
                 var slot = Instantiate(slotPrefab, row.transform); //instance des slot
-                slot.GetComponent<RectTransform>().GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth , slotHeight);
+                //slot.GetComponent<RectTransform>().GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(slotWidth , slotHeight);
             }
         }
     }
@@ -472,10 +473,11 @@ public class Inventory : MonoBehaviour
                 if (item.patern[i, j] != null)
                 {
                     //Debug.Log($"place {item.patern[i, j]} {x + i - pos[0]} {y + j - pos[1]}");
+                    ItemData instItem = null;
                     //si premier element deja placer ou non
                     if (firstPos[0] == -1 && firstPos[1] == -1)
                     {
-                        var instItem = Instantiate(item); //instancie l'objet
+                        instItem = Instantiate(item); //instancie l'objet
                         //ajoute de l'item instancier
                         inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Slot>().ItemData = instItem;
                         content[x + i - pos[0], y + j - pos[1]] = instItem;
@@ -484,7 +486,8 @@ public class Inventory : MonoBehaviour
                         if (item.patern == null)
                         {
                             content[x + i - pos[0], y + j - pos[1]].InitPatern();
-                        } else
+                        }
+                        else
                         {
                             content[x + i - pos[0], y + j - pos[1]].patern = item.patern;
                         }
@@ -498,7 +501,7 @@ public class Inventory : MonoBehaviour
                     }
                     else
                     {
-                        var instItem = Instantiate(itemDataSprite); //instantiation de l'item
+                        instItem = Instantiate(itemDataSprite); //instantiation de l'item
                         //ajout des reference
                         instItem.refX = firstPos[0];
                         instItem.refY = firstPos[1];
@@ -507,7 +510,8 @@ public class Inventory : MonoBehaviour
                         //Debug.Log($"add item {itemDataSprite} {x + i} {y + j}");
                     }
                     //desactivation des bordure
-                    inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Outline>().enabled = false;
+                    //inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).GetComponent<Outline>().enabled = false;
+                    SetBorder(true, inventoryColumnContent.GetComponent<RectTransform>().GetChild(x + i - pos[0]).GetChild(y + j - pos[1]).gameObject, item, i, j);
                 }
             }
         }
@@ -536,7 +540,7 @@ public class Inventory : MonoBehaviour
                 {
                     //Debug.Log($"space {x + i - pos[0] < content.GridSize.x && y + j - pos[1] < content.GridSize.y && 0 <= x + i - pos[0] && 0 <= y + j - pos[1]} {x + i - pos[0]} {y + j - pos[1]} x{x} y{y} i{i} j{j} pos[0]{pos[0]} pos[1]{pos[1]}");
                     //verif si les coordone sont encore situer dans l'inventaire encore dans l'espace de l'inventaire
-                    if (x + i - pos[0] < content.GetLength(0) && y + j - pos[1] < content.GetLength(1) && 0 <= x + i - pos[0] &&  0 <= y + j - pos[1])
+                    if (x + i - pos[0] < content.GetLength(0) && y + j - pos[1] < content.GetLength(1) && 0 <= x + i - pos[0] && 0 <= y + j - pos[1])
                     {
                         //verif si l'inv est occuper a cette position
                         if (content[x + i - pos[0], y + j - pos[1]] != null)
@@ -563,11 +567,57 @@ public class Inventory : MonoBehaviour
         {
             for (int j = 0; j < contentHeight; j++)
             {
-                if(content[i, j] != null) //si plein
+                if (content[i, j] != null) //si plein
                 {
                     RemoveItemFrom(content[i, j], content[i, j].refX, content[i, j].refY, GetPosInPatern(content[i, j].patern));//retire le contenu
                 }
             }
+        }
+    }
+
+    public void SetBorder(bool show, GameObject slot, ItemData item, int i, int j)
+    {
+        if (!show)
+        {
+            slot.transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+            slot.transform.GetChild(1).GetChild(1).gameObject.SetActive(true);
+            slot.transform.GetChild(1).GetChild(2).gameObject.SetActive(true);
+            slot.transform.GetChild(1).GetChild(3).gameObject.SetActive(true);
+        }
+        else if (item.patern != null && slot != null)
+        {
+            if (item.patern[i, j] != null)
+            {
+                if (i + 1 < item.patern.GetLength(0))
+                {
+                    if (item.patern[i + 1, j] != null)
+                    {
+                        slot.transform.GetChild(1).GetChild(2).gameObject.SetActive(false);
+                    }
+                }
+                if (i - 1 >= 0)
+                {
+                    if (item.patern[i - 1, j] != null)
+                    {
+                        slot.transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+                    }
+                }
+                if (j + 1 < item.patern.GetLength(1))
+                {
+                    if (item.patern[i, j + 1] != null)
+                    {
+                        slot.transform.GetChild(1).GetChild(3).gameObject.SetActive(false);
+                    }
+                }
+                if (j - 1 >= 0)
+                {
+                    if (item.patern[i, j - 1] != null)
+                    {
+                        slot.transform.GetChild(1).GetChild(1).gameObject.SetActive(false);
+                    }
+                }
+            }
+
         }
     }
 }

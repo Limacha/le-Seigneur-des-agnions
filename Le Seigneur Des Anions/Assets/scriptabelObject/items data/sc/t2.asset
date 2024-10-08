@@ -15,30 +15,17 @@ MonoBehaviour:
   id: bee3627a-7030-4b69-a00c-ccd4a0ed8b4c
   nom: t2
   description: t2
-  width: 4
-  height: 4
+  width: 2
+  height: 1
+  imgRef: {fileID: 0}
   listSprite:
-  - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
+  - {fileID: 21300000, guid: 0c92c328201b9b94e82f157287c1ff35, type: 3}
+  - {fileID: 21300000, guid: 0c92c328201b9b94e82f157287c1ff35, type: 3}
   poids: 0
   stackable: 0
   stackLimit: 1
+  stack: 1
   refX: 0
   refY: 0
   rotate: 0
   prefab: {fileID: 0}
-  type: 0

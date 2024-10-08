@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public void Awake()
     {
         DontDestroyOnLoad(this);
+        //Cursor.lockState = CursorLockMode.Locked; 
+        //Cursor.visible = false;
     }
     public void DestroySave()
     {

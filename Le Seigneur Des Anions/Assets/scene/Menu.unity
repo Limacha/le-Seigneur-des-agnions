@@ -1794,13 +1794,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: {fileID: 1544170001}
-  buttonPrefab: {fileID: 479623904643941134, guid: 6128b1e5b5949df48b6a77abfa3eac27, type: 3}
+  buttonPrefab: {fileID: 479623904643941134, guid: 769125d6a7410654ca4528b868c28ced, type: 3}
   startLoad: {fileID: 755659509}
   overwrite: 0
-  delete: 0
+  delete: 1
   overwriteSize: 30
   deleteSize: 30
   spaceBetween: 10
+  textMarginLeft: 5
 --- !u!1 &501067848
 GameObject:
   m_ObjectHideFlags: 0
@@ -2794,6 +2795,8 @@ GameObject:
   - component: {fileID: 801529455}
   - component: {fileID: 801529454}
   - component: {fileID: 801529456}
+  - component: {fileID: 801529457}
+  - component: {fileID: 801529458}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2814,6 +2817,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   save: nico test save
+  openConsole: {fileID: 11400000, guid: 35d6697dc7ce4444eba197ade1ed117f, type: 2}
+  consoleSystem: {fileID: 801529458}
 --- !u!4 &801529455
 Transform:
   m_ObjectHideFlags: 0
@@ -2842,6 +2847,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMixer: {fileID: 24100000, guid: b8ada81a0d5d1784284ff99da4880910, type: 2}
+--- !u!114 &801529457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801529453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 405758c103fddd7439750692f3d606bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemList:
+  - {fileID: 11400000, guid: aef2cc5954079a746907cf40acaca793, type: 2}
+  - {fileID: 11400000, guid: b131c9dd6fa19de448dd16ade5ac4323, type: 2}
+  - {fileID: 11400000, guid: 3b1717ca9db815b4b9c40759439405a3, type: 2}
+  - {fileID: 11400000, guid: 2e39ad0a6335edc459e198587781045b, type: 2}
+  - {fileID: 11400000, guid: c5288238dc92c9e4ead3526395704ceb, type: 2}
+  - {fileID: 11400000, guid: 60118d3bfa013aa419057e253b35cf1c, type: 2}
+  - {fileID: 11400000, guid: d96ca08f3f882574e9c58ac8c3c95bdb, type: 2}
+  - {fileID: 11400000, guid: 26abe13782021d346bc35f4991350657, type: 2}
+--- !u!114 &801529458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801529453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f2df98d3d1b1414aa95c387be011223, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showConsole: 0
+  input: 
+  label: mabite.com
+  defaultskin: {fileID: 11400000, guid: 14ea0b3f3ba6c6c45a178503a4fe130c, type: 2}
+  posX: 3
+  posY: 3
+  fontSize: 15
+  inputWidth: 200
+  inputHeight: 30
+  inputMargX: 3
+  inputMargY: 3
+  inputBorderColor: {r: 0, g: 0, b: 0, a: 0}
+  inputTextColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+  inputBackColor: {r: 0, g: 0, b: 0, a: 1}
+  labelWidth: 200
+  labelHeight: 250
+  labelMargX: 5
+  labelMargY: 2
+  labelSpaceInput: 2
+  labelBorderColor: {r: 0, g: 0, b: 0, a: 0}
+  labelTextColor: {r: 0.65882355, g: 0.65882355, b: 0.65882355, a: 1}
+  labelBackColor: {r: 0, g: 0, b: 0, a: 1}
+  commandList:
+  - {fileID: 11400000, guid: d912fcaf0da701e4e86df408f4799d24, type: 2}
+  - {fileID: 11400000, guid: c0a009f438107a8449285d9b4488ad30, type: 2}
+  - {fileID: 11400000, guid: cfb03a773ca483843a31fbf30479cf17, type: 2}
 --- !u!1 &844288889
 GameObject:
   m_ObjectHideFlags: 0
@@ -4146,7 +4210,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: -33.401993}
+  m_AnchoredPosition: {x: -0.000061035156, y: -33.402008}
   m_SizeDelta: {x: -49.602, y: -100.7164}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1105105437

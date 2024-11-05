@@ -20,21 +20,6 @@ namespace AllFonction
         }
 
         /// <summary>
-        /// debug le contenu de l'inventaire avec "item in {cells[y, x]}({x}, {y})"
-        /// </summary>
-        public void show2DItemDataContent(ItemData[,] content)
-        {
-            //parcour du contenu
-            for (var y = 0; y < content.GetLength(1); y++)
-            {
-                for (var x = 0; x < content.GetLength(0); x++)
-                {
-                    Debug.Log($"item in {content[x, y]}({x}, {y})"); //affichage console
-                }
-            }
-        }
-
-        /// <summary>
         /// rotate les 2DSprite de 90°
         /// </summary>
         /// <param name="array">array a tourner</param>

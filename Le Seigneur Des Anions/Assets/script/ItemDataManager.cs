@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using inventory;
 
 public class ItemDataManager : MonoBehaviour
 {
-    public List<ItemData> itemList = new List<ItemData>();
+    [SerializeField] private List<ItemData> itemList = new List<ItemData>();
+    public List<ItemData> ItemList { get { return itemList; } }
     // Start is called before the first frame update
     void Start()
     {        

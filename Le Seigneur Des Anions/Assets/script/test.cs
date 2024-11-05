@@ -22,3 +22,22 @@ public class test : MonoBehaviour
         Debug.Log(t);
     }
 }
+public class t
+{
+
+}
+
+public abstract class ttt
+{
+
+}
+
+public interface tt
+{
+
+}
+
+public class yoyo : MyEvent, tt
+{
+
+}

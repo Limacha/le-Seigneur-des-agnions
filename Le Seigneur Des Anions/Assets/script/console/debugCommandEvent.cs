@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+using inventory;
 using UnityEngine;
 
-namespace debugCommand { 
+namespace debugCommand
+{
     public class DebugCommandEvent : MonoBehaviour
     {
         /// <summary>
@@ -36,22 +35,60 @@ namespace debugCommand {
         public void Give(string input)
         {
             ConsoleSystem console = GameObject.Find("GameManager").GetComponent<GameManager>().ConsoleSystem;
+            Inventory inventaire = GameObject.Find("Inventory").GetComponent<Inventory>();
+            string retour = "Une erreur est survenu.";
             string[] properties = input.Split(' ');
 
             if (properties.Length == 3)
             {
-                if (int.TryParse(properties[2], out int number))
+                ItemData item = inventaire.FindItemWhitName(properties[1]);
+                if (item != null)
                 {
-                    console.Label = $"{properties[1]}\n{number}";
+                    if (int.TryParse(properties[2], out int number))
+                    {
+                        if (number != 0)
+                        {
+                            bool possible = true;
+                            int i = 0;
+                            if (number < 0)
+                            {
+                                retour = $"Supresion de {-number} {properties[1]}.\n";
+                                for (i = 0; i < -number && possible; i++)
+                                {
+                                    possible = inventaire.RemoveItem(item);
+                                }
+                                retour += $"{i} {properties[1]} ont été suprimer.";
+                            }
+                            else
+                            {
+                                retour = $"Ajout de {number} {properties[1]}.";
+                                for (i = 0; i < number && possible; i++)
+                                {
+                                    possible = inventaire.AddItem(item);
+                                }
+                                retour += $"{i} {properties[1]} ont été ajouter.";
+                            }
+                        }
+                        else
+                        {
+                            retour = "Si tu veux rien tu n'aura rien";
+                        }
+                    }
+                    else
+                    {
+                        retour = "La valeur n°2 n'est pas un entier!";
+                    }
                 }
                 else
                 {
-                    console.Label = "la valeur n°2 n'est pas un entier!";
+                    retour = $"l'item avec comme nom {properties[1]} n'existe pas.";
                 }
-            } else
-            {
-                console.Label = "nombre de proprieter invalid";
             }
+            else
+            {
+                retour = "Nombre de proprieter invalid";
+            }
+            console.Label = retour;
         }
     }
 }

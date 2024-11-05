@@ -164,7 +164,7 @@ namespace inventory
         /// ajoute un item a l'inventaire
         /// </summary>
         /// <param name="item">item a ajouter</param>
-        public void AddItem(ItemData item)
+        public bool AddItem(ItemData item)
         {
             //Debug.Log(item);
             bool find = false;
@@ -211,6 +211,7 @@ namespace inventory
                 }
             }
             RefreshInventory(); //affiche l'inventaire
+            return find;
         }
 
         /// <summary>
@@ -259,22 +260,24 @@ namespace inventory
         /// retire un item a l'inventaire
         /// </summary>
         /// <param name="item">item a retirer</param>
-        public void RemoveItem(ItemData item)
+        public bool RemoveItem(ItemData item)
         {
             //debugInvContent();
             bool delete = false;
             int[] pos = GetPosInPatern(item.Patern);
 
-            //parcourt l'inventaire pour enlever les stack stacker
-            for (int y = 0; y < content.GetLength(1) && !delete; y++)
+            if (item.Stackable)
             {
-                for (int x = 0; x < content.GetLength(0) && !delete; x++)
+                //parcourt l'inventaire pour enlever les stack stacker
+                for (int y = 0; y < content.GetLength(1) && !delete; y++)
                 {
-                    //verifier si la case est vide
-                    if (content[x, y] != null)
+                    for (int x = 0; x < content.GetLength(0) && !delete; x++)
                     {
-                        if (item.Stackable)
+                        //verifier si la case est vide
+                        if (content[x, y] != null)
                         {
+                            //Debug.Log(content[x, y].ID);
+                            //Debug.Log(item.ID);
                             if (content[x, y].ID == item.ID)
                             {
                                 if (content[x, y].Stack > 1)
@@ -283,6 +286,7 @@ namespace inventory
                                     delete = true;
                                 }
                             }
+
                         }
                     }
                 }
@@ -305,6 +309,7 @@ namespace inventory
                 }
             }
             RefreshInventory(); //affiche l'inventaire
+            return delete;
         }
 
         /// <summary>
@@ -393,10 +398,10 @@ namespace inventory
                     // si l'element est null alors affiche un sprite transparent
                     if (content[x, y] != null)
                     {
-                        Debug.Log(content[x, y]);
-                        Debug.Log(content[x, y].ID);
-                        Debug.Log(itemDataSprite.ID);
-                        Debug.Log(content[x, y].ID != itemDataSprite.ID);
+                        //Debug.Log(content[x, y]);
+                        //Debug.Log(content[x, y].ID);
+                        //Debug.Log(itemDataSprite.ID);
+                        //Debug.Log(content[x, y].ID != itemDataSprite.ID);
                         // si itemDataSprite alors on fait rien car l'affichage se fait autre par
                         if (content[x, y].ID != itemDataSprite.ID)
                         {
@@ -739,7 +744,7 @@ namespace inventory
         /// <summary>
         /// debug le contenu de l'inventaire avec "item in {cells[y, x]}({x}, {y})"
         /// </summary>
-        public void show2DItemDataContent(ItemData[,] content)
+        public void Show2DItemDataContent(ItemData[,] content)
         {
             //parcour du contenu
             for (var y = 0; y < content.GetLength(1); y++)
@@ -749,6 +754,19 @@ namespace inventory
                     Debug.Log($"item in {content[x, y]}({x}, {y})"); //affichage console
                 }
             }
+        }
+
+
+        public ItemData FindItemWhitName(string name)
+        {
+            foreach(ItemData item in gameManager.GetComponent<ItemDataManager>().ItemList)
+            {
+                if(item.name == name)
+                {
+                    return item;
+                }
+            }
+            return null;
         }
     }
 }

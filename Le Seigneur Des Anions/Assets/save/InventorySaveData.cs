@@ -3,9 +3,8 @@ using inventory;
 [System.Serializable]
 public class InventorySaveData
 {
-    public ItemSaveData[] itemSaveDatas;
+    protected ItemSaveData[] itemSaveDatas;
 
-    public ItemSaveData[] ItemSaveDatas { get { return itemSaveDatas; } set{ itemSaveDatas = value; } }
     public InventorySaveData(Inventory inv)
     {
         itemSaveDatas = new ItemSaveData[inv.ContentWidth * inv.ContentHeight]; //taille max des items possible de stocker

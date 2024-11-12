@@ -72,6 +72,7 @@ namespace inventory
 
                     inventory.RemoveItemFrom(itemData, itemData.RefX, itemData.RefY, inventory.GetPosInPatern(itemData.Patern));
                     inventory.RefreshInventory();
+                    refreshDragDropObj();
                 }
             }
         }

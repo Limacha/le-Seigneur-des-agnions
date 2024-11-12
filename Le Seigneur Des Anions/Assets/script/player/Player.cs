@@ -12,13 +12,13 @@ public class Player : MonoBehaviour
     public float Endurance { get { return endurance; } set { endurance = value; } }
     public float CameraSensibilityX { get { return camSensibilityX; } set { camSensibilityX = value; } }
     public float CameraSensibilityY { get { return camSensibilityY; } set { camSensibilityY = value; } }
-
+    /*
     /// <summary>
     /// sauvegarde du jouer
     /// </summary>
     public void SavePlayer()
     {
-        SaveSystem.SavePlayer(this);
+        SaveSystem.SavePlayer(, this);
     }
     /// <summary>
     /// chargemen du jouer
@@ -35,6 +35,6 @@ public class Player : MonoBehaviour
             endurance = data.endurance;
             transform.position = new Vector3(data.position[0], data.position[1], data.position[2]);
         }
-    }
+    }*/
 }
     

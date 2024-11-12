@@ -4,13 +4,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 using inventory;
 public static class SaveSystem
 {
-    static readonly string defaultPath = Application.persistentDataPath + "/data/save"; //le chemin des sauvegarde par default
-    static readonly BinaryFormatter formatter = new BinaryFormatter(); //le formateur en binaire
-    static readonly GameObject gameManager = GameObject.Find("GameManager"); //gestionaire du jeux
+    private static readonly string defaultPath = Application.persistentDataPath + "/data/save"; //le chemin des sauvegarde par default
+    private static readonly BinaryFormatter formatter = new BinaryFormatter(); //le formateur en binaire
     public static string DefaultPath { get { return defaultPath; } }
 
     /// <summary>
-    /// verifier si les folder exists sinon les crees
+    /// verifier si les folders exists sinon les crees
     /// </summary>
     /// <param name="path">le chemin choisi</param>
     private static void DirectoryExistsOrCreate(string path)
@@ -33,21 +32,22 @@ public static class SaveSystem
     /// <summary>
     /// delete une sauvegarde
     /// </summary>
-    public static void DeleteSave()
+    public static void DeleteSave(string save)
     {
-        string path = defaultPath + "/" + gameManager.GetComponent<GameManager>().Save;
+        string path = defaultPath + "/" + save;
         if (Directory.Exists(path))
         {
             Directory.Delete(path, true);
         }
     }
+    /*
     /// <summary>
     /// sauvegarde les donne du serveur
     /// </summary>
     /// <param name="player">le jouer dont il faus save les data</param>
-    public static void SavePlayer(Player player)
+    public static void SavePlayer(string save, Player player)
     {
-        string path = $"{defaultPath}/{gameManager.GetComponent<GameManager>().Save}/player/player.assa"; //le chemin
+        string path = $"{defaultPath}/{save}/player/player.assa"; //le chemin
         //Debug.Log(path);
 
         DirectoryExistsOrCreate(path);
@@ -62,9 +62,9 @@ public static class SaveSystem
     /// charge les info du jouer
     /// </summary>
     /// <returns>les info du jouer</returns>
-    public static PlayerSaveData LoadPlayer()
+    public static PlayerSaveData LoadPlayer(string save)
     {
-        string path = $"{defaultPath}/{gameManager.GetComponent<GameManager>().Save}/player/player.assa";
+        string path = $"{defaultPath}/{save}/player/player.assa";
         if (File.Exists(path))
         {
             FileStream stream = new FileStream(path, FileMode.Open);
@@ -79,14 +79,14 @@ public static class SaveSystem
             return null;
         }
     }
-
+    */
     /// <summary>
     /// sauvegarde les donne du serveur
     /// </summary>
     /// <param name="player">le jouer dont il faus save les data</param>
-    public static void SaveInventory(Inventory inv)
+    public static void SaveInventory(string save, Inventory inv)
     {
-        string path = $"{defaultPath}/{gameManager.GetComponent<GameManager>().Save}/inventory/inv.assa";
+        string path = $"{defaultPath}/{save}/inventory/inv.assa";
         //Debug.Log(path);
 
         DirectoryExistsOrCreate(path);
@@ -101,9 +101,9 @@ public static class SaveSystem
     /// charge les info du jouer
     /// </summary>
     /// <returns>les info du jouer</returns>
-    public static InventorySaveData LoadInventory(Inventory inv)
+    public static InventorySaveData LoadInventory(string save, Inventory inv)
     {
-        string path = $"{defaultPath}/{gameManager.GetComponent<GameManager>().Save}/inventory/inv.assa";
+        string path = $"{defaultPath}/{save}/inventory/inv.assa";
         if (File.Exists(path))
         {
             FileStream stream = new FileStream(path, FileMode.Open);

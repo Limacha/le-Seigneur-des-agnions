@@ -10,10 +10,10 @@ namespace inventory
         [SerializeReference] private TMP_Text description;
         [SerializeReference] private TMP_Text stack;
         [SerializeReference] private TMP_Text poids;
-        Inventory inventory;
-        public void Start()
+        Inventory inv;
+        public void Awake()
         {
-            inventory = GameObject.Find("Inventory").GetComponent<Inventory>();
+            inv = GameObject.Find("Inventory").GetComponent<Inventory>();
         }
         public void Show()
         {
@@ -33,7 +33,8 @@ namespace inventory
             }
             else
             {
-                GetComponent<RectTransform>().GetChild(0).GetComponent<Image>().sprite = inventory.TransImage;
+                //Debug.Log(inv);
+                GetComponent<RectTransform>().GetChild(0).GetComponent<Image>().sprite = inv.TransImage;
             }
             nom.SetText(item.Nom);
             description.SetText(item.Description);
@@ -46,7 +47,7 @@ namespace inventory
             {
                 stack.gameObject.SetActive(false);
             }
-            poids.SetText("Poids: " + item.Poids.ToString());
+            poids.SetText("Poids: " + (item.Poids * item.Stack).ToString());
         }
     }
 }

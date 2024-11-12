@@ -24,9 +24,9 @@ public class GameManager : MonoBehaviour
             consoleSystem.ShowConsole = !consoleSystem.ShowConsole;
         }
     }
-
+    /*
     public void DestroySave()
     {
-        SaveSystem.DeleteSave();
-    }
+        SaveSystem.DeleteSave(save);
+    }*/
 }

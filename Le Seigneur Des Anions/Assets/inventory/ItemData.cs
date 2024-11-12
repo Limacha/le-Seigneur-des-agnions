@@ -7,7 +7,7 @@ namespace inventory
     public class ItemData : ScriptableObject
     {
         [Header("global item variable")]
-        [SerializeField] private string id = Guid.NewGuid().ToString(); //id unique
+        [SerializeField, ReadOnly] private string id = Guid.NewGuid().ToString(); //id unique
         [SerializeField] private string nom; //nom de l'item
         [SerializeField] private string description; //description de l'item
         [SerializeField] private int width; //larguer de la matrice
@@ -19,8 +19,8 @@ namespace inventory
         [SerializeField] private bool stackable = false; //si il peut se stack
         [SerializeField] private int stackLimit = 1; //nombre ou distance en m
         [SerializeField] private int stack = 1;
-        [SerializeField] private int refX; //reference a l'item principal si sprite itemData
-        [SerializeField] private int refY; //reference a l'item principal si sprite itemData
+        [SerializeField, ReadOnly] private int refX; //reference a l'item principal si sprite itemData
+        [SerializeField, ReadOnly] private int refY; //reference a l'item principal si sprite itemData
         [SerializeField] private int rotate = 360; //degrer de rotation
 
         [SerializeReference] private GameObject prefab; //l'item en 3D

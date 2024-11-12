@@ -1,12 +1,24 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
+using UnityEngine.UI;
 
 namespace inventory
 {
     public class InventoryPanel : MonoBehaviour, IDropHandler
     {
         [SerializeReference] private Inventory inventory;
+        public Texture texture;
+        public GUISkin skin;
+        [Header("style text area")]
+        [SerializeField] private int labelWidth;
+        [SerializeField] private int labelHeight;
+        [SerializeField] private float labelMargX;
+        [SerializeField] private float labelMargY;
+        [SerializeField] private Color labelBorderColor;
+        [SerializeField] private Color labelTextColor;
+        [SerializeField] private Color labelBackColor;
+
         public void OnDrop(PointerEventData eventData)
         {
             //Debug.Log("onDrop");
@@ -22,64 +34,44 @@ namespace inventory
 
                 if (elem != null)
                 {
-                    var elemRt = elem.GetComponent<RectTransform>(); //rect transform de l'element
-                    var canvas = GameObject.Find("Canvas"); //le canvas
-                    var canvasRt = canvas.GetComponent<RectTransform>(); //le rect du canvas
-                    var rt = GetComponent<RectTransform>(); //le rt de inventory panel
+                    RectTransform elemRt = elem.GetComponent<RectTransform>(); //rect transform de l'element
+                    CanvasScaler canvasreso = GameObject.Find("Canvas").GetComponent<CanvasScaler>(); //le canvas
+                    RectTransform rt = GetComponent<RectTransform>(); //le rt de inventory panel
+                    RectTransform rtChild = rt.GetChild(0).GetComponent<RectTransform>(); //rt de l'enfant
+                    float ratioX = Screen.width / canvasreso.referenceResolution.x; //proportion taille/reference
+
+                    /*
+                    Debug.Log(elemRt.position.x);
+                    Debug.Log(elemRt.position.y);
+                    Debug.Log(rtChild.position.x);
+                    Debug.Log(rtChild.position.y);
+                    Debug.Log(rtChild.rect.width);
+                    Debug.Log(rtChild.rect.height);*/
+                    /*Debug.Log("rat"+ratioX);
+                    Debug.Log(prX);
+                    Debug.Log(prY);
+                    Debug.Log("pos"+posX);
+                    Debug.Log("pos"+posY);*/
 
                     if (elem.GetComponent<ItemDragDrop>() != null)
                     {
                         ItemData item = elem.GetComponent<ItemDragDrop>().ItemData; //item en ItemData
-                                                                                    //Debug.Log(elem);
-                                                                                    //Debug.Log(item);
-
-                        float spacingWidth = inventory.XSpacing; //l'espacement des case en horizontal
-                        float spacingHeight = inventory.YSpacing; //l'espacement des case en vertical
                         float slotWidth = inventory.SlotWidth; //la largeur de slot
                         float slotHeight = inventory.SlotHeight; //la hauteur des slot
-                        int[] pos = inventory.GetPosInPatern(item.Patern);
-                        ItemData[,] content = inventory.Content; //contenu de l'inventaire
+                        double prX = elemRt.position.x - (rtChild.position.x - (rtChild.rect.width / 2 * ratioX));
+                        double prY = elemRt.position.y - (rtChild.position.y - (rtChild.rect.height / 2 * ratioX));
 
-                        float decalX = (item.Patern.GetLength(0) % 2 == 0) ? 50 : 25; //decalage de la grille en x
-                        float decalY = (item.Patern.GetLength(1) % 2 == 0) ? 50 : 25; //decalage de la grille en y
+                        float decalX = (item.Patern.GetLength(0) % 2 == 0)? 25 : 0;
+                        float decalY = (item.Patern.GetLength(1) % 2 == 0)? 25 : 0;
 
-                        float paddingLeft = rt.GetChild(0).GetComponent<RectTransform>().rect.xMin - rt.rect.xMin; //l'espace gauche entre l'inventory panel et le columnContent
-                        float paddingTop = rt.GetChild(0).GetComponent<RectTransform>().rect.yMin - rt.rect.yMin; //l'espace en haut entre l'inventory panel et le columnContent
+                        int x = (int)((prX + (decalX * ratioX)) / (slotWidth * ratioX));
+                        int y = inventory.ContentHeight - 1 - (int)((prY - (decalY * ratioX)) / (slotHeight * ratioX));
 
-                        #region debug
-                        //Debug.Log($"{paddingLeft}");
-                        //Debug.Log($"{paddingTop}");
+                        x -= inventory.GetPosInPatern(item.Patern)[0];
+                        y -= inventory.GetPosInPatern(item.Patern)[1];
 
-                        //Debug.Log((canvasRt.position.y - rt.position.y - paddingTop));
-                        //Debug.Log((canvasRt.rect.height - rt.rect.height) / 2);
-                        //Debug.Log(elemRt.position.y);
-
-                        //Debug.Log($"x{elemRt.position.x - ((canvasRt.rect.width - rt.rect.width) / 2 - (canvasRt.position.x - rt.position.x - paddingLeft))}");
-                        //Debug.Log($"y{elemRt.position.y - ((canvasRt.rect.height - rt.rect.height) / 2 - (canvasRt.position.y - rt.position.y - paddingTop))}");
-
-                        //(elemRt.position.x - decalX - ((canvasRt.rect.width - rt.rect.width) / 2 - (canvasRt.position.x - rt.position.x - paddingLeft))) == position dans le column content
-                        //(slotWidth + spacingWidth) = creez une grille de la taille des slot
-                        //content.GridSize.y - = car y comence en bas
-                        //Debug.Log($"xx{(int)Math.Round((elemRt.position.x - decalX - ((canvasRt.rect.width - rt.rect.width) / 2 - (canvasRt.position.x - rt.position.x - paddingLeft))) / (slotWidth + spacingWidth))}");
-                        //Debug.Log($"yy{content.GridSize.y - (int)Math.Round((elemRt.position.y + decalY - ((canvasRt.rect.height - rt.rect.height) / 2 - (canvasRt.position.y - rt.position.y - paddingTop))) / (slotHeight + spacingHeight))}");
-                        #endregion
-
-                        int x = (int)Math.Round((elemRt.position.x - decalX - ((canvasRt.rect.width - rt.rect.width) / 2 - (canvasRt.position.x - rt.position.x - paddingLeft))) / (slotWidth + spacingWidth)); //position en x dans l'inventaire
-                        int y = content.GetLength(1) - (int)Math.Round((elemRt.position.y + decalY - ((canvasRt.rect.height - rt.rect.height) / 2 - (canvasRt.position.y - rt.position.y - paddingTop))) / (slotHeight + spacingHeight)); //position en y dans l'inventaire
-
-                        #region debug
-                        //Debug.Log($"x{x} y{y}");
-                        //Debug.Log(pos[0] + " " + pos[1]);
-                        //Debug.Log(item.patern.GetLength(0) + " " + item.patern.GetLength(1));
-
-                        //Debug.Log((int)Math.Ceiling((decimal)item.patern.GetLength(0) / 2));
-                        //Debug.Log((int)Math.Ceiling((decimal)item.patern.GetLength(1) / 2));
-                        #endregion
-
-                        //decalage des position par raport a l'affichage
-                        x -= (int)Math.Ceiling((decimal)item.Patern.GetLength(0) / 2) - 1 - pos[0]; //-1 car 1/1 != 0
-                        y -= (int)Math.Ceiling((decimal)item.Patern.GetLength(1) / 2) - 1 - pos[1];
-                        //Debug.Log($"x{x} y{y}");
+                        x -= (int)(item.Patern.GetLength(0) / 2);
+                        y -= (int)(item.Patern.GetLength(1) / 2);
 
                         if (inventory.VerifPlace(item, x, y))
                         {
@@ -96,5 +88,53 @@ namespace inventory
                 }
             }
         }
+        /*
+        public void OnGUI()
+        {
+            RectTransform rt = GetComponent<RectTransform>(); //le rt de inventory panel
+            RectTransform rtChild = rt.GetChild(0).GetComponent<RectTransform>();
+            var canvas = GameObject.Find("Canvas"); //le canvas
+            var canvasreso = canvas.GetComponent<CanvasScaler>(); //le canvas
+            string label = "";
+            var ratioX = Screen.width / canvasreso.referenceResolution.x;
+            //var ratioY = Screen.height / canvasreso.referenceResolution.y;
+
+            //label += $"panel x{rt.position.x} y{rt.position.y} \n";
+            //label += $"panel W{rt.rect.width} H{rt.rect.height} \n";
+
+            //label += $"panel 0 x{rt.position.x - rt.rect.width/2} y{rt.position.y - rt.rect.height/2} \n";
+            //label += $"panel 0 + pad x{rt.position.x - rt.rect.width/2 + paddingLeft} y{rt.position.y - rt.rect.height/2 + paddingTop} \n";
+
+            label += $"child x{rtChild.position.x} y{rtChild.position.y} \n";
+            label += $"child W{rtChild.rect.width} H{rtChild.rect.height} \n";
+            label += $"ecran W{Screen.width} H{Screen.height} \n";
+            label += $"origi W{canvasreso.referenceResolution.x} H{canvasreso.referenceResolution.y} \n";
+            label += $"ratio X{ratioX} YratioY \n";
+
+            GUI.skin = skin;
+            GUI.backgroundColor = labelBackColor;
+            GUI.Box(new Rect(0, 0, labelWidth, labelHeight), "");
+            GUI.backgroundColor = labelBorderColor;
+            GUI.contentColor = labelTextColor;
+            GUI.Label(new Rect(labelMargX, labelMargY, (labelWidth - (labelMargX * 2))*ratioX, (labelHeight - (labelMargY * 2))*ratioX), label);
+            GUI.skin.label.fontSize = 10;
+
+
+            GUI.color = Color.white;
+            //GUI.DrawTexture(new Rect(rtChild.position, new Vector2(1, 1)), texture);
+            //GUI.DrawTexture(new Rect(new Vector2(rt.position.x - rt.rect.width / 2, rt.position.y - rt.rect.height / 2), new Vector2(1, 1)), texture);
+            GUI.DrawTexture(new Rect(rtChild.position, new Vector2(1, 1)), texture);
+            GUI.DrawTexture(new Rect(new Vector2(rtChild.position.x - (rtChild.rect.width / 2), rtChild.position.y - (rtChild.rect.height / 2)), new Vector2(1, 1)), texture);
+            GUI.DrawTexture(new Rect(new Vector2(rtChild.position.x - (rtChild.rect.width / 2) * ratioX, rtChild.position.y - (rtChild.rect.height / 2) * ratioX), new Vector2(1, 1)), texture);
+            GUI.color = Color.red;
+            GUI.backgroundColor = labelBackColor;
+            GUI.Box(new Rect(new Vector2(rtChild.position.x - (rtChild.rect.width / 2) * ratioX, rtChild.position.y - (rtChild.rect.height / 2) * ratioX), new Vector2(rtChild.rect.width * ratioX, rtChild.rect.height * ratioX)), "");
+            for (int i = 0; i < inventory.ContentWidth; i++)
+            {
+                GUI.color = Color.green;
+                GUI.backgroundColor = labelBackColor;
+                GUI.Box(new Rect(new Vector2(rtChild.position.x - (rtChild.rect.width / 2) * ratioX + (i * 50 * ratioX), rtChild.position.y - (rtChild.rect.height / 2) * ratioX), new Vector2(50*ratioX, 50*ratioX)), "");
+            }
+        }*/
     }
 }

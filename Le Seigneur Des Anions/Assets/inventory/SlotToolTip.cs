@@ -21,6 +21,8 @@ namespace inventory
                 toolTip.Show();
                 if (GetComponent<Slot>().ItemData.ID == inventory.ItemDataSprite.ID)
                 {
+                    //Debug.Log(GetComponent<Slot>().ItemData.RefX);
+                    //Debug.Log(GetComponent<Slot>().ItemData.RefY);
                     toolTip.SetInfo(inventory.Content[GetComponent<Slot>().ItemData.RefX, GetComponent<Slot>().ItemData.RefY]);
                 }
                 else

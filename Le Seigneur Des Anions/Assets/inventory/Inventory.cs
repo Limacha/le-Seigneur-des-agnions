@@ -98,7 +98,7 @@ namespace inventory
                 }
             }
         }
-
+        /*
         /// <summary>
         /// savegarde cet inventaire
         /// </summary>
@@ -158,7 +158,7 @@ namespace inventory
                 }
             }
             RefreshInventory(); //affiche l'inventaire
-        }
+        }*/
 
         /// <summary>
         /// ajoute un item a l'inventaire
@@ -323,7 +323,7 @@ namespace inventory
         {
             //Debug.Log(item);
             //Debug.Log(item.patern.GridSize.x);
-            poids -= item.Poids * item.Stack;
+            //poids -= item.Poids * item.Stack;
             item = content[x, y];
             //parcour le patern
             for (int i = 0; i < item.Patern.GetLength(0); i++)
@@ -389,7 +389,7 @@ namespace inventory
         /// </summary>
         public void RefreshInventory()
         {
-            textPoids.GetComponent<TMP_Text>().SetText("poids: " + poids);
+            poids = 0;
             //parcour l'inventaire
             for (var y = 0; y < content.GetLength(1); y++)
             {
@@ -405,12 +405,13 @@ namespace inventory
                         // si itemDataSprite alors on fait rien car l'affichage se fait autre par
                         if (content[x, y].ID != itemDataSprite.ID)
                         {
+                            poids += content[x, y].Poids * content[x, y].Stack;
                             //definir de sont type si ressource data
-                            if (content[x, y].GetType() == typeof(RessourceData))
+                            /*if (content[x, y].GetType() == typeof(RessourceData))
                             {
                                 RessourceData t = content[x, y] as RessourceData;
                                 //Debug.Log(t.Source);
-                            }
+                            }*/
 
 
                             var patCells = content[x, y].Patern;
@@ -445,6 +446,7 @@ namespace inventory
                     }
                 }
             }
+            textPoids.GetComponent<TMP_Text>().SetText("poids: " + poids);
         }
 
         /// <summary>
@@ -525,7 +527,7 @@ namespace inventory
             //positionement de l'inventaire
             inventoryPanel.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position;
             //position text poids
-            textPoids.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position - new Vector3(0, inventoryPanel.GetComponent<RectTransform>().rect.height / 2 + inventoryPanelPadding / 4, 0);
+            textPoids.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position - new Vector3(0, (inventoryPanel.GetComponent<RectTransform>().rect.height/2), 0);
             //espace sur les coter
             textPoids.GetComponent<TMP_Text>().margin = new Vector4(0, 0, 0, 0);
             //taille du texte
@@ -570,11 +572,11 @@ namespace inventory
             int[] firstPos = new int[2];
             firstPos[0] = -1;
             firstPos[1] = -1;
-            poids += item.Poids * item.Stack;
+            //poids += item.Poids * item.Stack;
 
-            Debug.Log(item);
+            //Debug.Log(item);
             int[] pos = GetPosInPatern(item.Patern);
-            Debug.Log(pos[0] + " " + pos[1]);
+            //Debug.Log(pos[0] + " " + pos[1]);
             //parcour le patern
             for (int i = 0; i < item.Patern.GetLength(0); i++)
             {
@@ -756,12 +758,33 @@ namespace inventory
             }
         }
 
-
+        /// <summary>
+        /// permet de trouver un item avec son nom
+        /// </summary>
+        /// <param name="name">nom de l'item</param>
+        /// <returns>l'item si trouver</returns>
         public ItemData FindItemWhitName(string name)
         {
             foreach(ItemData item in gameManager.GetComponent<ItemDataManager>().ItemList)
             {
                 if(item.name == name)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// permet de trouver un item avec son id
+        /// </summary>
+        /// <param name="id">id de l'item</param>
+        /// <returns>l'item si trouver</returns>
+        public ItemData FindItemWhitId(string id)
+        {
+            foreach (ItemData item in gameManager.GetComponent<ItemDataManager>().ItemList)
+            {
+                if (item.ID == id)
                 {
                     return item;
                 }

@@ -18,7 +18,7 @@ namespace inventory
         [SerializeField] private Color labelBorderColor;
         [SerializeField] private Color labelTextColor;
         [SerializeField] private Color labelBackColor;
-
+        #region system1
         public void OnDrop(PointerEventData eventData)
         {
             //Debug.Log("onDrop");
@@ -37,21 +37,8 @@ namespace inventory
                     RectTransform elemRt = elem.GetComponent<RectTransform>(); //rect transform de l'element
                     CanvasScaler canvasreso = GameObject.Find("Canvas").GetComponent<CanvasScaler>(); //le canvas
                     RectTransform rt = GetComponent<RectTransform>(); //le rt de inventory panel
-                    RectTransform rtChild = rt.GetChild(0).GetComponent<RectTransform>(); //rt de l'enfant
+                    RectTransform rtChild = rt.GetChild(1).GetComponent<RectTransform>(); //rt de l'enfant
                     float ratioX = Screen.width / canvasreso.referenceResolution.x; //proportion taille/reference
-
-                    /*
-                    Debug.Log(elemRt.position.x);
-                    Debug.Log(elemRt.position.y);
-                    Debug.Log(rtChild.position.x);
-                    Debug.Log(rtChild.position.y);
-                    Debug.Log(rtChild.rect.width);
-                    Debug.Log(rtChild.rect.height);*/
-                    /*Debug.Log("rat"+ratioX);
-                    Debug.Log(prX);
-                    Debug.Log(prY);
-                    Debug.Log("pos"+posX);
-                    Debug.Log("pos"+posY);*/
 
                     if (elem.GetComponent<ItemDragDrop>() != null)
                     {
@@ -61,17 +48,29 @@ namespace inventory
                         double prX = elemRt.position.x - (rtChild.position.x - (rtChild.rect.width / 2 * ratioX));
                         double prY = elemRt.position.y - (rtChild.position.y - (rtChild.rect.height / 2 * ratioX));
 
+                        Debug.Log(prX);
+                        Debug.Log(prY);
+
                         float decalX = (item.Patern.GetLength(0) % 2 == 0)? 25 : 0;
                         float decalY = (item.Patern.GetLength(1) % 2 == 0)? 25 : 0;
 
                         int x = (int)((prX + (decalX * ratioX)) / (slotWidth * ratioX));
                         int y = inventory.ContentHeight - 1 - (int)((prY - (decalY * ratioX)) / (slotHeight * ratioX));
 
-                        x -= inventory.GetPosInPatern(item.Patern)[0];
-                        y -= inventory.GetPosInPatern(item.Patern)[1];
+                        Debug.Log(x);
+                        Debug.Log(y);
+
+                        x += inventory.GetPosInPatern(item.Patern)[0];
+                        y += inventory.GetPosInPatern(item.Patern)[1];
+
+                        Debug.Log(x);
+                        Debug.Log(y);
 
                         x -= (int)(item.Patern.GetLength(0) / 2);
                         y -= (int)(item.Patern.GetLength(1) / 2);
+
+                        Debug.Log(x);
+                        Debug.Log(y);
 
                         if (inventory.VerifPlace(item, x, y))
                         {
@@ -92,7 +91,7 @@ namespace inventory
         public void OnGUI()
         {
             RectTransform rt = GetComponent<RectTransform>(); //le rt de inventory panel
-            RectTransform rtChild = rt.GetChild(0).GetComponent<RectTransform>();
+            RectTransform rtChild = rt.GetChild(1).GetComponent<RectTransform>();
             var canvas = GameObject.Find("Canvas"); //le canvas
             var canvasreso = canvas.GetComponent<CanvasScaler>(); //le canvas
             string label = "";
@@ -135,6 +134,8 @@ namespace inventory
                 GUI.backgroundColor = labelBackColor;
                 GUI.Box(new Rect(new Vector2(rtChild.position.x - (rtChild.rect.width / 2) * ratioX + (i * 50 * ratioX), rtChild.position.y - (rtChild.rect.height / 2) * ratioX), new Vector2(50*ratioX, 50*ratioX)), "");
             }
-        }*/
+        }
+        */
+        #endregion
     }
 }

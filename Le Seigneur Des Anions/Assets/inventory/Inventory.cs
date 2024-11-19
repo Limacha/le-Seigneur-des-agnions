@@ -358,10 +358,20 @@ namespace inventory
         /// </summary>
         public void CloseInventory()
         {
+            toolTip.SetActive(false);
+            animationSacEnCours = true;
             StartCoroutine(ToggleCloseAnimeSac());
         }
         IEnumerator ToggleCloseAnimeSac()
         {
+            RectTransform invPanelRT = inventoryPanel.GetComponent<RectTransform>();
+            for (int i = 1; i >= 0 && i < invPanelRT.childCount; i++)
+            {
+                if (invPanelRT.GetChild(i).name.Substring(0, 8) == "dragItem")
+                {
+                    Destroy(invPanelRT.GetChild(i).gameObject);
+                }
+            }
             inventoryPanel.SetActive(false);
             AnimatorPerso.SetTrigger(closeTriggerSac);
             yield return new WaitForSeconds(3); // Attendre que l'animation se termine
@@ -521,13 +531,15 @@ namespace inventory
         /// </summary>
         public void InitInventory()
         {
+            CanvasScaler canvasreso = GameObject.Find("Canvas").GetComponent<CanvasScaler>(); //le canvas
+            float ratioX = Screen.width / canvasreso.referenceResolution.x; //proportion taille/reference
             //Debug.Log(content.GetLength(0));
             //Debug.Log(slotWidth);
             //Debug.Log(inventoryPanelPadding * 2);
             //positionement de l'inventaire
             inventoryPanel.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position;
             //position text poids
-            textPoids.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position - new Vector3(0, (inventoryPanel.GetComponent<RectTransform>().rect.height/2), 0);
+            textPoids.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position - new Vector3(0, ((inventoryPanel.GetComponent<RectTransform>().rect.height/2) + (inventoryPanelPadding / 4)) * ratioX, 0);
             //espace sur les coter
             textPoids.GetComponent<TMP_Text>().margin = new Vector4(0, 0, 0, 0);
             //taille du texte

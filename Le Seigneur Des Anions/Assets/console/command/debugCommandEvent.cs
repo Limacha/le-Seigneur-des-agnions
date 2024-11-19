@@ -15,7 +15,7 @@ namespace debugCommand
 
             foreach (DebugCommand command in console.CommandList)
             {
-                helpText += $"{command.Format}:\n{command.Description}\n\n";
+                helpText += $"{command.Format}\n";
             }
             console.Label = helpText;
         }

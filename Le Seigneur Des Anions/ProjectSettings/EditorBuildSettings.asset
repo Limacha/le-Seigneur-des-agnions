@@ -11,5 +11,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/scene/Game.unity
     guid: 9a42bf82f7d8c7543b7a86d81f29c42c
+  - enabled: 1
+    path: Assets/scene/nicoTest.unity
+    guid: 64cdd2e20c6e3174283b45076fb70107
+  - enabled: 1
+    path: Assets/scene/adriTest.unity
+    guid: 2ad0777e88672e24db8c03fa2e3131d2
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

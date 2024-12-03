@@ -30,8 +30,9 @@ public static class SaveSystem
         }
     }
     /// <summary>
-    /// delete une sauvegarde
+    /// suppression d'une sauvegarde
     /// </summary>
+    /// <param name="save">nom de la save</param>
     public static void DeleteSave(string save)
     {
         string path = defaultPath + "/" + save;

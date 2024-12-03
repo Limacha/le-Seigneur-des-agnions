@@ -1,5 +1,7 @@
 using inventory;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace debugCommand
 {
@@ -121,7 +123,7 @@ namespace debugCommand
         /// charge une partie sur un nom donner
         /// </summary>
         /// <param name="input">l'entrer de lutilisateur avec le nom de la save[1]</param>
-        public void Load(string input)
+        public void LoadSave(string input)
         {
             ConsoleSystem console = GameObject.Find("GameManager").GetComponent<GameManager>().ConsoleSystem;
             Inventory inventaire = GameObject.Find("Inventory").GetComponent<Inventory>();
@@ -130,10 +132,71 @@ namespace debugCommand
             console.Label = $"chargement de {save}:\n";
 
             console.Label += $"Tentative de LoadInventory de {save}.\n";
-            SaveSystem.LoadInventory(save, inventaire);
+            InventorySaveData inventorySaveData = SaveSystem.LoadInventory(save, inventaire);
             console.Label += $"Inventaire charge de {save}.\n";
+            //Debug.Log(inventorySaveData.ItemSaveDatas.Length);
+            inventaire.ResetInventory();
+            foreach (var item in inventorySaveData.ItemSaveDatas)
+            {
+                if(item != null)
+                {
+                    //Debug.Log($"n°{k++}");
+                    //Debug.Log(item.id);
+                    //Debug.Log(item.refX + " " + item.refY);
+                    //Debug.Log(item.stack + "stack" + item.rotation + "°");
+                    ItemData itemData = inventaire.FindItemWhitId(item.id);
+                    itemData.Init();
+                    itemData.RefX = item.refX;
+                    itemData.RefY = item.refY;
+                    itemData.Rotate = item.rotation;
+                    itemData.Stack = item.stack;
+                    if (itemData.Rotate != 360)
+                    {
+                        int rotate = 360;
+                        do
+                        {
+                            itemData.rotatePatern();
+                            rotate -= 90;
+                        } while (itemData.Rotate != rotate || rotate == 0);
+                    }
+                    inventaire.PlaceItemInInventory(itemData, itemData.RefX, itemData.RefY);
+                }
+            }
+            inventaire.RefreshInventory();
 
-            console.Label += $"Fin de du chargement de {save}.\n";
+            console.Label += $"Fin du chargement de {save}.\n";
+        }
+
+        public void DeleteSave(string input)
+        {
+            ConsoleSystem console = GameObject.Find("GameManager").GetComponent<GameManager>().ConsoleSystem;
+            string save = input.Split(" ")[1];
+            console.Label = $"suppression de {save}:\n";
+            SaveSystem.DeleteSave(save);
+        }
+
+        public void NicoTest()
+        {
+            ConsoleSystem console = GameObject.Find("GameManager").GetComponent<GameManager>().ConsoleSystem;
+            console.Label = $"chargement de la scene test";
+            SceneManager.LoadScene("nicoTest");
+            console.Label += $"la scene test est charger";
+        }
+
+        public void LoadScene(string input)
+        {
+            ConsoleSystem console = GameObject.Find("GameManager").GetComponent<GameManager>().ConsoleSystem;
+            string scene = input.Split(" ")[1];
+            if (scene != null)
+            {
+                console.Label = $"chargement de la scene {scene}";
+                SceneManager.LoadScene(scene);
+                console.Label += $"la scene {scene} est charger";
+            }
+            else
+            {
+                console.Label = $"Merci de mettre un nom de scene valide!";
+            }
         }
     }
 }

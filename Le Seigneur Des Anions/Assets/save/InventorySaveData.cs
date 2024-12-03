@@ -4,7 +4,7 @@ using inventory;
 public class InventorySaveData
 {
     protected ItemSaveData[] itemSaveDatas;
-
+    public ItemSaveData[] ItemSaveDatas { get { return itemSaveDatas; } }
     public InventorySaveData(Inventory inv)
     {
         itemSaveDatas = new ItemSaveData[inv.ContentWidth * inv.ContentHeight]; //taille max des items possible de stocker
@@ -15,7 +15,7 @@ public class InventorySaveData
             {
                 if (inv.Content[i, j] != null) //si l'item n'est pas null
                 {
-                    if (inv.Content[i, j] != inv.ItemDataSprite) //si se n'est pas un item de blockage
+                    if (inv.Content[i, j].ID != inv.ItemDataSprite.ID) //si se n'est pas un item de blockage
                     {
                         ItemSaveData item = null;
 

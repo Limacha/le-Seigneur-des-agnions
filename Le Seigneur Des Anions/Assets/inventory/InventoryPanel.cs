@@ -48,29 +48,17 @@ namespace inventory
                         double prX = elemRt.position.x - (rtChild.position.x - (rtChild.rect.width / 2 * ratioX));
                         double prY = elemRt.position.y - (rtChild.position.y - (rtChild.rect.height / 2 * ratioX));
 
-                        Debug.Log(prX);
-                        Debug.Log(prY);
-
                         float decalX = (item.Patern.GetLength(0) % 2 == 0)? 25 : 0;
                         float decalY = (item.Patern.GetLength(1) % 2 == 0)? 25 : 0;
 
                         int x = (int)((prX + (decalX * ratioX)) / (slotWidth * ratioX));
                         int y = inventory.ContentHeight - 1 - (int)((prY - (decalY * ratioX)) / (slotHeight * ratioX));
 
-                        Debug.Log(x);
-                        Debug.Log(y);
-
                         x += inventory.GetPosInPatern(item.Patern)[0];
                         y += inventory.GetPosInPatern(item.Patern)[1];
 
-                        Debug.Log(x);
-                        Debug.Log(y);
-
                         x -= (int)(item.Patern.GetLength(0) / 2);
                         y -= (int)(item.Patern.GetLength(1) / 2);
-
-                        Debug.Log(x);
-                        Debug.Log(y);
 
                         if (inventory.VerifPlace(item, x, y))
                         {

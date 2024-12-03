@@ -10,6 +10,7 @@ public class ItemSaveData
     public int refX; //position en x
     public int refY; // position en y
     public int stack; //le nombre de stack
+    public int rotation; //rotation de l'item
 
     /// <summary>
     /// genere les donnees de L'item
@@ -21,5 +22,6 @@ public class ItemSaveData
         refX = item.RefX;
         refY = item.RefY;
         stack = item.Stack;
+        rotation = item.Rotate;
     }
 }

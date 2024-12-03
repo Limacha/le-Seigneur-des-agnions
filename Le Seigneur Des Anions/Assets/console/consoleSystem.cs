@@ -37,10 +37,6 @@ namespace debugCommand
         [SerializeField] private Color labelTextColor;
         [SerializeField] private Color labelBackColor;
 
-        [Header("scrollBar")]
-        [SerializeField] private float vSbarValue = 0;
-        [SerializeField] private Vector2 vSbarPos = new Vector2(0, 0);
-
         [Header("commande")]
         [SerializeField] private List<DebugCommand> commandList;
 
@@ -93,7 +89,7 @@ namespace debugCommand
             string[] properties = input.Split(' ');
             for (int i = 0; i < commandList.Count; i++)
             {
-                if (properties[0] == commandList[i].Name)
+                if (properties[0] == '/' + commandList[i].Name)
                 {
                     commandList[i].Effect.Invoke(input);
                     return;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace inventory
@@ -17,11 +18,12 @@ namespace inventory
         [SerializeField] private Sprite[,] patern; //paterne des sprites dans l'inventaire
         [SerializeField] private float poids = 0; //poids en gramme (plus tard)
         [SerializeField] private bool stackable = false; //si il peut se stack
-        [SerializeField] private int stackLimit = 1; //nombre ou distance en m
-        [SerializeField] private int stack = 1;
+        [SerializeField] private int stackLimit = 1; //nombre maxe d'object
+        [SerializeField] private int stack = 1; //le nombre d'item qu'il y a
         [SerializeField, ReadOnly] private int refX; //reference a l'item principal si sprite itemData
         [SerializeField, ReadOnly] private int refY; //reference a l'item principal si sprite itemData
         [SerializeField] private int rotate = 360; //degrer de rotation
+        [SerializeField] private Restrict[] restriction; //restriction des placement de l'item
 
         [SerializeReference] private GameObject prefab; //l'item en 3D
 
@@ -41,6 +43,17 @@ namespace inventory
         public int RefY { get { return refY; } set { refY = value; } }
         public int Rotate { get { return rotate; } set { rotate = value; } }
         public GameObject Prefab { get { return prefab; } }
+
+        private enum Restrict
+        {
+
+            inventory,
+            haveHand,
+            leftHand,
+            rightHand,
+            leftAndRightHand,
+            leftOrRightHand
+        }
 
         /// <summary>
         /// instancie l'item
@@ -77,7 +90,7 @@ namespace inventory
         public Sprite[,] rotatePatern()
         {
             Sprite[,] newArray = new Sprite[patern.GetLength(1), patern.GetLength(0)]; //creation du nouveau tableau
-                                                                                       //parcour du vieux tableau
+            //parcour du vieux tableau
             for (var y = 0; y < patern.GetLength(1); y++)
             {
                 for (var x = 0; x < patern.GetLength(0); x++)

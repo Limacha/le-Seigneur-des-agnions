@@ -20,6 +20,10 @@ namespace inventory
 
         [SerializeField] private int contentWidth; //largeur du contenu
         [SerializeField] private int contentHeight; //hauteur du contenu
+        [SerializeField] private ItemData leftHand; //mainGauche
+        [SerializeField] private ItemData rightHand; //main droite
+        [SerializeField] private bool haveLeftHand; //
+        [SerializeField] private bool haveRightHand; //
 
         [SerializeReference] private ItemData itemDataSprite; //itemdata qui designe que l'espace est occuper
 
@@ -30,7 +34,7 @@ namespace inventory
         [SerializeReference] private GameObject rowContentPrefab; //prefab du conteneur des slot
         [SerializeReference] private GameObject slotPrefab; //prefab des slot
         [SerializeReference] private GameObject textPoids; //text qui affiche le poids
-        [SerializeReference] private GameObject gameManager; //game manager
+        [SerializeReference, ReadOnly] private GameObject gameManager; //game manager
         [SerializeReference] private GameObject toolTip; //toolTip
 
         [Header("input")]
@@ -781,7 +785,7 @@ namespace inventory
             {
                 if(item.name == name)
                 {
-                    return item;
+                    return Instantiate(item);
                 }
             }
             return null;
@@ -798,7 +802,7 @@ namespace inventory
             {
                 if (item.ID == id)
                 {
-                    return item;
+                    return Instantiate(item);
                 }
             }
             return null;

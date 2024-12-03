@@ -5533,6 +5533,8 @@ MonoBehaviour:
   inventoryPanelPadding: 23
   contentWidth: 4
   contentHeight: 5
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
   itemDataSprite: {fileID: 11400000, guid: 2e39ad0a6335edc459e198587781045b, type: 2}
   inventoryPanel: {fileID: 1732219160}
   inventoryColumnContent: {fileID: 42715547}

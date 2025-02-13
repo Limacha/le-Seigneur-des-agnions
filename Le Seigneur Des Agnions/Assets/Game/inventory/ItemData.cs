@@ -42,11 +42,11 @@ namespace inventory
         public int RefX { get { return refX; } set { refX = value; } }
         public int RefY { get { return refY; } set { refY = value; } }
         public int Rotate { get { return rotate; } set { rotate = value; } }
+        public Restrict[] Restriction { get { return restriction; } }
         public GameObject Prefab { get { return prefab; } }
 
-        private enum Restrict
+        public enum Restrict
         {
-
             inventory,
             haveHand,
             leftHand,

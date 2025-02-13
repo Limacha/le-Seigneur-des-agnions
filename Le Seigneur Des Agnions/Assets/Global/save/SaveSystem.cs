@@ -102,7 +102,7 @@ public static class SaveSystem
     /// charge les info du jouer
     /// </summary>
     /// <returns>les info du jouer</returns>
-    public static InventorySaveData LoadInventory(string save, Inventory inv)
+    public static InventorySaveData LoadInventory(string save)
     {
         string path = $"{defaultPath}/{save}/inventory/inv.assa";
         if (File.Exists(path))

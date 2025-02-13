@@ -1,4 +1,4 @@
-/[Bb]uild/
+[Bb]uild/
 build/UnityPlayer.dll
 build/UnityCrashHandler64.exe
 build/MonoBleedingEdge/EmbedRuntime/MonoPosixHelper.dll

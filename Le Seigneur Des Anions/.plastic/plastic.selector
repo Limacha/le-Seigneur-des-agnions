@@ -1,4 +1,0 @@
-repository "Le Seigneur Des Anions@Handdor@cloud"
-  path "/"
-    br "/main"
-    co "/main"

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4872fc118f544041acdf1c28e2dcdb0, type: 3}
+  m_Name: bobineVide
+  m_EditorClassIdentifier: 
+  id: 9f3bc41f-93e8-4fb6-969a-b91702a1dc93
+  nom: bobine vide
+  description: une bobine pouvent contenir des cables de tout type mais elle est
+    vide.
+  width: 3
+  height: 3
+  imgRef: {fileID: 0}
+  listSprite:
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  poids: 0
+  stackable: 0
+  stackLimit: 1
+  stack: 1
+  refX: 0
+  refY: 0
+  rotate: 360
+  restriction: 0000000004000000
+  prefab: {fileID: 0}
+  source: bipbip

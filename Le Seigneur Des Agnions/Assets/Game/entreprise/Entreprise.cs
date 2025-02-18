@@ -6,18 +6,38 @@ namespace entreprise
 {
     public class Entreprise : MonoBehaviour
     {
-        [Header("")]
+        [Header("Principal")]
         private string nom;
         private int argent;
-        private Employer[] employers;
+        private int batiment;
+        private int reputation;
+
+        //private Employer[] employers;
         /*[Header("")]
         private int danger;
         private Infraction[] infractions;*/
 
-        private int batiment;
-        private Upgrade[] upgrades;
-        private Recherche[] recherches;
+        //private Upgrade[] upgrades;
+        //private Recherche[] recherches;
 
-        private int reputation;
+
+        public string Nom { get { return nom; } }
+        public int Argent { get { return argent; } }
+        public int Batiment { get { return batiment; } }
+        public int Reputation { get { return reputation; } }
+
+        public void Transaction(int montant)
+        {
+            argent += montant;
+        }
+
+        public void Upgrade()
+        {
+            batiment++;
+        }
+        public void ChangerReput(int reput)
+        {
+            reputation = reput;
+        }
     }
 }

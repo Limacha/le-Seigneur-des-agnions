@@ -137,7 +137,7 @@ namespace debugCommand
             console.Label = $"chargement de {save}:\n";
 
             console.Label += $"Tentative de LoadInventory de {save}.\n";
-            InventorySaveData inventorySaveData = SaveSystem.LoadInventory(save, inventaire);
+            InventorySaveData inventorySaveData = SaveSystem.LoadInventory(save);
             console.Label += $"Inventaire charge de {save}.\n";
             //Debug.Log(inventorySaveData.ItemSaveDatas.Length);
             inventaire.ResetInventory();

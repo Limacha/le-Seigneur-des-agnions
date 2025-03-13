@@ -41,7 +41,7 @@ namespace player
                                     {
                                         foreach (InteractionObject interact in interactionObjects)
                                         {
-                                            Debug.Log(hit.transform.gameObject.name);
+                                            //Debug.Log(hit.transform.gameObject.name);
                                             interact.InteractionPlayer();
                                         }
                                     }

@@ -9,13 +9,13 @@ namespace interaction
 {
     public abstract class InteractionObject : MonoBehaviour
     {
-        [SerializeField] private bool shine = true;
+        [SerializeField] protected bool shine = true;
         // Start is called before the first frame update
         void Start()
         {
             if (shine)
             {
-                Debug.Log("I'm chining");
+                //Debug.Log("I'm chining");
             }
         }
 

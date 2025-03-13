@@ -40,12 +40,17 @@ namespace debugCommand
         [SerializeField] private Color labelBackColor;
 
         [Header("commande")]
-        [SerializeField] private List<DebugCommand> commandList;
+        [SerializeField] private DebugCommand[] commands;
 
         public bool ShowConsole { get { return showConsole; } set { showConsole = value; } }
-        public List<DebugCommand> CommandList { get { return commandList; } }
+        public DebugCommand[] Commands { get { return commands; } }
         public string UserInput { get { return input; } }
         public string Label { get { return label; } set { label = value; } }
+
+        void Awake()
+        {
+            commands = Resources.LoadAll<DebugCommand>("Commands");
+        }
 
         public void Start()
         {
@@ -106,11 +111,11 @@ namespace debugCommand
         public void HandleInput()
         {
             string[] properties = input.Split(' ');
-            for (int i = 0; i < commandList.Count; i++)
+            for (int i = 0; i < commands.Length; i++)
             {
-                if (properties[0] == '/' + commandList[i].Name)
+                if (properties[0] == '/' + commands[i].Name)
                 {
-                    commandList[i].Effect.Invoke(input);
+                    commands[i].Effect.Invoke(input);
                     return;
                 }
             }

@@ -8,6 +8,9 @@ namespace player
 {
     public class TryMovePlayer : MonoBehaviour
     {
+        [Header("boolControl")]
+        [SerializeField] private bool fly;//fait volez le jouer
+
         [Header("Movement")]
         [SerializeField, ReadOnly] private float moveSpeed; //vitesse du joueur
         [SerializeField] private float walkSpeed; //vitesse quand il marche
@@ -35,7 +38,7 @@ namespace player
         [Header("Gravity")]
         [SerializeField] private float gravity; //la puissance de la graviter
         [SerializeField] private float mass; //la masse du joueur
-        [SerializeField] private bool useGravity; //si on utilise la graviter
+        [SerializeField, ReadOnly] private bool useGravity; //si on utilise la graviter
 
         [Header("Keybinds")]
         [SerializeReference] private KeyBiding upKey; //touche pour avance
@@ -48,6 +51,7 @@ namespace player
 
         [Header("Ground Check")]
         [SerializeField] private float maxDistance; //distance a verifier sous le joueur
+        [SerializeField] private float boxCastWidth; //distance a verifier sous le joueur
         [SerializeField] private LayerMask whatIsGround; //se qui est un sol
         [SerializeField, ReadOnly] private bool grounded; //si il est au sol
 
@@ -69,15 +73,18 @@ namespace player
         [SerializeField, ReadOnly] private MovementState state = MovementState.stop; //l'etat du joueur
         private enum MovementState
         {
-            walking,
-            sprinting,
-            crouching,
-            air,
-            stop
+            walking, //si il marche
+            sprinting, //si il cour
+            crouching, //si il est acroupi
+            air, //si il est dans les air
+            stop, //si il est freeze
+            fly, //si il vol
+            wearBigThings //si il porte qq chose de gros (comme un agnion)
         }
 
         private void Start()
         {
+            //set toute les ref des script a soit
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;
 
@@ -92,21 +99,25 @@ namespace player
             player = GetComponent<Player>();
             animator = GetComponent<Animator>();
         }
+        
+        void OnDrawGizmos()
+        {
+            //dessine le cube dans la scene
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(transform.position + (Vector3.down * maxDistance/2), new Vector3(boxCastWidth, maxDistance, boxCastWidth));
+        }
 
         private void Update()
         {
-            Ray ray = new Ray(transform.position, Vector3.down);
-
-            // ground check
-            grounded = Physics.Raycast(ray, maxDistance, whatIsGround);
-
-            //Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red);
+            //verifie si il est au sol ou pas
+            RaycastHit[] hits = Physics.BoxCastAll(transform.position, new Vector3(boxCastWidth, maxDistance, boxCastWidth) / 2, Vector3.down, Quaternion.identity, maxDistance, whatIsGround);
+            grounded = hits.Length > 0;
 
             MyInput();
             StateHandler();
             SpeedControl();
 
-            // defini le drag
+            // defini le drag (le frotement du sol)
             if (grounded)
             {
                 rb.drag = groundDrag;
@@ -116,6 +127,7 @@ namespace player
                 rb.drag = 0;
             }
 
+            //affiche les text de debug
             if (textspeed != null && text2 != null)
             {
                 var vel = new Vector3(rb.velocity.x, 0, rb.velocity.z);
@@ -126,6 +138,7 @@ namespace player
 
         private void FixedUpdate()
         {
+            //verifie si on peut bouger
             if (player.CanMouve)
             {
                 MovePlayer();
@@ -147,11 +160,12 @@ namespace player
             horizontalInput = 0;
             verticalInput = 0;
 
+            //obtien la direction de deplacement en fonction des inputs
             horizontalInput += (Input.GetKey(rightKey.key)) ? 1 : 0;
             horizontalInput -= (Input.GetKey(leftKey.key)) ? 1 : 0;
             verticalInput += (Input.GetKey(upKey.key)) ? 1 : 0;
             verticalInput -= (Input.GetKey(bottomKey.key)) ? 1 : 0;
-            // when to jump
+
             if (Input.GetKey(jumpKey.key) && readyToJump && grounded) //si le joueur veut et peut sauter
             {
                 readyToJump = false; //ne peut plus sauter
@@ -165,6 +179,7 @@ namespace player
             // start crouch
             if (Input.GetKeyDown(crouchKey.key))
             {
+                //reduit et deplace la capsule
                 capsuleCollider.center = new Vector3(capsuleCollider.center.x, capsuleCollider.center.y / (startYScale / crouchYScale), capsuleCollider.center.z);
                 capsuleCollider.height = crouchYScale;
             }
@@ -172,6 +187,7 @@ namespace player
             // stop crouch
             if (Input.GetKeyUp(crouchKey.key))
             {
+                //reset la capsule
                 capsuleCollider.center = new Vector3(capsuleCollider.center.x, centerY, capsuleCollider.center.z);
                 capsuleCollider.height = startYScale;
 
@@ -190,8 +206,14 @@ namespace player
             }
             else
             {
+                // Mode - vol
+                if (fly)
+                {
+                    state = MovementState.fly;
+                    moveSpeed = walkSpeed;
+                }
                 // Mode - Crouching
-                if (grounded && Input.GetKey(crouchKey.key))
+                else if (grounded && Input.GetKey(crouchKey.key))
                 {
                     state = MovementState.crouching;
                     moveSpeed = crouchSpeed;
@@ -227,13 +249,15 @@ namespace player
         {
             // calculate movement direction
             moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput; //creez la direction en fonction de la rotation de la camera et des resulta des input user
-            moveDirection = new Vector3(moveDirection.x, 0, moveDirection.z); //l'empeche de voler si regarde le dol
+            moveDirection = new Vector3(moveDirection.x, 0, moveDirection.z); //l'empeche de voler si regarde en hauteurs
 
             // on slope
             if (OnSlope() && !exitingSlope)
             {
+                //deplace la direction de la force pour aller dans le sens de la pente
                 rb.AddForce(GetSlopeMoveDirection() * moveSpeed * 10f, ForceMode.Force);
 
+                //plaque le joueur au sol
                 if (rb.velocity.y < 0)
                 {
                     rb.AddForce(Vector3.down * 80, ForceMode.Force);
@@ -243,26 +267,38 @@ namespace player
             //applique la force
             if (grounded)
             {
+                //sans modification
                 rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
             }
             else if (!grounded)
             {
+                //avec la vitesse dans les air
                 rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
             }
-
-            // turn gravity off while on slope
-            useGravity = !OnSlope();
+            //si il vol
+            if (state == MovementState.fly)
+            {
+                //pas de gravite
+                useGravity = false;
+            }
+            else
+            {
+                // sinon en fonction de si il glisse ou pas
+                useGravity = !OnSlope();
+            }
         }
         /// <summary>
         /// control la vitesse du joueur
         /// </summary>
         private void SpeedControl()
         {
-            // limiting speed on slope car y change donc peut pas le reset en 0
+            // limiting speed on slope car la coordonner y change donc peut pas la reset en 0
             if (OnSlope() && !exitingSlope)
             {
+                //si il est trop rapide
                 if (rb.velocity.magnitude > moveSpeed)
                 {
+                    //raplique en fonction de la vitesse
                     rb.velocity = rb.velocity.normalized * moveSpeed;
                 }
             }
@@ -285,15 +321,19 @@ namespace player
         /// </summary>
         private void Jump()
         {
+            //quiter une pente
             exitingSlope = true;
 
+            //ajoute un force vers le haut
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
-        //set readyToJump true
+        /// <summary>
+        /// permet de reset les parametre de saut
+        /// </summary>
         private void ResetJump()
         {
-            readyToJump = true;
-            exitingSlope = false;
+            readyToJump = true; //pret a sauter
+            exitingSlope = false; //ne quite plus une pente
         }
         /// <summary>
         /// verifie si on glisse
@@ -303,6 +343,7 @@ namespace player
         {
             if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, maxDistance, whatIsGround)) //permet d'obtenir l'object sur le quel on marche
             {
+                //obtient l'angle de la pente
                 float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
                 //Debug.Log(slopeHit.normal + " " + Vector3.up + " " + angle + " " + (angle < maxSlopeAngle && angle != 0));
                 return angle < maxSlopeAngle && angle != 0;
@@ -316,9 +357,12 @@ namespace player
         /// <returns>la direction pour avance normalement</returns>
         private Vector3 GetSlopeMoveDirection()
         {
+            //creer la projection
             return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
         }
-
+        /// <summary>
+        /// a faire lors de l'ajout des animation
+        /// </summary>
         private void CallAnnimatorTrigger()
         {
             if (state == MovementState.walking)

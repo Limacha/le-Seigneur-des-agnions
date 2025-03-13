@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def5f02c5a53d5d428f0d4b09a7e2fb7, type: 3}
+  m_Name: boneHands
+  m_EditorClassIdentifier: 
+  id: 00bb3419-c06d-440d-a16e-0a2c3efe7077
+  nom: boneHands
+  description: des mains fait avec des os
+  width: 1
+  height: 2
+  imgRef: {fileID: 21300000, guid: 31a45102702670e4798774ef14fb48df, type: 3}
+  listSprite:
+  - {fileID: 21300000, guid: 31a45102702670e4798774ef14fb48df, type: 3}
+  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
+  poids: 50
+  stackable: 0
+  stackLimit: 1
+  stack: 1
+  refX: 0
+  refY: 0
+  canRotate: 1
+  rotate: 360
+  restriction: 0000000004000000
+  leftHandPrefab: {fileID: 2033530487499468831, guid: 59035703aeaf76c4fab8c43da747cf50,
+    type: 3}
+  rightHandPrefab: {fileID: 5942373511215774409, guid: 230cfa52e8f5ad74ca9c6a0bc4a6f5c7,
+    type: 3}

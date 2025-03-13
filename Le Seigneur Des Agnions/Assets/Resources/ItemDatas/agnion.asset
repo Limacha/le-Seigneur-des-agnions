@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df94bb08a5af71240a5087097ff6e9bd, type: 3}
+  m_Name: agnion
+  m_EditorClassIdentifier: 
+  id: 0072e98d-d1ca-43fb-adfb-ddf1669092a2
+  nom: Agnion
+  description: un agnion capture sauvagement alors qu'il marchait tranquilement dans
+    la prairie insoutient de tout probleme
+  width: 0
+  height: 0
+  imgRef: {fileID: 21300000, guid: d18b9fca8c2d32f47985603ac76bac92, type: 3}
+  listSprite: []
+  poids: 1000
+  stackable: 0
+  stackLimit: 1
+  stack: 1
+  refX: 0
+  refY: 0
+  canRotate: 0
+  rotate: 360
+  restriction: 040000000100000005000000
+  prefab: {fileID: 8013714886485329342, guid: 20abfc598fe8d544f98609057a4196e2, type: 3}
+  oneHandPrefab: {fileID: 5620849681279861730, guid: bdacf054b77e11d4e918667c7af62396,
+    type: 3}
+  twoHandPrefab: {fileID: 6809026769749333766, guid: 269d83b801a47a2408ebe6a37e830bac,
+    type: 3}

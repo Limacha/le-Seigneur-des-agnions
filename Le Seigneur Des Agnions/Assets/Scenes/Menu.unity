@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2162.715, g: 2343.0764, b: 3436.5278, a: 1}
+  m_IndirectSpecularColor: {r: 2123.9104, g: 2283.385, b: 3306.9067, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4898,17 +4898,7 @@ MonoBehaviour:
   labelBorderColor: {r: 0, g: 0, b: 0, a: 0}
   labelTextColor: {r: 0.65882355, g: 0.65882355, b: 0.65882355, a: 1}
   labelBackColor: {r: 0, g: 0, b: 0, a: 1}
-  commandList:
-  - {fileID: 11400000, guid: d912fcaf0da701e4e86df408f4799d24, type: 2}
-  - {fileID: 11400000, guid: c0a009f438107a8449285d9b4488ad30, type: 2}
-  - {fileID: 11400000, guid: cfb03a773ca483843a31fbf30479cf17, type: 2}
-  - {fileID: 11400000, guid: 9b3df9f81a00d6e41b8dd76f12347acb, type: 2}
-  - {fileID: 11400000, guid: 6556a69edf7e5704382932d32b5c12c1, type: 2}
-  - {fileID: 11400000, guid: 3cbf02b039f352141bed453c04558433, type: 2}
-  - {fileID: 11400000, guid: abfb6ec9b9bb8a54c9cec655e26e6b2a, type: 2}
-  - {fileID: 11400000, guid: 148a59ec57bcbed479c250e2cf6f9a41, type: 2}
-  - {fileID: 11400000, guid: 9c83f23c536efa64c9f83ab8d33d6876, type: 2}
-  - {fileID: 11400000, guid: 3682979cfd3d24e48a55e4329517a477, type: 2}
+  commands: []
 --- !u!114 &1003480044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4921,15 +4911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405758c103fddd7439750692f3d606bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemList:
-  - {fileID: 11400000, guid: aef2cc5954079a746907cf40acaca793, type: 2}
-  - {fileID: 11400000, guid: b131c9dd6fa19de448dd16ade5ac4323, type: 2}
-  - {fileID: 11400000, guid: 3b1717ca9db815b4b9c40759439405a3, type: 2}
-  - {fileID: 11400000, guid: 2e39ad0a6335edc459e198587781045b, type: 2}
-  - {fileID: 11400000, guid: c5288238dc92c9e4ead3526395704ceb, type: 2}
-  - {fileID: 11400000, guid: 60118d3bfa013aa419057e253b35cf1c, type: 2}
-  - {fileID: 11400000, guid: d96ca08f3f882574e9c58ac8c3c95bdb, type: 2}
-  - {fileID: 11400000, guid: 26abe13782021d346bc35f4991350657, type: 2}
+  items: []
 --- !u!114 &1003480046
 MonoBehaviour:
   m_ObjectHideFlags: 0

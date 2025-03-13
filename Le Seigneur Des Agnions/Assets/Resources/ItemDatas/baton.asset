@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4872fc118f544041acdf1c28e2dcdb0, type: 3}
+  m_Name: baton
+  m_EditorClassIdentifier: 
+  id: 1d55ba57-25f1-4f8d-b095-8b5811ea3062
+  nom: baton en bois
+  description: un baton rond fait de bois et poli donc pas besoin de s'inquiter des
+    echarde.
+  width: 1
+  height: 2
+  imgRef: {fileID: 0}
+  listSprite:
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  poids: 3.5
+  stackable: 1
+  stackLimit: 5
+  stack: 1
+  refX: 0
+  refY: 0
+  canRotate: 1
+  rotate: 360
+  restriction: 000000000100000005000000
+  source: bipbip

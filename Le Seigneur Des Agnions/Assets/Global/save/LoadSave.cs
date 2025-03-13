@@ -18,7 +18,6 @@ public class LoadSave : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Fonction func = new Fonction();
         if (Directory.Exists(SaveSystem.DefaultPath))
         {
             
@@ -34,7 +33,7 @@ public class LoadSave : MonoBehaviour
                 if (overwrite && delete)
                 {
                     //texte
-                    func.SetRightRt(button.transform.GetChild(0).GetComponent<RectTransform>(), overwriteSize + deleteSize + spaceBetween * 3);
+                    Fonction.SetRightRt(button.transform.GetChild(0).GetComponent<RectTransform>(), overwriteSize + deleteSize + spaceBetween * 3);
 
                     //overwrite
                     button.transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(-(overwriteSize/2 + spaceBetween + deleteSize + spaceBetween), 0);
@@ -46,7 +45,7 @@ public class LoadSave : MonoBehaviour
                 } else if (delete)
                 {
                     //texte
-                    func.SetRightRt(button.transform.GetChild(0).GetComponent<RectTransform>(),deleteSize + spaceBetween * 3);
+                    Fonction.SetRightRt(button.transform.GetChild(0).GetComponent<RectTransform>(),deleteSize + spaceBetween * 3);
 
                     //overwrite
                     button.transform.GetChild(1).gameObject.SetActive(false);
@@ -57,7 +56,7 @@ public class LoadSave : MonoBehaviour
                 } else if (overwrite)
                 {
                     //texte
-                    func.SetRightRt(button.transform.GetChild(0).GetComponent<RectTransform>(), overwriteSize + spaceBetween * 3);
+                    Fonction.SetRightRt(button.transform.GetChild(0).GetComponent<RectTransform>(), overwriteSize + spaceBetween * 3);
 
                     //ovrerwrite
                     button.transform.GetChild(1).GetComponent<RectTransform>().anchoredPosition = new Vector2(-(overwriteSize/2 + spaceBetween*2), 0);

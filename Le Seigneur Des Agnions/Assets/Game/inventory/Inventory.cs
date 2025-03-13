@@ -22,8 +22,8 @@ namespace inventory
         [SerializeField] private int contentHeight; //hauteur du contenu
         [SerializeField] private ItemData leftHand; //mainGauche
         [SerializeField] private ItemData rightHand; //main droite
-        [SerializeField] private bool haveLeftHand; //si il a une main gauche ou pas
-        [SerializeField] private bool haveRightHand; //si il a une main droite ou pas
+        [SerializeField] private ItemData twoHands; //si il a quelque chose dans les deux mains
+        [SerializeField] private HandsData hands; //les mains qu'il a
 
         [SerializeReference] private ItemData itemDataSprite; //itemdata qui designe que l'espace est occuper
 
@@ -43,7 +43,6 @@ namespace inventory
 
         private float poids = 0; //poid de l'inventaire
         private ItemData[,] content; //contenu de l'inventaire
-        private readonly Fonction func = new Fonction(); //object fonction
 
         [Header("animations")]
         [SerializeField] private string openTriggerSac = "openTriggerSac"; // Animation ouverture du sac
@@ -59,6 +58,10 @@ namespace inventory
         public float XSpacing { get { return xSpacing; } }
         public int ContentWidth { get { return contentWidth; } }
         public int ContentHeight { get { return contentHeight; } }
+        public ItemData LeftHand { get { return leftHand; } }
+        public ItemData RightHand { get { return rightHand; } }
+        public ItemData TwoHands { get { return twoHands; } }
+        public HandsData Hands { get { return hands; } }
         public ItemData[,] Content { get { return content; } }
         public ItemData ItemDataSprite { get { return itemDataSprite; } }
         public GameObject InventoryPanel { get { return inventoryPanel; } }
@@ -71,6 +74,13 @@ namespace inventory
         public GameObject ToolTip { get { return toolTip; } }
         #endregion
 
+        public enum HandPosition
+        {
+            Left, //main gauche
+            Right, //main droite
+            Both, //les deux mains
+            Hand //se sont des mains
+        }
 
         public void Awake()
         {
@@ -543,7 +553,7 @@ namespace inventory
             //positionement de l'inventaire
             inventoryPanel.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position;
             //position text poids
-            textPoids.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position - new Vector3(0, ((inventoryPanel.GetComponent<RectTransform>().rect.height/2) + (inventoryPanelPadding / 4)) * ratioX, 0);
+            textPoids.GetComponent<RectTransform>().position = invetoryPanelPosition + GameObject.Find("Canvas").GetComponent<RectTransform>().position - new Vector3(0, ((inventoryPanel.GetComponent<RectTransform>().rect.height / 2) + (inventoryPanelPadding / 4)) * ratioX, 0);
             //espace sur les coter
             textPoids.GetComponent<TMP_Text>().margin = new Vector4(0, 0, 0, 0);
             //taille du texte
@@ -553,10 +563,10 @@ namespace inventory
             //taille du panel
             inventoryPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(content.GetLength(0) * (slotWidth + xSpacing) - xSpacing + (inventoryPanelPadding * 2), content.GetLength(1) * (slotHeight + ySpacing) - ySpacing + (inventoryPanelPadding * 2));
             //definition du padding
-            func.SetLeftRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
-            func.SetRightRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
-            func.SetTopRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
-            func.SetBottomRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
+            Fonction.SetLeftRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
+            Fonction.SetRightRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
+            Fonction.SetTopRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
+            Fonction.SetBottomRt(inventoryColumnContent.GetComponent<RectTransform>(), inventoryPanelPadding);
             //spacing + taille des cellule du conteneur de column
             inventoryColumnContent.GetComponent<GridLayoutGroup>().spacing = new Vector2(xSpacing, 0);
             inventoryColumnContent.GetComponent<GridLayoutGroup>().cellSize = new Vector2(slotHeight, content.GetLength(1) * (slotHeight + ySpacing) - ySpacing);
@@ -781,9 +791,9 @@ namespace inventory
         /// <returns>l'item si trouver</returns>
         public ItemData FindItemWhitName(string name)
         {
-            foreach(ItemData item in gameManager.GetComponent<ItemDataManager>().ItemList)
+            foreach (ItemData item in gameManager.GetComponent<ItemDataManager>().Items)
             {
-                if(item.name == name)
+                if (item.name == name)
                 {
                     var instItem = Instantiate(item);
                     instItem.Init();
@@ -800,7 +810,7 @@ namespace inventory
         /// <returns>l'item si trouver</returns>
         public ItemData FindItemWhitId(string id)
         {
-            foreach (ItemData item in gameManager.GetComponent<ItemDataManager>().ItemList)
+            foreach (ItemData item in gameManager.GetComponent<ItemDataManager>().Items)
             {
                 if (item.ID == id)
                 {
@@ -810,6 +820,76 @@ namespace inventory
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// equip un object dans les mains et drop seux en main
+        /// </summary>
+        /// <param name="item">l'item</param>
+        /// <param name="fromInv">si l'object vient de l'inventaire</param>
+        /// <param name="handPosition">la position dans les mains</param>
+        /// <returns>si equip reussi</returns>
+        public bool EquipItem(ItemData item, bool fromInv, HandPosition handPosition)
+        {
+            if (fromInv)
+            {
+
+            }
+            else
+            {
+                switch (handPosition)
+                {
+                    case HandPosition.Left:
+                        if(leftHand != null)
+                        {
+                            leftHand.Drop(transform.position.x, transform.position.y, transform.position.z);
+                        }
+                        if (twoHands != null)
+                        {
+                            twoHands.Drop(transform.position.x, transform.position.y, transform.position.z);
+                        }
+                        leftHand = item;
+                        return true;
+                    case HandPosition.Right:
+                        if (rightHand != null)
+                        {
+                            rightHand.Drop(transform.position.x, transform.position.y, transform.position.z);
+                        }
+                        if (twoHands != null)
+                        {
+                            twoHands.Drop(transform.position.x, transform.position.y, transform.position.z);
+                        }
+                        rightHand = item;
+                        return true;
+                    case HandPosition.Both:
+                        if (twoHands != null)
+                        {
+                            twoHands.Drop(transform.position.x, transform.position.y, transform.position.z);
+                        }
+                        if (leftHand != null)
+                        {
+                            leftHand.Drop(transform.position.x, transform.position.y, transform.position.z);
+                        }
+                        if (rightHand != null)
+                        {
+                            rightHand.Drop(transform.position.x, transform.position.y, transform.position.z);
+                        }
+                        twoHands = item;
+                        return true;
+                    case HandPosition.Hand:
+                        if (item is HandsData)
+                        {
+                            if (hands != null)
+                            {
+                                hands.Drop(transform.position.x, transform.position.y, transform.position.z);
+                            }
+                            hands = item as HandsData;
+                            return true;
+                        }
+                        return false;
+                }
+            }
+            return false;
         }
     }
 }

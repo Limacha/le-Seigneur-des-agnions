@@ -1,15 +1,17 @@
-using interaction;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class launchInterface : InteractionObject
+namespace interaction
 {
-    [SerializeReference] private Transform fenetre;
-
-    public override void InteractionPlayer()
+    public class launchInterface : InteractionObject
     {
-        fenetre.gameObject.SetActive(true);
-        Cursor.lockState = CursorLockMode.Confined;
+        [SerializeReference] private Transform fenetre;
+
+        public override void InteractionPlayer()
+        {
+            fenetre.gameObject.SetActive(true);
+            Cursor.lockState = CursorLockMode.Confined;
+        }
     }
 }

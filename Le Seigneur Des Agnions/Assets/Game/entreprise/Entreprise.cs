@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace entreprise
@@ -7,10 +5,10 @@ namespace entreprise
     public class Entreprise : MonoBehaviour
     {
         [Header("Principal")]
-        private string nom;
-        private int argent;
-        private int batiment;
-        private int reputation;
+        [SerializeField] private string nom;
+        [SerializeField] private float argent;
+        [SerializeField] private int batiment;
+        [SerializeField] private int reputation;
 
         //private Employer[] employers;
         /*[Header("")]
@@ -22,11 +20,11 @@ namespace entreprise
 
 
         public string Nom { get { return nom; } }
-        public int Argent { get { return argent; } }
+        public float Argent { get { return argent; } }
         public int Batiment { get { return batiment; } }
         public int Reputation { get { return reputation; } }
 
-        public void Transaction(int montant)
+        public void Transaction(float montant)
         {
             argent += montant;
         }

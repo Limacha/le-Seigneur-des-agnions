@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace AllFonction
 {
-    public struct Fonction
+    public static class Fonction
     {
         /// <summary>
         /// debug le contenu de l'inventaire avec "sprite in {cells[y, x]}({x}, {y})"
         /// </summary>
-        public void show2DSpriteContent(Sprite[,] content)
+        public static void show2DSpriteContent(Sprite[,] content)
         {
             //parcour contenu
             for (var y = 0; y < content.GetLength(1); y++)
@@ -24,7 +24,7 @@ namespace AllFonction
         /// </summary>
         /// <param name="array">array a tourner</param>
         /// <returns>2Dsprite de la rotation finel</returns>
-        public Sprite[,] rotate2DSprite(Sprite[,] array)
+        public static Sprite[,] rotate2DSprite(Sprite[,] array)
         {
             Sprite[,] newArray = new Sprite[array.GetLength(1), array.GetLength(0)]; //creation du nouveau tableau
             //parcour du vieux tableau
@@ -46,7 +46,7 @@ namespace AllFonction
         /// </summary>
         /// <param name="rt">rect transform</param>
         /// <param name="left">la position a left</param>
-        public void SetLeftRt(RectTransform rt, float left)
+        public static void SetLeftRt(RectTransform rt, float left)
         {
             rt.offsetMin = new Vector2(left, rt.offsetMin.y);
         }
@@ -55,7 +55,7 @@ namespace AllFonction
         /// </summary>
         /// <param name="rt">rect transform</param>
         /// <param name="right">la position a droite</param>
-        public void SetRightRt(RectTransform rt, float right)
+        public static void SetRightRt(RectTransform rt, float right)
         {
             rt.offsetMax = new Vector2(-right, rt.offsetMax.y);
         }
@@ -64,7 +64,7 @@ namespace AllFonction
         /// </summary>
         /// <param name="rt">rect transform</param>
         /// <param name="top">la position a top</param>
-        public void SetTopRt(RectTransform rt, float top)
+        public static void SetTopRt(RectTransform rt, float top)
         {
             rt.offsetMax = new Vector2(rt.offsetMax.x, -top);
         }
@@ -73,7 +73,7 @@ namespace AllFonction
         /// </summary>
         /// <param name="rt">rect transform</param>
         /// <param name="bottom">la position a bottom</param>
-        public void SetBottomRt(RectTransform rt, float bottom)
+        public static void SetBottomRt(RectTransform rt, float bottom)
         {
             rt.offsetMin = new Vector2(rt.offsetMin.x, bottom);
         }

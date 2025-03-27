@@ -9,11 +9,13 @@ namespace entreprise.venteAgnion
 {
     public class SiteVente : MonoBehaviour
     {
+        [SerializeField] private string nom; //nom du site
         [SerializeField, Range(1, 9)] private int qualityMin; //borne des qualiter possible
         [SerializeField, Range(2, 10)] private int qualityMax; //borne des qualiter possible
         [SerializeField, Range(0, 100)] private int proprety; //la propreter du lieux
         [SerializeField, Range(0, 100)] private int celebrity; //la celebriter total
-        [SerializeReference] private GameObject agnions; //les agnions qu'ils est possible d'achetter sur place
+        [SerializeReference] private GameObject buyConteneur; //les agnions qu'ils est possible d'achetter sur place
+        [SerializeReference] private GameObject sellConteneur; //les agnions qu'ils est possible de vendre
 
         [SerializeReference] private VenteAgnionSystem sellSystem; //durer avant de pouvoir recall Ini
 
@@ -21,6 +23,9 @@ namespace entreprise.venteAgnion
         [SerializeField, ReadOnly] private float ratio; //le ratio d'achat en fonctiion du prix global sur le marche
         [SerializeField, ReadOnly] private int reloadStock; //durer avant de pouvoir recall les fonction de stocks
         [SerializeField, ReadOnly] private int reloadInit; //durer avant de pouvoir recall Init
+        [SerializeField] private bool change = true; //durer avant de pouvoir recall Init
+
+        [SerializeReference] private Transform spawnPoint; //la position de spawn des agnions
 
         [Header("variable")]
         [SerializeField] private float reloadStockRatio;//combient on reload par seconde
@@ -29,15 +34,19 @@ namespace entreprise.venteAgnion
         [Header("temporaire")]
         [SerializeField, Range(0, 360)] private int rotation;//l'heure qu'il est
 
+        public string Nom { get { return nom; } }
         public int QualityMin { get { return qualityMin; } }
         public int QualityMax { get { return qualityMax; } }
         public int Proprety { get { return proprety; } }
         public int Celebrity { get { return celebrity; } }
 
         public int Demand { get { return demand; } }
-        public float Ratio { get { return Ratio; } }
-        public GameObject Agnion { get { return agnions; } }
+        public float Ratio { get { return ratio; } }
+        public GameObject BuyConteneur { get { return buyConteneur; } }
+        public GameObject SellConteneur { get { return sellConteneur; } }
         public VenteAgnionSystem SellSystem { get { return sellSystem; } }
+        public bool Change { get { return change; } set { change = value; } }
+        public Transform SpawnPoint { get { return spawnPoint; } set { spawnPoint = value; } }
 
 
         public void Start()
@@ -78,50 +87,59 @@ namespace entreprise.venteAgnion
             {
                 proprety = 100;
             }
+            Init();
         }
 
         /// <summary>
         /// instancie tout les parametre du site quand le joueur rentre dedans
         /// </summary>
         /// <param name="venteAgnionSystem">le system de vente global</param>
-        private void Init(VenteAgnionSystem venteAgnionSystem)
+        public void Init()
         {
             //verifier que le system global le connais
-            if (!venteAgnionSystem.SiteVentes.Contains(this))
+            if (!sellSystem.SiteVentes.Contains(this))
             {
                 Destroy(gameObject);
             }
 
             int celebTotal = 0;
-            foreach (SiteVente site in venteAgnionSystem.SiteVentes)
+            foreach (SiteVente site in sellSystem.SiteVentes)
             {
                 celebTotal += site.Celebrity;
             }
             if (celebTotal > 0 && celebrity > 0)
             {
-                demand = (int)(venteAgnionSystem.DemandeGlobal * (celebrity / celebTotal) * Random.Range(0.9f, 1.1f));
+                demand = (int)(sellSystem.DemandeGlobal * (float)((float)celebrity / (float)celebTotal) * Random.Range(0.9f, 1.1f));
                 ratio = ((float)demand / (float)celebrity);
-                reloadInit = (int)(50 * reloadInitRatio);
             }
+            else
+            {
+                demand = 1;
+                ratio = 0.5f;
+            }
+            reloadInit = (int)(50 * reloadInitRatio);
         }
 
         public void FixedUpdate()
         {
-            //gere les chronometre
-            if (reloadInit > 0)
+            if (change)
             {
-                reloadInit--;
-            }
-            if (reloadStock > 0)
-            {
-                reloadStock--;
-            }
-            //reload tout les x secondes
-            else if (reloadStock == 0)
-            {
-                UpdateStock();
-                DegradeStock();
-                reloadStock = (int)(50 * reloadStockRatio);
+                //gere les chronometre
+                if (reloadInit > 0)
+                {
+                    reloadInit--;
+                }
+                if (reloadStock > 0)
+                {
+                    reloadStock--;
+                }
+                //reload tout les x secondes
+                else if (reloadStock == 0)
+                {
+                    UpdateStock();
+                    DegradeStock();
+                    reloadStock = (int)(50 * reloadStockRatio);
+                }
             }
         }
 
@@ -137,7 +155,7 @@ namespace entreprise.venteAgnion
                 //init si il peut
                 if (reloadInit <= 0)
                 {
-                    Init(sellSystem);
+                    Init();
                 }
             }
         }
@@ -151,10 +169,10 @@ namespace entreprise.venteAgnion
             if ((int)Random.Range(0, proprety) < 10)
             {
                 //degrade un nombre au pif
-                for (int i = 0; i < Random.Range(0, agnions.GetComponents<Agnion>().Length/2); i++)
+                for (int i = 0; i < Random.Range(0, buyConteneur.GetComponents<Agnion>().Length/2); i++)
                 {
                     //permet de degrader au pif
-                    agnions.GetComponents<Agnion>()[Random.Range(0, agnions.GetComponents<Agnion>().Length)].Degrader();
+                    buyConteneur.GetComponents<Agnion>()[Random.Range(0, buyConteneur.GetComponents<Agnion>().Length)].Degrader();
                 }
                 return true;
             }
@@ -169,7 +187,6 @@ namespace entreprise.venteAgnion
         {
             if (celebrity > 10)
             {
-                //si on modifier la demande d'agnions
                 if ((int)Random.Range(0, celebrity) > 10)
                 {
                     SupOrAdd();
@@ -178,12 +195,6 @@ namespace entreprise.venteAgnion
             }
             else
             {
-                /*
-                //verifier si il y a un soleil
-                GameObject sun = GameObject.Find("Sun");
-                if (sun)
-                {
-                    Debug.Log(sun.transform);*/
                 //verifier l'heure
                 if (rotation >= 120 && rotation <= 130)
                 {
@@ -193,7 +204,6 @@ namespace entreprise.venteAgnion
                     }
                     return true;
                 }
-                //}
             }
             return false;
         }
@@ -207,16 +217,16 @@ namespace entreprise.venteAgnion
             //si on ajoute ou retire
             if ((int)Random.Range(0, 4) == 0)
             {
-                if (agnions.GetComponents<Agnion>().Length > 0)
+                if (buyConteneur.GetComponents<Agnion>().Length > 0)
                 {
                     //agnions.GetComponentAtIndex(Random.Range(0, agnions.GetComponents<Agnion>().Length))
-                    Destroy(agnions.GetComponents<Agnion>()[Random.Range(0, agnions.GetComponents<Agnion>().Length)]);
+                    Destroy(buyConteneur.GetComponents<Agnion>()[Random.Range(0, buyConteneur.GetComponents<Agnion>().Length)]);
                 }
                 return 0;
             }
             else
             {
-                Agnion agnion = agnions.AddComponent<Agnion>();
+                Agnion agnion = buyConteneur.AddComponent<Agnion>();
                 agnion.Quality = Random.Range(qualityMin, qualityMax + 1);
 
                 return 1;

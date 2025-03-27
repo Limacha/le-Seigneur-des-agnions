@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SecondGameController
   - interact
+  - Agnion
   layers:
   - Default
   - TransparentFX

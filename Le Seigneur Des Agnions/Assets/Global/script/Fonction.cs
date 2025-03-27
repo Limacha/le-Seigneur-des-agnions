@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace AllFonction
@@ -78,4 +79,4 @@ namespace AllFonction
             rt.offsetMin = new Vector2(rt.offsetMin.x, bottom);
         }
     }
-}
+ }

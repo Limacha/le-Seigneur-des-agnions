@@ -5,8 +5,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float health; //santer du jouer
     [SerializeField] private float faim; //faim du jouer
     [SerializeField] private float endurance; //l'energie du jouer
-    [SerializeField] private float camSensibilityX; //sensibiliter de la camera
-    [SerializeField] private float camSensibilityY; //sensibiliter de la camera
     [SerializeField] private bool canMouve; //si le joueur peut bouger
     [SerializeField] private bool canLookAround; //si le joueur peut bouger la camera
     [SerializeField] private bool canInteract; //si le joueur peut interagir
@@ -14,8 +12,6 @@ public class Player : MonoBehaviour
     public float Health { get { return health; } set { health = value; } }
     public float Faim { get { return faim; } set { faim = value; } }
     public float Endurance { get { return endurance; } set { endurance = value; } }
-    public float CameraSensibilityX { get { return camSensibilityX; } set { camSensibilityX = value; } }
-    public float CameraSensibilityY { get { return camSensibilityY; } set { camSensibilityY = value; } }
     public bool CanMouve { get { return canMouve; } set { canMouve = value; } }
     public bool CanLookAround { get { return canLookAround; } set { canLookAround = value; } }
     public bool CanInteract { get { return canInteract; } set { canInteract = value; } }

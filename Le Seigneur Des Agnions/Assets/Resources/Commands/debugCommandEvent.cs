@@ -1,13 +1,16 @@
+using entreprise.venteAgnion;
 using inventory;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using mob;
 
 namespace debugCommand
 {
     public class DebugCommandEvent : MonoBehaviour
     {
+        [SerializeField] private ItemData agnion;
         /// <summary>
         /// commande qui affiche les autres commande
         /// </summary>
@@ -222,8 +225,75 @@ namespace debugCommand
 
         public void HipHop()
         {
-            var player = GameObject.FindGameObjectWithTag("Player");
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
             player.GetComponent<Animator>().SetTrigger("triggerHipHop");
         }
+        public void VendreAgnion()
+        {
+            GameObject gameManager = GameObject.Find("GameManager");
+            ConsoleSystem console = gameManager?.GetComponent<ConsoleSystem>();
+            Inventory inv = GameObject.Find("Inventory")?.GetComponent<Inventory>();
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (console == null || inv == null || player == null)
+            {
+                console.Label = "Probleme lors de la recuperation";
+                return;
+            }
+
+            if (inv.TwoHands == null && (inv.Hands == null || (inv.LeftHand == null && inv.RightHand == null)))
+            {
+                console.Label = "Rien en main";
+                return;
+            }
+
+            int quality;
+            GameObject entreprise = GameObject.Find("Entreprise");
+            VenteAgnionSystem venteSystem = entreprise?.GetComponent<VenteAgnionSystem>();
+            SiteVente site = GameObject.Find("consoleSite")?.GetComponent<SiteVente>();
+
+            if (venteSystem == null || site == null)
+            {
+                console.Label = "Pas de site ou de système de vente";
+                return;
+            }
+
+            ItemData heldItem = inv.TwoHands ?? inv.LeftHand ?? inv.RightHand;
+            if (heldItem == null || heldItem.ID != agnion.ID || !int.TryParse(heldItem.PersonalData, out quality))
+            {
+                console.Label = "L'objet en main n'est pas un agnion valide";
+                return;
+            }
+
+            site.Init();
+            console.Label = "Initialisation du site...";
+
+            Agnion agn = site.SellConteneur.AddComponent<Agnion>();
+            agn.Quality = quality;
+
+            Agnion[] agnionsToSell = new Agnion[1] { agn };
+            float price = venteSystem.CalcSellPrice(agnionsToSell, site);
+
+            console.Label = "Prix : " + price;
+
+            if (venteSystem.Sell(agnionsToSell, site))
+            {
+                // Vérifie quelle main tenait l'agnion et la vide
+                if (inv.TwoHands == heldItem)
+                    inv.TwoHands = null;
+                else if (inv.LeftHand == heldItem)
+                    inv.LeftHand = null;
+                else if (inv.RightHand == heldItem)
+                    inv.RightHand = null;
+
+                console.Label += "\nAgnion vendu";
+            }
+            else
+            {
+                heldItem.Drop(player.transform.position.x, player.transform.position.y, player.transform.position.z);
+                console.Label = "Agnion invendable";
+            }
+        }
+
     }
 }

@@ -58,9 +58,9 @@ namespace inventory
         public float XSpacing { get { return xSpacing; } }
         public int ContentWidth { get { return contentWidth; } }
         public int ContentHeight { get { return contentHeight; } }
-        public ItemData LeftHand { get { return leftHand; } }
-        public ItemData RightHand { get { return rightHand; } }
-        public ItemData TwoHands { get { return twoHands; } }
+        public ItemData LeftHand { get { return leftHand; } set { leftHand = value; } }
+        public ItemData RightHand { get { return rightHand; } set { rightHand = value; } }
+        public ItemData TwoHands { get { return twoHands; } set { twoHands = value; } }
         public HandsData Hands { get { return hands; } }
         public ItemData[,] Content { get { return content; } }
         public ItemData ItemDataSprite { get { return itemDataSprite; } }
@@ -848,7 +848,7 @@ namespace inventory
                         {
                             twoHands.Drop(transform.position.x, transform.position.y, transform.position.z);
                         }
-                        leftHand = item;
+                        leftHand = Instantiate(item);
                         return true;
                     case HandPosition.Right:
                         if (rightHand != null)
@@ -859,7 +859,7 @@ namespace inventory
                         {
                             twoHands.Drop(transform.position.x, transform.position.y, transform.position.z);
                         }
-                        rightHand = item;
+                        rightHand = Instantiate(item);
                         return true;
                     case HandPosition.Both:
                         if (twoHands != null)
@@ -874,7 +874,7 @@ namespace inventory
                         {
                             rightHand.Drop(transform.position.x, transform.position.y, transform.position.z);
                         }
-                        twoHands = item;
+                        twoHands = Instantiate(item);
                         return true;
                     case HandPosition.Hand:
                         if (item is HandsData)
@@ -883,7 +883,7 @@ namespace inventory
                             {
                                 hands.Drop(transform.position.x, transform.position.y, transform.position.z);
                             }
-                            hands = item as HandsData;
+                            hands = Instantiate(item) as HandsData;
                             return true;
                         }
                         return false;

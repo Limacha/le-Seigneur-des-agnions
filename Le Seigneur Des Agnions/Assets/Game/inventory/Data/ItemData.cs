@@ -27,6 +27,7 @@ namespace inventory
         [SerializeField] private int rotate = 360; //degrer de rotation
         [SerializeField] private Restrict[] restriction = new Restrict[1] {Restrict.inventory}; //restriction des placement de l'item
         [SerializeReference] private GameObject prefab; //object a faire spawn si drop
+        [SerializeReference] private string personnalData; //variable perso
 
         public string ID { get { return id; } }
         public string Nom { get { return nom; } }
@@ -44,6 +45,7 @@ namespace inventory
         public int RefY { get { return refY; } set { refY = value; } }
         public bool CanRotate { get { return CanRotate; } }
         public int Rotate { get { return rotate; } set { rotate = value; } }
+        public string PersonalData { get { return personnalData; } }
         public Restrict[] Restriction { get { return restriction; } }
 
         public enum Restrict

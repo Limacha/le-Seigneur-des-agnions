@@ -18,16 +18,21 @@ namespace player
 
         [SerializeField, ReadOnly] private float xRotation = 0f; //la rotation de la tete du joueur
 
-        [SerializeReference] private Player player; //le joueur
+        [SerializeReference, ReadOnly] private Player player; //le joueur
 
 
-        void Start()
+        public void Start()
         {
+            player = gameObject.GetComponent<Player>();
+            if (player == null)
+            {
+                Destroy(gameObject);
+            }
             //desactive et block le curser
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-        void Update()
+        public void Update()
         {
             if (player.CanLookAround)
             {
@@ -41,7 +46,7 @@ namespace player
         /// <summary>
         /// rotation orizontal du corps pour tourner la vue
         /// </summary>
-        void RotatteBodyForLooking()
+        private void RotatteBodyForLooking()
         {
             // Mouvement horizontal de la caméra et du corps (rotation du joueur)
             float mouseX = Input.GetAxis("Mouse X") * senX * Time.deltaTime;
@@ -52,7 +57,7 @@ namespace player
             //oritentation.rotation = Quaternion.Euler(0, playerBody.rotation.eulerAngles.y, 0);
         }
 
-        void RotateHeadAndNeckt()
+        private void RotateHeadAndNeckt()
         {
             if (headBone && neckBone)
             {

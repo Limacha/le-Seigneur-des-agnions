@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,7 +43,7 @@ namespace debugCommand
         [Header("commande")]
         [SerializeField] private DebugCommand[] commands;
 
-        public bool ShowConsole { get { return showConsole; } set { showConsole = value; } }
+        public bool ShowConsole { get { return showConsole; } }
         public DebugCommand[] Commands { get { return commands; } }
         public string UserInput { get { return input; } }
         public string Label { get { return label; } set { label = value; } }
@@ -50,6 +51,14 @@ namespace debugCommand
         void Awake()
         {
             commands = Resources.LoadAll<DebugCommand>("Commands");
+            /*if (commands.Length == 0)
+            {
+                Debug.LogError("Aucun DebugCommand trouvé dans le dossier 'Resources/Commands'!");
+            }
+            else
+            {
+                Debug.Log("Nombre de DebugCommand chargés : " + commands.Length);
+            }*/
         }
 
         public void Start()
@@ -63,6 +72,7 @@ namespace debugCommand
 
         public void Update()
         {
+            /*
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Cursor.lockState = CursorLockMode.None;
@@ -72,6 +82,7 @@ namespace debugCommand
             {
                 showConsole = !showConsole;
             }
+            */
             if (!showConsole) { return; }
             if (Input.GetKeyDown("return"))
             {
@@ -113,13 +124,37 @@ namespace debugCommand
             string[] properties = input.Split(' ');
             for (int i = 0; i < commands.Length; i++)
             {
-                if (properties[0] == '/' + commands[i].Name)
+                if (properties[0] == '/' + commands[i].Nom)
                 {
                     commands[i].Effect.Invoke(input);
                     return;
                 }
             }
             label = "Commande pas trouver.";
+        }
+    
+        public void OpenClose()
+        {
+            if (showConsole)
+            {
+                Close();
+            }
+            else
+            {
+                Open();
+            }
+        }
+
+        public void Close()
+        {
+            showConsole = false;
+        }
+
+        public void Open()
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+            showConsole = true;
         }
     }
 }

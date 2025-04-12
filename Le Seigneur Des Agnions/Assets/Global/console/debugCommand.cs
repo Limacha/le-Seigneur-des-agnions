@@ -9,7 +9,7 @@ namespace debugCommand
     public class DebugCommand : ScriptableObject
     {
         [SerializeField, ReadOnly] private string _id = Guid.NewGuid().ToString();
-        [SerializeField] private string _name;
+        [SerializeField] private string _nom;
         [SerializeField] private string _description;
         [SerializeField] private string _format;
         [SerializeField] private bool _showHelp = true;
@@ -17,7 +17,7 @@ namespace debugCommand
         [SerializeField] private DebugCommandEffect _effect;
 
         public string Id { get { return _id; } }
-        public string Name { get { return _name; } }
+        public string Nom { get { return _nom; } }
         public string Description { get { return _description; } }
         public string Format { get { return _format; } }
         public bool ShowHelp { get { return _showHelp; } }

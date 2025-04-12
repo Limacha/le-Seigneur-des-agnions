@@ -63,7 +63,7 @@ namespace player
         private Rigidbody rb; //le rigidbody
         private CapsuleCollider capsuleCollider; //le collider
         private Animator animator; //l'animateur
-        [SerializeReference] private Player player; //le joueur
+        [SerializeReference, ReadOnly] private Player player; //le joueur
 
         //[SerializeReference] private TextMeshProUGUI textspeed; //texte pour afficher le mouvement du joueur 
         //[SerializeReference] private TextMeshProUGUI text2; //deuxiemme texte pour afficher qq chose
@@ -82,6 +82,11 @@ namespace player
 
         private void Start()
         {
+            player = gameObject.GetComponent<Player>();
+            if (player == null)
+            {
+                Destroy(gameObject);
+            }
             //set toute les ref des script a soit
             rb = GetComponent<Rigidbody>();
             rb.freezeRotation = true;

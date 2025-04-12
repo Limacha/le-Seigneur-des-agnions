@@ -8,6 +8,16 @@ namespace interaction
     {
         [SerializeField] private GameObject obj;
         [SerializeField, ReadOnly] private bool actived;
+
+        public void Start()
+        {
+            if(obj == null)
+            {
+                Debug.Log($"{gameObject.name}: pas d'obj");
+                Destroy(gameObject);
+            }
+        }
+
         public override void InteractionPlayer()
         {
             actived = !obj.activeSelf;

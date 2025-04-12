@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -6,15 +7,20 @@ using UnityEngine;
 
 public class DayNightCycle : MonoBehaviour
 {
-    public GameObject sun;
-    public GameObject moon;
+    [SerializeReference] private GameObject sun;
+    [SerializeReference] private GameObject moon;
     [SerializeField] private float TimeSpan = 1;
     float actualTime;
-    [SerializeField, ReadOnly] private int minutes = 0;
-    [SerializeField, ReadOnly] private int hours = 6;
-    [SerializeField, ReadOnly] private int day = 0;
+    [SerializeField, Range(0, 59)] private int minutes = 0;
+    [SerializeField, Range(0, 23)] private int hours = 6;
+    [SerializeField] private int day = 0;
     int EntreTemps = 0;
     bool OnceOnATime = true;
+
+
+    public int Minutes { get { return minutes; } }
+    public int Hours { get { return hours; } }
+    public int Day { get { return day; } }
 
     void Start()
     {
@@ -65,6 +71,10 @@ public class DayNightCycle : MonoBehaviour
                 {
                     hours = 0;
                     day++;
+                    if (GameObject.Find("GameManager"))
+                    {
+                        GameObject.Find("GameManager").GetComponent<GameManager>().ThisDate = new DateTime().AddDays(day);
+                    }
                 }
             }
 

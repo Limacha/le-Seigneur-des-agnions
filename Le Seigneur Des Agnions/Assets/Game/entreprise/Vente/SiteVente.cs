@@ -97,8 +97,15 @@ namespace entreprise.venteAgnion
         public void Init()
         {
             //verifier que le system global le connais
+            if(sellSystem == null)
+            {
+                Debug.Log($"{gameObject.name}: pas de sell system");
+                Destroy(gameObject);
+            }
+
             if (!sellSystem.SiteVentes.Contains(this))
             {
+                Debug.Log($"{gameObject.name}: site non conu du system");
                 Destroy(gameObject);
             }
 
@@ -227,10 +234,16 @@ namespace entreprise.venteAgnion
             else
             {
                 Agnion agnion = buyConteneur.AddComponent<Agnion>();
-                agnion.Quality = Random.Range(qualityMin, qualityMax + 1);
+                agnion.Quality = (byte)Random.Range(qualityMin, qualityMax + 1);
 
                 return 1;
             }
+        }
+    
+        public void AddSellAgnion(byte quality)
+        {
+            Agnion agnion = sellConteneur.AddComponent<Agnion>();
+            agnion.Quality = quality;
         }
     }
 }

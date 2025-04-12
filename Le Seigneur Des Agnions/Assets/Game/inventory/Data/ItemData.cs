@@ -6,10 +6,11 @@ using AllFonction;
 namespace inventory
 {
     [CreateAssetMenu(fileName = "scriptabelObject/items data", menuName = "Items/New item")]
+    [Serializable]
     public class ItemData : ScriptableObject
     {
         [Header("global item variable")]
-        [SerializeField, ReadOnly] private string id = Guid.NewGuid().ToString(); //id unique
+        [SerializeField, ReadOnly] private string _id = Guid.NewGuid().ToString(); //id unique
         [SerializeField] private string nom; //nom de l'item
         [SerializeField] private string description; //description de l'item
         [SerializeField] private int width; //larguer de la matrice
@@ -29,7 +30,7 @@ namespace inventory
         [SerializeReference] private GameObject prefab; //object a faire spawn si drop
         [SerializeReference] private string personnalData; //variable perso
 
-        public string ID { get { return id; } }
+        public string ID { get { return _id; } }
         public string Nom { get { return nom; } }
         public string Description { get { return description; } }
         public int Width { get { return width; } }
@@ -45,7 +46,7 @@ namespace inventory
         public int RefY { get { return refY; } set { refY = value; } }
         public bool CanRotate { get { return CanRotate; } }
         public int Rotate { get { return rotate; } set { rotate = value; } }
-        public string PersonalData { get { return personnalData; } }
+        public string PersonalData { get { return personnalData; } set { personnalData = value; } }
         public Restrict[] Restriction { get { return restriction; } }
 
         public enum Restrict
@@ -64,6 +65,49 @@ namespace inventory
         public void Init()
         {
             InitPatern();
+        }
+
+        /// <summary>
+        /// renvoie toute les infos de l'items
+        /// </summary>
+        /// <returns>les infos</returns>
+        public override string ToString()
+        {
+            // Construction de la liste des restrictions sous forme de string
+            string restrictionsStr = restriction.Length > 0 ? string.Join(", ", restriction) : "Aucune";
+
+            // Construction des sprites du pattern sous forme de tableau texte
+            string paternStr = "";
+            if (patern != null)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        paternStr += patern[x, y] != null ? "[X] " : "[ ] ";
+                    }
+                    paternStr += "\n"; // Nouvelle ligne pour la prochaine rangée
+                }
+            }
+            else
+            {
+                paternStr = "Non défini";
+            }
+            return $"=============== ITEM INFOS ===============\n" +
+           $"ID: {_id}\n" +
+           $"Nom: {nom}\n" +
+           $"Description: {description}\n" +
+           $"Dimensions: {width}x{height}\n" +
+           $"Poids: {poids}g\n" +
+           $"Stackable: {stackable} (Max: {stackLimit}, Actuel: {stack})\n" +
+           $"Peut tourner: {canRotate} (Angle: {rotate}°)\n" +
+           $"Restrictions: {restrictionsStr}\n" +
+           $"Données personnalisées: {personnalData}\n" +
+           $"Prefab associé: {(prefab != null ? prefab.name : "Aucun")}\n" +
+           $"Sprite de référence: {(imgRef != null ? imgRef.name : "Aucun")}\n" +
+           $"Liste des sprites: {(listSprite != null && listSprite.Length > 0 ? listSprite.Length + " sprites définis" : "Aucun")}\n" +
+           $"Pattern dans l'inventaire:\n{paternStr}" +
+           $"\n==========================================";
         }
 
         /// <summary>

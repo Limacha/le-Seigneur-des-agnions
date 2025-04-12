@@ -72,6 +72,8 @@ namespace inventory
         public float Poids { get { return poids; } }
 
         public GameObject ToolTip { get { return toolTip; } }
+
+        public bool AnimationSacEnCours { get { return animationSacEnCours; } }
         #endregion
 
         public enum HandPosition
@@ -97,7 +99,7 @@ namespace inventory
 
         // Update is called once per frame
         void Update()
-        {
+        {/*
             if (Input.GetKeyDown(openKey.key) && !animationSacEnCours) //ouvre ou ferme l'inventaire
             {
                 toolTip.SetActive(false);
@@ -110,7 +112,7 @@ namespace inventory
                 {
                     OpenInventory();
                 }
-            }
+            }*/
         }
         /*
         /// <summary>
@@ -358,13 +360,18 @@ namespace inventory
         }
 
         /// <summary>
-        /// ferme l'inventaire depuis le click de la croix
+        /// ouvre ou ferme l'inventaire
         /// </summary>
-        public void CloseInventoryBtn()
+        public void OpenCloseInventory()
         {
-            toolTip.SetActive(false);
-            animationSacEnCours = true;
-            StartCoroutine(ToggleCloseAnimeSac());
+            if (inventoryPanel.activeSelf)
+            {
+                CloseInventory();
+            }
+            else
+            {
+                OpenInventory();
+            }
         }
 
         /// <summary>
@@ -787,7 +794,7 @@ namespace inventory
         /// <summary>
         /// permet de trouver un item avec son nom
         /// </summary>
-        /// <param name="name">nom de l'item</param>
+        /// <param name="name">nom du game object</param>
         /// <returns>l'item si trouver</returns>
         public ItemData FindItemWhitName(string name)
         {
@@ -828,6 +835,7 @@ namespace inventory
         /// <param name="item">l'item</param>
         /// <param name="fromInv">si l'object vient de l'inventaire</param>
         /// <param name="handPosition">la position dans les mains</param>
+        /// <param name="personalData">une data personnel a save</param>
         /// <returns>si equip reussi</returns>
         public bool EquipItem(ItemData item, bool fromInv, HandPosition handPosition)
         {
@@ -843,10 +851,12 @@ namespace inventory
                         if(leftHand != null)
                         {
                             leftHand.Drop(transform.position.x, transform.position.y, transform.position.z);
+                            leftHand = null;
                         }
                         if (twoHands != null)
                         {
                             twoHands.Drop(transform.position.x, transform.position.y, transform.position.z);
+                            twoHands = null;
                         }
                         leftHand = Instantiate(item);
                         return true;
@@ -854,10 +864,12 @@ namespace inventory
                         if (rightHand != null)
                         {
                             rightHand.Drop(transform.position.x, transform.position.y, transform.position.z);
+                            rightHand = null;
                         }
                         if (twoHands != null)
                         {
                             twoHands.Drop(transform.position.x, transform.position.y, transform.position.z);
+                            twoHands = null;
                         }
                         rightHand = Instantiate(item);
                         return true;
@@ -865,14 +877,17 @@ namespace inventory
                         if (twoHands != null)
                         {
                             twoHands.Drop(transform.position.x, transform.position.y, transform.position.z);
+                            twoHands = null;
                         }
                         if (leftHand != null)
                         {
                             leftHand.Drop(transform.position.x, transform.position.y, transform.position.z);
+                            leftHand = null;
                         }
                         if (rightHand != null)
                         {
                             rightHand.Drop(transform.position.x, transform.position.y, transform.position.z);
+                            rightHand = null;
                         }
                         twoHands = Instantiate(item);
                         return true;
@@ -882,6 +897,7 @@ namespace inventory
                             if (hands != null)
                             {
                                 hands.Drop(transform.position.x, transform.position.y, transform.position.z);
+                                hands = null;
                             }
                             hands = Instantiate(item) as HandsData;
                             return true;

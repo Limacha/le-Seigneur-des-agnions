@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using inventory;
 public static class SaveSystem
 {
+    //C:\Users\Nico\AppData\LocalLow\Handdor\Le Seigneur Des Agnions\data\save
     private static readonly string defaultPath = Application.persistentDataPath + "/data/save"; //le chemin des sauvegarde par default
     private static readonly BinaryFormatter formatter = new BinaryFormatter(); //le formateur en binaire
     public static string DefaultPath { get { return defaultPath; } }
@@ -29,6 +30,91 @@ public static class SaveSystem
             }
         }
     }
+
+    /// <summary>
+    /// obtient le nom de toute les saves
+    /// </summary>
+    /// <returns>un tableau avec tout les noms</returns>
+    public static string[] GetAllSaveName()
+    {
+        //Debug.Log(defaultPath);
+        string[] directories = Directory.Exists(defaultPath) ? Directory.GetDirectories(defaultPath) : new string[0];
+        string[] saveName = new string[directories.Length];
+
+        for (int i = 0; i < directories.Length; i++)
+        {
+            saveName[i] = Path.GetFileName(directories[i]).ToLower();
+        }
+        return saveName;
+    }
+
+    public static bool RenameSave(string oldSave, string newSave)
+    {
+        newSave = defaultPath + "/" + newSave;
+        oldSave = defaultPath + "/" + oldSave;
+        if (!Directory.Exists(newSave))
+        {
+            if (Directory.Exists(oldSave))
+            {
+                Directory.Move(oldSave, newSave);
+            }
+            else
+            {
+                Directory.CreateDirectory(newSave);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static bool DuplicateSave(string oldSave, string newSave)
+    {
+        if(oldSave == null || newSave == null || oldSave == newSave)
+        {
+            return false; 
+        }
+        oldSave = defaultPath + "/" + oldSave;
+        newSave = defaultPath + "/" + newSave;// Vérifie si le dossier source existe
+        if (!Directory.Exists(oldSave))
+        {
+            return false;
+        }
+        // Crée le dossier de destination s'il n'existe pas
+        if (Directory.Exists(newSave))
+        {
+            Directory.Delete(newSave, true);
+        }
+        Directory.CreateDirectory(newSave);
+
+        CopyDirectory(oldSave, newSave);
+        return true;
+    }
+
+    private static void CopyDirectory(string oldDir, string newDir)
+    {
+        // Crée le dossier de destination s'il n'existe pas
+        if (Directory.Exists(newDir))
+        {
+            Directory.Delete(newDir, true);
+        }
+        Directory.CreateDirectory(newDir);
+
+        // Copier les fichiers du dossier source
+        foreach (string file in Directory.GetFiles(oldDir))
+        {
+            string fileName = Path.GetFileName(file);
+            string destFile = Path.Combine(newDir, fileName);
+            File.Copy(file, destFile, true); // true = overwrite si existe
+        }
+        // Copier les sous-dossiers récursivement
+        foreach (string subDir in Directory.GetDirectories(oldDir))
+        {
+            string subDirName = Path.GetFileName(subDir);
+            string destSubDir = Path.Combine(newDir, subDirName);
+            CopyDirectory(subDir, destSubDir);
+        }
+    }
+
     /// <summary>
     /// suppression d'une sauvegarde
     /// </summary>
@@ -119,4 +205,5 @@ public static class SaveSystem
             return null;
         }
     }
+    
 }

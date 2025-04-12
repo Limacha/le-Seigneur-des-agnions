@@ -8,7 +8,7 @@ namespace inventory
     public class ConsomableData : ItemData
     {
         [Header("consomable item variable")]
-        [SerializeField] private GameObject prefab; //prefab pour quand on le consome
-        public GameObject Prefab { get { return prefab; } }
+        [SerializeField] private GameObject consoPref; //prefab pour quand on le consome
+        public GameObject ConsoPref { get { return consoPref; } }
     }
 }

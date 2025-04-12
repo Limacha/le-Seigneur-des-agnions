@@ -4,12 +4,12 @@ namespace mob
 {
     public class Agnion: MonoBehaviour
     {
-        [SerializeField, Range(0, 10)] private int quality; //la qualiter de l'agnion
+        [SerializeField, Range(0, 10)] private byte quality; //la qualiter de l'agnion
         [SerializeField]  private bool selected = false; //si il est selectionner ou pas
 
         public bool Selected { get { return selected; } set { selected = value; } }
 
-        public int Quality 
+        public byte Quality 
         { 
             get { return quality; } 
             set
@@ -21,7 +21,7 @@ namespace mob
             } 
         }
 
-        public Agnion(int quality)
+        public Agnion(byte quality)
         {
             this.quality = quality;
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace entreprise
 {
@@ -31,38 +32,38 @@ namespace entreprise
         }
 
         [Header("Principal")]
-        [SerializeField] private string nom;
-        [SerializeField] private float argent;
-        [SerializeField] private int batiment;
-        [SerializeField] private int batimentMax;
+        [SerializeField] private string nom; //nom de l'entreprise
+        [SerializeField] private float argent; //argent posseder
+        [SerializeField] private int batiment; //niveau du batiment
+        [SerializeField] private int batimentMax; //niveau max du batiement
         [SerializeField, Range(0, 100)] private int reputation; //0-100 -> /20 -> x/5 (n etoile)
-        [SerializeField] private UpgradeRestriction[] batimentRestriction = new UpgradeRestriction[] 
-        { 
-            new UpgradeRestriction(0, 500, 1, 0), 
-            new UpgradeRestriction(1, 1000, 2, 1), 
-            new UpgradeRestriction(2, 50000, 2, 2), 
-            new UpgradeRestriction(3, 8954652, 5, 3), 
-            new UpgradeRestriction(4, 648634198, 8, 4) 
-        };
+        private readonly UpgradeRestriction[] batimentRestriction = new UpgradeRestriction[]
+        {
+            new UpgradeRestriction(0, 500, 1, 0),
+            new UpgradeRestriction(1, 1000, 2, 1),
+            new UpgradeRestriction(2, 50000, 2, 2),
+            new UpgradeRestriction(3, 8954652, 5, 3),
+            new UpgradeRestriction(4, 648634198, 8, 4)
+        };//tableau de toute les restriction possible
 
-        [SerializeField, ReadOnly] private Func<string, bool> functionInput;
+        [SerializeField, ReadOnly] private Func<string, bool> functionInput; //function qui sera executer lors de l'entrer d'un input
 
-        private List<Employer> employers;
-        private List<Recherche> recherches;
-        private List<Dette> dettes = new() { 
+        private List<Employer> employers; //liste des employer
+        private List<Recherche> recherches; //liste des recherches
+        private List<Dette> dettes = new() {
             new ("tuto", "une dette pour le tuto", 100, new DateTime(1, 1, 1), 365, 10, 365*5+1, 5),
             new ("test", "juste pour test", 5000, new DateTime(1, 2, 3), 958, 2, 958*5, 2)
-        };
+        }; //liste des dettes
 
         private int danger; //a quel point l'entreprise semble illegal
         private string phraseAcueil = "Bonjour monsieur que voulez vous faire?"; //phrase afficher par default dans le menu
 
 
-        public string Nom { get { return nom; } }
+        public string Nom { get { return nom; } set { nom = value; } }
         public float Argent { get { return argent; } }
         public int Batiment { get { return batiment; } }
         public int Reputation { get { return reputation; } }
-        public int Etoile { get { return reputation/20; } }
+        public int Etoile { get { return reputation / 20; } }
 
         /// <summary>
         /// fait un modification du montant de l'argent de l'entreprise
@@ -97,7 +98,7 @@ namespace entreprise
         public void ChangerReput(int reput)
         {
             reputation = reput;
-            if(reputation > 10)
+            if (reputation > 10)
             {
                 reputation = 10;
             }
@@ -112,7 +113,7 @@ namespace entreprise
             label.text = $"{nom}: \n";
             label.text += $"{argent}€\n";
             label.text += $"{batiment}/{batimentMax}\n";
-            label.text += $"{reputation} reputation\n";
+            label.text += $"{Etoile} reputation\n";
         }
 
         #region amelioration du batiment
@@ -123,8 +124,8 @@ namespace entreprise
         /// <param name="restriction">les restriction</param>
         /// <returns>le string cree</returns>
         private string AfficherRestriction(UpgradeRestriction restriction)
-        { 
-            if(restriction != null)
+        {
+            if (restriction != null)
             {
                 return $"niveau du batiment {batiment} == {restriction.BatimentLevel}\n" +
                        $"argent requis: {argent}/{restriction.Argent}\n" +
@@ -144,7 +145,7 @@ namespace entreprise
         /// <returns>si les restriction sont remplis</returns>
         private bool VerifierRestriction(UpgradeRestriction restriction)
         {
-            if(restriction != null)
+            if (restriction != null)
             {
                 return (batiment == restriction.BatimentLevel && argent >= restriction.Argent && Etoile >= restriction.Etoile && true);
             }
@@ -176,10 +177,10 @@ namespace entreprise
             label.text = AfficherRestriction(restriction);
             label.text += "\nVoullez-vous proceder a l'amelioration: oui/non\n";
 
-            functionInput = (input) => 
+            functionInput = (input) =>
             {
                 functionInput = null;
-                if (input.ToLower() == "oui") 
+                if (input.ToLower() == "oui")
                 {
 
                     if (VerifierRestriction(restriction))
@@ -209,12 +210,16 @@ namespace entreprise
 
         #region dette/fisc
 
-        public void DisplayDette(TextMeshProUGUI label)
+        /// <summary>
+        /// afficher une liste de dette et defini une fonction pour l'input
+        /// </summary>
+        /// <param name="label">l'endroit ou afficher</param>
+        public void DisplayDettes(TextMeshProUGUI label)
         {
             label.text = "Liste des dettes:";
-            for (int i = 0; i < dettes.Count(); i++)        
+            for (int i = 0; i < dettes.Count(); i++)
             {
-                label.text += $"\n{i+1}:\n";
+                label.text += $"\n{i + 1}:\n";
                 label.text += dettes[i].Info();
                 label.text += "\n";
             }
@@ -222,12 +227,33 @@ namespace entreprise
             functionInput = (input) =>
             {
                 functionInput = null;
-                if(ushort.TryParse(input, out ushort nDette))
+                if (ushort.TryParse(input, out ushort nDette))
                 {
+                    //si une dette est selectionner
                     nDette--;
                     if (nDette < dettes.Count())
                     {
-                        label.text = nDette.ToString();
+                        label.text = dettes[nDette].Info();
+                        label.text += "\n\nVoulez vous payer?\noui ou non.";
+                        functionInput = (input) =>
+                        {
+                            functionInput = null;
+                            if(input == "oui")
+                            {
+                                //payer la dette si il peut
+                                if (dettes[nDette].Montant <= argent)
+                                {
+                                    Transaction(-dettes[nDette].Montant);
+                                    dettes.Remove(dettes[nDette]);
+                                    label.text = "Dette payez.";
+                                    return true;
+                                }
+                                label.text = "Argent insufisant.";
+                                return false;
+                            }
+                            label.text = phraseAcueil;
+                            return false;
+                        };
                     }
                     else
                     {
@@ -240,6 +266,116 @@ namespace entreprise
                 }
                 return false;
             };
+        }
+
+        /// <summary>
+        /// affiche une liste de tout les prets
+        /// </summary>
+        /// <param name="label">l'endroit ou afficher</param>
+        public void DisplayPrets(TextMeshProUGUI label)
+        {
+            if(batiment >= 1)
+            {
+                if(Etoile >= 2)
+                {
+                    label.text = "fonction pas encore ajouter.";
+                    return;
+                }
+                else
+                {
+                    label.text = "Vous avez une trop mauvaise reputation pour faire un pret.";
+                    return;
+                }
+            }
+            label.text = "Votre batiment n'est pas assez haut level pour pouvoir faire un pret.";
+            return;
+        }
+
+        /// <summary>
+        /// affiche un menu pour faire les dettes ou les prets
+        /// </summary>
+        /// <param name="label">la zone ou afficher</param>
+        public void DisplayFisc(TextMeshProUGUI label)
+        {
+            label.text = "Voulez vous faire un pret ou voir vos dette.\n 1)pret \n 2)dette";
+            functionInput = (input) => {
+                functionInput = null;
+                if (input == "1") { 
+                    DisplayPrets(label); 
+                } 
+                else if (input == "2") { 
+                    DisplayDettes(label); 
+                } 
+                else { label.text = phraseAcueil; 
+                }
+                return true; 
+            };
+        }
+
+        #endregion
+
+        #region name
+
+        public void SetName(TextMeshProUGUI label)
+        {
+            if (GameObject.Find("GameManager"))
+            {
+                if (GameObject.Find("GameManager").TryGetComponent<GameManager>(out GameManager manager)) { 
+                        label.text = "Entrez le nouveau nom\n" +
+                                 "nom deja existant:\n";
+                    for (int i = 0; i < SaveSystem.GetAllSaveName().Length; i++)
+                    {
+                        label.text += SaveSystem.GetAllSaveName()[i] + "\n";
+                    }
+                    functionInput = (input) =>
+                    {
+                        functionInput = null;
+                        if (!SaveSystem.GetAllSaveName().Contains(input))
+                        {
+                            string save = input.ToLower();
+                            label.text = $"nouveau nom: {input}\n";
+                            label.text += "Merci de confirmer ce changement?\noui\nnon";
+
+                            functionInput = (input) =>
+                            {
+                                functionInput = null;
+                                if (input == "oui")
+                                {
+                                    if (manager.ChangeSaveName(save))
+                                    {
+                                        label.text = "nom changer";
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        label.text = "probleme survenu";
+                                        return false;
+                                    }
+                                }
+                                else
+                                {
+                                    label.text = phraseAcueil;
+                                }
+                                return false;
+                            };
+                            return true;
+                        }
+                        else
+                        {
+                            label.text = "nom existe deja.";
+                        }
+                        return false;
+                    };
+                }
+                else
+                {
+                    label.text = "pas de gameManager";
+                }
+            }
+            else
+            {
+                label.text = "pas de gameManager";
+            }
         }
 
         #endregion

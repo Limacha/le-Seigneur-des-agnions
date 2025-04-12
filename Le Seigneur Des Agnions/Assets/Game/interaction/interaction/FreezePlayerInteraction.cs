@@ -16,12 +16,19 @@ namespace interaction
         {
             shine = false;
             player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            if (player == null)
+            {
+                Debug.Log($"{gameObject.name}: pas de joueur trouver");
+                Destroy(gameObject);
+            }
+
         }
+
         public override void InteractionPlayer()
         {
-            player.CanMouve = freezMove;
-            player.CanLookAround = freezLookAround;
-            player.CanInteract = freezInteract;
+            player.CanMouve = !freezMove;
+            player.CanLookAround = !freezLookAround;
+            player.CanInteract = !freezInteract;
         }
     }
 }

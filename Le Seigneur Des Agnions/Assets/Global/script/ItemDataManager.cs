@@ -17,8 +17,8 @@ public class ItemDataManager : MonoBehaviour
     {        
         foreach (var item in items)
         {
-            //Debug.Log(item);
             item.Init();
+            //Debug.Log(item.ToString());
         }
     }
 }

@@ -1,2 +1,18 @@
 - vente agnions
+	- site ou vendre
+	- achetter
+-collect item
+	- instancie le spawn
+	- equip si doit
+	- inv prioritaire
+	-celon restrict
 - menu entreprise 0
+	- upgrade
+	- fisc
+	- nom
+	- affichage du jour + heure + nom
+- broyage des agnions
+
+- supretion des dont destroy + surplus gamemanager
+- correction bug build
+-input manager

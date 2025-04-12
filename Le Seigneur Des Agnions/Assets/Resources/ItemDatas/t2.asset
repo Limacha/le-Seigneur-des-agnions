@@ -21,19 +21,19 @@ MonoBehaviour:
   listSprite:
   - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
   - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
-  - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
-  - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
+  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
+  - {fileID: 21300000, guid: 81a1f3ed6ffbf524a918bb5f30555296, type: 3}
+  - {fileID: 21300000, guid: 31a45102702670e4798774ef14fb48df, type: 3}
   - {fileID: 21300000, guid: cc3ad788e5c7765478bf57d5fa02f30d, type: 3}
-  - {fileID: 21300000, guid: cc3ad788e5c7765478bf57d5fa02f30d, type: 3}
   - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
   - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
   - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
+  - {fileID: 21300000, guid: 31a45102702670e4798774ef14fb48df, type: 3}
   - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
   - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
   - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
-  - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
-  - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
-  - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
+  - {fileID: 21300000, guid: 31a45102702670e4798774ef14fb48df, type: 3}
+  - {fileID: 21300000, guid: 31a45102702670e4798774ef14fb48df, type: 3}
   - {fileID: 21300000, guid: a31da98749d2ecf4fb8ed8dc44d61c43, type: 3}
   poids: 0
   stackable: 0
@@ -41,6 +41,8 @@ MonoBehaviour:
   stack: 1
   refX: 0
   refY: 0
+  canRotate: 1
   rotate: 360
   restriction: 00000000
   prefab: {fileID: 0}
+  personnalData: 

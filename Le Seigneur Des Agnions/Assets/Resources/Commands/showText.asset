@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: showText
   m_EditorClassIdentifier: 
   _id: 707491e3-5049-409d-9ac1-5ae0104ef254
-  _name: showText
+  _nom: showText
   _description: affiche le texte entre ""
   _format: showText "<string text>"
   _showHelp: 1

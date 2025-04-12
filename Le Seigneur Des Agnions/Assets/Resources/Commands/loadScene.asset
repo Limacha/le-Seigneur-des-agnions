@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: loadScene
   m_EditorClassIdentifier: 
   _id: 6c480d6c-36bc-47ed-9a73-da9926388485
-  _name: loadScene
+  _nom: loadScene
   _description: charge la scene avec le nom
   _format: loadScene <string scene>
   _showHelp: 1

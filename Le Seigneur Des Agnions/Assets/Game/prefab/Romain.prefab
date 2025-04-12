@@ -1809,7 +1809,7 @@ GameObject:
   - component: {fileID: 197965675973530534}
   m_Layer: 0
   m_Name: Inventory
-  m_TagString: Untagged
+  m_TagString: inventory
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2156,7 +2156,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 24
   grounded: 0
-  orientation: {fileID: 8674911127728227997}
   moveDirection: {x: 0, y: 0, z: 0}
   player: {fileID: 8438551635584761283}
   state: 4
@@ -2194,9 +2193,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactDistance: 10
+  interactTag:
+  - interact
+  - Agnion
+  player: {fileID: 8438551635584761283}
   interactKey: {fileID: 11400000, guid: 0046b11bcfe7bb74ebbf3f9d87d6a4cb, type: 2}
   playerCamera: {fileID: 8509107777772308368}
-  player: {fileID: 8438551635584761283}
 --- !u!1 &2408375822940280447
 GameObject:
   m_ObjectHideFlags: 0

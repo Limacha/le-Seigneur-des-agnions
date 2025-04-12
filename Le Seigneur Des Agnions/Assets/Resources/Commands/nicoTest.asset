@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: nicoTest
   m_EditorClassIdentifier: 
   _id: 6c480d6c-36bc-47ed-9a73-da9926388485
-  _name: nicoTest
+  _nom: nicoTest
   _description: charge la scene de test nico
   _format: nicoTest
   _showHelp: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: hipHop
   m_EditorClassIdentifier: 
   _id: 42154931-3a38-47eb-b19d-b7f32346e057
-  _name: hipHop
+  _nom: hipHop
   _description: faire le hip hop
   _format: hipHop
   _showHelp: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: lock
   m_EditorClassIdentifier: 
   _id: 51caa963-045c-4734-aa5b-04148700fd27
-  _name: lock
+  _nom: lock
   _description: lock la souris
   _format: lock
   _showHelp: 1

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: venteAgnion
   m_EditorClassIdentifier: 
   _id: 75d06580-0638-45a6-8897-83f772e77dad
-  _name: venteAgnion
+  _nom: venteAgnion
   _description: permet de vendre l'agnion en posssetion
   _format: venteAgnion
   _showHelp: 1

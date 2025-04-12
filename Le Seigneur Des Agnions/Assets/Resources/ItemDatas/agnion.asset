@@ -29,7 +29,7 @@ MonoBehaviour:
   canRotate: 0
   rotate: 360
   restriction: 040000000100000005000000
-  prefab: {fileID: 8013714886485329342, guid: 20abfc598fe8d544f98609057a4196e2, type: 3}
+  prefab: {fileID: 5271757095136408326, guid: 394a7ea910f004142bbe4cb49a6abc77, type: 3}
   personnalData: 3
   oneHandPrefab: {fileID: 5620849681279861730, guid: bdacf054b77e11d4e918667c7af62396,
     type: 3}

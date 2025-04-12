@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: loadSave
   m_EditorClassIdentifier: 
   _id: 612009f7-6299-4535-bcb5-0e6b66e7baf2
-  _name: loadSave
+  _nom: loadSave
   _description: charge une save
   _format: loadSave <string saveName>
   _showHelp: 1

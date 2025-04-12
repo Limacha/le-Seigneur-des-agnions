@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: save
   m_EditorClassIdentifier: 
   _id: ac4c91e4-e77f-4ea8-9df5-7f6459050a24
-  _name: save
+  _nom: save
   _description: sauvegarde le jeux
   _format: save <string saveName>
   _showHelp: 1

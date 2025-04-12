@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: help
   m_EditorClassIdentifier: 
   _id: f6317ea9-905f-4d99-8dc2-acc03c552245
-  _name: help
+  _nom: help
   _description: command pour voir les autres commandes
   _format: help
   _showHelp: 1

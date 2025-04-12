@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: give
   m_EditorClassIdentifier: 
   _id: 974cbd67-da62-4873-9506-6ea526c3371c
-  _name: give
+  _nom: give
   _description: give you x item with his name
   _format: give <string item> <int num>
   _showHelp: 1

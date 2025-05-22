@@ -18,13 +18,13 @@ public class InventorySaveData
                     if (inv.Content[i, j].ID != inv.ItemDataSprite.ID) //si se n'est pas un item de blockage
                     {
                         ItemSaveData item = null;
-
+                        /*
                         //definition des variable en fonction de sont type
                         if (inv.Content[i, j].GetType() == typeof(RessourceData))
                         {
                             item = new RessourceSaveData(inv.Content[i, j] as RessourceData);
                         }
-                        else if(inv.Content[i, j].GetType() == typeof(ConsomableData))
+                        else*/ if(inv.Content[i, j].GetType() == typeof(ConsomableData))
                         {
                             item = new ConsomableSaveData(inv.Content[i, j] as ConsomableData);
                         }

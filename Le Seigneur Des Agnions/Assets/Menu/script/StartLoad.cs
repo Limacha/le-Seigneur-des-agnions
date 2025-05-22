@@ -5,15 +5,21 @@ using System.Collections;
 
 public class StartLoad : MonoBehaviour
 {
-    public Button newSave;          // button de nouvelle sauvegarde
-    public Button startButton;          // button de start
-    public Animator canvasAnimator;     // Animator Canvas
-    public GameObject loadingCanvas;   // Canvas de chargement
+    [SerializeReference] private Button newSave;          // button de nouvelle sauvegarde
+    [SerializeReference] private Button startButton;          // button de start
+    [SerializeReference] private Animator canvasAnimator;     // Animator Canvas
+    [SerializeReference] private GameObject loadingCanvas;   // Canvas de chargement
 
     /*void Start() // lors du clique button start lance Demarrage ButtonClique
     {
         //startButton.onClick.AddListener(DemarrageButtonClique);
     }*/
+
+    public Button StartButton
+    {
+        get { return startButton; }
+        set { startButton = value; }
+    }
 
     public void loadNewSave()
     {

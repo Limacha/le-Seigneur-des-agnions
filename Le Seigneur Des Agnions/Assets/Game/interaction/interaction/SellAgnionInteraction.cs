@@ -33,9 +33,9 @@ namespace Assets.Game.interaction.interaction
         {
             (ItemData hand, Action clearHand)[] hands =
             {
-                (inv.LeftHand, () => inv.LeftHand = null),
-                (inv.RightHand, () => inv.RightHand = null),
-                (inv.TwoHands, () => inv.TwoHands = null)
+                (inv.LeftHandItem, () => inv.LeftHandItem = null),
+                (inv.RightHandItem, () => inv.RightHandItem = null),
+                (inv.TwoHandsItem, () => inv.TwoHandsItem = null)
             };
 
             foreach (var (hand, clearHand) in hands)

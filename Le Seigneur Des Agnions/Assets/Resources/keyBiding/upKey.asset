@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8a6b92ac22b44e46907b53d65e277f4, type: 3}
   m_Name: upKey
   m_EditorClassIdentifier: 
-  nom: upKey
-  description: touche pour avancez
+  nom: Avancer
+  description: Aller vers l'avant
   key: z

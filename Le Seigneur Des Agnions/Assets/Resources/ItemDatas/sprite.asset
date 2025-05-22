@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632dff6b04be42545ab1612da7db8055, type: 3}
   m_Name: sprite
   m_EditorClassIdentifier: 
-  id: 0
+  _id: 39bcfaba-e6ca-4345-9403-12948b418f8c
   nom: sprite
   description: lock dans l'inventaire
   width: 1
@@ -26,6 +26,8 @@ MonoBehaviour:
   stack: 1
   refX: 0
   refY: 0
+  canRotate: 1
   rotate: 360
   restriction: 00000000
   prefab: {fileID: 0}
+  personnalData: 

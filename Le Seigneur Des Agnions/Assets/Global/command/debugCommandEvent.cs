@@ -104,7 +104,7 @@ namespace debugCommand
                 }
                 else
                 {
-                    retour = $"l'item avec comme nom {properties[1]} n'existe pas.";
+                    retour = $"l'item avec comme nom {properties[1]} n'existe pas ou il n'est pas ajoutable a l'inventaire.";
                 }
             }
             else
@@ -255,7 +255,7 @@ namespace debugCommand
                 return;
             }
 
-            if (inv.TwoHands == null && (inv.Hands == null || (inv.LeftHand == null && inv.RightHand == null)))
+            if (inv.TwoHandsItem == null && (inv.HandsItem == null || (inv.LeftHandItem == null && inv.RightHandItem == null)))
             {
                 console.Label = "Rien en main";
                 return;
@@ -272,7 +272,7 @@ namespace debugCommand
                 return;
             }
 
-            ItemData heldItem = inv.TwoHands ?? inv.LeftHand ?? inv.RightHand;
+            ItemData heldItem = inv.TwoHandsItem ?? inv.LeftHandItem ?? inv.RightHandItem;
             if (heldItem == null || heldItem.ID != agnion.ID || !byte.TryParse(heldItem.PersonalData, out quality))
             {
                 console.Label = "L'objet en main n'est pas un agnion valide";
@@ -293,18 +293,18 @@ namespace debugCommand
             if (venteSystem.Sell(agnionsToSell, site))
             {
                 // Vérifie quelle main tenait l'agnion et la vide
-                if (inv.TwoHands == heldItem)
-                    inv.TwoHands = null;
-                else if (inv.LeftHand == heldItem)
-                    inv.LeftHand = null;
-                else if (inv.RightHand == heldItem)
-                    inv.RightHand = null;
+                if (inv.TwoHandsItem == heldItem)
+                    inv.TwoHandsItem = null;
+                else if (inv.LeftHandItem == heldItem)
+                    inv.LeftHandItem = null;
+                else if (inv.RightHandItem == heldItem)
+                    inv.RightHandItem = null;
 
                 console.Label += "\nAgnion vendu";
             }
             else
             {
-                heldItem.Drop(player.transform.position.x, player.transform.position.y, player.transform.position.z);
+                heldItem.Drop(player.transform.position);
                 console.Label = "Agnion invendable";
             }
         }

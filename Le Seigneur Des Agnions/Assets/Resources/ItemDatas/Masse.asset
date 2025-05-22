@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df94bb08a5af71240a5087097ff6e9bd, type: 3}
+  m_Name: Masse
+  m_EditorClassIdentifier: 
+  _id: c7910b69-2cee-43ce-a3b3-d58ec7e1c4a9
+  nom: masse
+  description: un baton avec une pierre au bout se qui permet de frapper un peut
+    tout
+  width: 1
+  height: 2
+  imgRef: {fileID: 21300000, guid: cc6e448df394e5649af28bed0b2efc68, type: 3}
+  listSprite:
+  - {fileID: 21300000, guid: 4a31619eef661f34ba84355de0a7e566, type: 3}
+  - {fileID: 21300000, guid: cc6e448df394e5649af28bed0b2efc68, type: 3}
+  poids: 0
+  stackable: 0
+  stackLimit: 1
+  stack: 1
+  refX: 0
+  refY: 0
+  canRotate: 1
+  rotate: 360
+  restriction: 000000000100000005000000
+  prefab: {fileID: 0}
+  personnalData: 
+  oneHandPrefab: {fileID: 0}
+  twoHandPrefab: {fileID: 0}

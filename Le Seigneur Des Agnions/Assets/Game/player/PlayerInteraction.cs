@@ -10,9 +10,10 @@ namespace player
         [SerializeField] private string[] interactTag; //tout les tags avec les quel interagir
 
         [SerializeReference, ReadOnly] private Player player; //la camera du joueur
-        [SerializeReference] private KeyBiding interactKey; //la touche pour interagir
-        [SerializeReference] private Camera playerCamera; //la camera du joueur
+        [SerializeReference] private Camera playerCamera;
+        private Ray ray;
 
+        public float InteractDistance { get { return interactDistance; } } //distance pour interagir
 
         void Start()
         {
@@ -22,34 +23,32 @@ namespace player
                 Destroy(gameObject);
             }
         }
-
+        
         // Update is called once per frame
         void Update()
         {
-            Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.red);
-            if (player.CanInteract)
+            ray = playerCamera.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(ray.origin, ray.direction * interactDistance, Color.green);
+        }
+
+        public void LaunchInteract()
+        {
+            // ground check
+            if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, interactDistance))
             {
-                if (Input.GetKeyDown(interactKey.key))
+                if (interactTag.Count((tag) => { return tag == hit.transform.tag; }) >= 0)
                 {
-                    // ground check
-                    if (Physics.Raycast(ray.origin, ray.direction, out RaycastHit hit, interactDistance))
+                    if (hit.transform.TryGetComponent<InteractionObject>(out InteractionObject interaction))
                     {
-                        if (interactTag.Count((tag) => { return tag == hit.transform.tag; }) >= 0)
+                        if (interaction != null)
                         {
-                            if (hit.transform.TryGetComponent<InteractionObject>(out InteractionObject interaction))
+                            InteractionObject[] interactionObjects = hit.transform.GetComponents<InteractionObject>();
+                            if (interactionObjects.Length > 0)
                             {
-                                if (interaction != null)
+                                foreach (InteractionObject interact in interactionObjects)
                                 {
-                                    InteractionObject[] interactionObjects = hit.transform.GetComponents<InteractionObject>();
-                                    if (interactionObjects.Length > 0)
-                                    {
-                                        foreach (InteractionObject interact in interactionObjects)
-                                        {
-                                            //Debug.Log(hit.transform.gameObject.name);
-                                            interact.InteractionPlayer();
-                                        }
-                                    }
+                                    //Debug.Log(hit.transform.gameObject.name);
+                                    interact.InteractionPlayer();
                                 }
                             }
                         }

@@ -143,11 +143,14 @@ namespace inventory
             return patern;
         }
 
-        public bool Drop(float x, float y, float z)
+        public bool Drop(Vector3 position)
         {
             if (prefab)
             {
-                Instantiate(prefab, new Vector3(x, y, z), new Quaternion(0, 0, 0, 0));
+                for (int i = 0; i < stack; i++)
+                {
+                    Instantiate(prefab, position, new Quaternion(0, 0, 0, 0));
+                }
                 return true;
             }
             return false;

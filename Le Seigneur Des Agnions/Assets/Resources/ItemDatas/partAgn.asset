@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4872fc118f544041acdf1c28e2dcdb0, type: 3}
   m_Name: partAgn
   m_EditorClassIdentifier: 
-  id: 7dd1112c-9613-4433-8941-2b43082e77b7
+  _id: 118e3135-5a6c-4616-8412-0ea3253c65ed
   nom: partie d'agnion
   description: une partie d'un agnion
   width: 1
   height: 1
-  imgRef: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  imgRef: {fileID: 21300000, guid: 847f27e1693423444a13cea71b04642f, type: 3}
   listSprite:
-  - {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 21300000, guid: 847f27e1693423444a13cea71b04642f, type: 3}
   poids: 1
   stackable: 1
   stackLimit: 10

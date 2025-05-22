@@ -20,6 +20,15 @@ namespace player
 
         [SerializeReference, ReadOnly] private Player player; //le joueur
 
+        [SerializeField, ReadOnly] private float mouseX; //mouvement de la souris sur l'axe x horizontal
+        [SerializeField, ReadOnly] private float mouseY; //mouvement de la souris sur l'axe y
+
+        public float MouseX {  get { return mouseX; } set { mouseX = Mathf.Clamp(value, -1, 1) * senX * Time.deltaTime; } }
+        public float MouseY {  get { return mouseY; } set { mouseY = Mathf.Clamp(value, -1, 1) * senY * Time.deltaTime; } }
+        /*
+        [SerializeReference] private Camera playerCamera; //la camera du joueur
+        public Camera CamPlayer { get { return playerCamera; } } //distance pour interagir*/
+
 
         public void Start()
         {
@@ -49,7 +58,7 @@ namespace player
         private void RotatteBodyForLooking()
         {
             // Mouvement horizontal de la caméra et du corps (rotation du joueur)
-            float mouseX = Input.GetAxis("Mouse X") * senX * Time.deltaTime;
+            //float mouseX = Input.GetAxis("Mouse X") * senX * Time.deltaTime;
             // Rotation du joueur sur l'axe Y (horizontal)
             //Debug.Log(playerBody.rotation.eulerAngles.y + mouseX);
             //playerBody.rotation = Quaternion.Euler(0, playerBody.rotation.eulerAngles.y + mouseX, 0);
@@ -62,7 +71,7 @@ namespace player
             if (headBone && neckBone)
             {
                 // Rotation de la tête sur l'axe X en fonction de la souris
-                float mouseY = Input.GetAxis("Mouse Y") * senY * Time.deltaTime;
+                //float mouseY = Input.GetAxis("Mouse Y") * senY * Time.deltaTime;
                 xRotation -= mouseY;
                 xRotation = Mathf.Clamp(xRotation, minX, maxX); // Limite de l'angle de la tête
 

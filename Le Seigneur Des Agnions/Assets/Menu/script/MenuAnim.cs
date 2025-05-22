@@ -5,29 +5,29 @@ using UnityEngine;
 
 public class MenuAnim : MonoBehaviour
 {
-    public Animator animator; // l'animator
+    [SerializeReference] private Animator animator; // l'animator
 
-    public string openTriggerPlay = "PlayOpen"; // Animation ouverture
-    public string closeTriggerPlay = "PlayClose"; // Animation fermeture
-    private bool isOpenPlay = false; // si l'ui Play est ouvert ou pas
+    string openTriggerPlay = "PlayOpen"; // Animation ouverture
+    string closeTriggerPlay = "PlayClose"; // Animation fermeture
+    bool isOpenPlay = false; // si l'ui Play est ouvert ou pas
 
-    public string openTriggerSett = "SettingsOpen"; // Animation ouverture
-    public string closeTriggerSett = "SettingsClose"; // Animation fermeture
-    private bool isOpenSett = false; // si l'ui Sett est ouvert ou pas
+    string openTriggerSett = "SettingsOpen"; // Animation ouverture
+    string closeTriggerSett = "SettingsClose"; // Animation fermeture
+    bool isOpenSett = false; // si l'ui Sett est ouvert ou pas
 
-    public string openTriggerGraph = "GraphMenOpen"; // Animation ouverture
-    public string openTriggerAudio = "AudioMenOpen"; // Animation ouverture
-    public string openTriggerTouches = "TouchesMenOpen"; // Animation ouverture
-    public string closeTriggerGraph = "GraphMenClose"; // Animation fermeture
-    public string closeTriggerAudio = "AudioMenClose"; // Animation fermeture
-    public string closeTriggerTouches = "TouchesMenClose"; // Animation fermeture
-    private bool isOpenSettGraph = false; // si l'ui SettGrap est ouvert ou pas
-    private bool isOpenSettAudio = false; // si l'ui SettAudio est ouvert ou pas
-    private bool isOpenSettTouches = false; // si l'ui SettTouches est ouvert ou pas
+    string openTriggerGraph = "GraphMenOpen"; // Animation ouverture
+    string openTriggerAudio = "AudioMenOpen"; // Animation ouverture
+    string openTriggerTouches = "TouchesMenOpen"; // Animation ouverture
+    string closeTriggerGraph = "GraphMenClose"; // Animation fermeture
+    string closeTriggerAudio = "AudioMenClose"; // Animation fermeture
+    string closeTriggerTouches = "TouchesMenClose"; // Animation fermeture
+    bool isOpenSettGraph = false; // si l'ui SettGrap est ouvert ou pas
+    bool isOpenSettAudio = false; // si l'ui SettAudio est ouvert ou pas
+    bool isOpenSettTouches = false; // si l'ui SettTouches est ouvert ou pas
 
-    public string openTriggerNew = "NewOpen"; // Animation ouverture
-    public string closeTriggerNew = "NewClose"; // Animation fermeture
-    private bool isOpenNew = false; // si l'ui New est ouvert ou pas
+    string openTriggerNew = "NewOpen"; // Animation ouverture
+    string closeTriggerNew = "NewClose"; // Animation fermeture
+    bool isOpenNew = false; // si l'ui New est ouvert ou pas
 
 
     public void ToggleAnimationPlay() // lancer l'animation de fermeture ou d'ouverture

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeReference] private bool isTheController; //si s'est un second gameManager
     [SerializeReference] private ConsoleSystem consoleSystem; //console
     [SerializeField] private DateTime thisDate = new DateTime(); //le jour actuel
+    [SerializeField] private bool loose = false; //si le joueur a perdu
 
     [SerializeReference, ReadOnly]  private Entreprise entreprise;
 
@@ -136,4 +137,15 @@ public class GameManager : MonoBehaviour
         return SaveSystem.RenameSave(oldSave, save);
     }
     #endregion
+
+    public void VerifAllGame(Entreprise ent)
+    {
+        if (ent)
+        {
+            if(ent.Argent < 0)
+            {
+                loose = true;
+            }
+        }
+    }
 }

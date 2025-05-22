@@ -29,7 +29,7 @@ public class LoadSave : MonoBehaviour
                 button.transform.SetParent(content.transform, false);
                 button.transform.GetComponentInChildren<TMP_Text>().text = file.Split('\\')[1];
                 button.transform.GetComponentInChildren<TMP_Text>().margin = new Vector4(textMarginLeft, 0, 0, 0);
-                button.GetComponent<Button>().onClick.AddListener(() => { startLoad.startButton = button.GetComponent<Button>(); });
+                button.GetComponent<Button>().onClick.AddListener(() => { startLoad.StartButton = button.GetComponent<Button>(); });
                 if (overwrite && delete)
                 {
                     //texte

@@ -1854,6 +1854,7 @@ MonoBehaviour:
   twoHands: {fileID: 0}
   hands: {fileID: 0}
   itemDataSprite: {fileID: 11400000, guid: 2e39ad0a6335edc459e198587781045b, type: 2}
+  canvas: {fileID: 0}
   inventoryPanel: {fileID: 0}
   inventoryColumnContent: {fileID: 0}
   transImage: {fileID: 21300000, guid: 25d0ac2a41f0cd541869ac8148bf3e3f, type: 3}
@@ -1864,8 +1865,7 @@ MonoBehaviour:
   textPoids: {fileID: 0}
   gameManager: {fileID: 0}
   toolTip: {fileID: 0}
-  rotateKey: {fileID: 11400000, guid: 71976488ca5863342a09a28cfc42c7df, type: 2}
-  openKey: {fileID: 11400000, guid: e9c315a28342b1041bd0443cf2796d00, type: 2}
+  slotDrag: {fileID: 0}
   openTriggerSac: openTriggerSac
   closeTriggerSac: closeTriggerSac
   AnimatorPerso: {fileID: 2252312272026463366}
@@ -2130,11 +2130,13 @@ MonoBehaviour:
   walkSpeed: 10
   sprintSpeed: 20
   crouchSpeed: 5
+  sprinting: 0
   groundDrag: 5
   jumpForce: 12
   jumpCooldown: 0.3
   airMultiplier: 0
   readyToJump: 0
+  crouch: 0
   crouchYScale: 2
   startYScale: 0
   centerY: 0
@@ -2143,13 +2145,6 @@ MonoBehaviour:
   gravity: 9.81
   mass: 3
   useGravity: 0
-  upKey: {fileID: 11400000, guid: d8d92073d5f1d5f4fb28bc2497bf476d, type: 2}
-  bottomKey: {fileID: 11400000, guid: e65a878283c31e64d9b42d199e64253d, type: 2}
-  leftKey: {fileID: 11400000, guid: e8ba8fd29ab74ff4d8007845977ab707, type: 2}
-  rightKey: {fileID: 11400000, guid: 17aa43ee5ef8d934797ff3216b9a0658, type: 2}
-  jumpKey: {fileID: 11400000, guid: 5d776077f0737ed48bddced70769c919, type: 2}
-  sprintKey: {fileID: 11400000, guid: 51d224a9c1e909b418e9406e47d00205, type: 2}
-  crouchKey: {fileID: 11400000, guid: 186033d7ea551374bb566a5d7cda73b0, type: 2}
   maxDistance: 0.2
   boxCastWidth: 0.5
   whatIsGround:
@@ -2171,8 +2166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b24336198f19aa241b81eae8a2f5b548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  senX: 400
-  senY: 400
+  senX: 1000
+  senY: 1000
   minX: -54
   maxX: 54
   headBone: {fileID: 2117424387316286396}
@@ -2180,6 +2175,8 @@ MonoBehaviour:
   playerBody: {fileID: 8674911127728227997}
   xRotation: 0
   player: {fileID: 8438551635584761283}
+  mouseX: 0
+  mouseY: 0
 --- !u!114 &3683779595266173236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2197,7 +2194,6 @@ MonoBehaviour:
   - interact
   - Agnion
   player: {fileID: 8438551635584761283}
-  interactKey: {fileID: 11400000, guid: 0046b11bcfe7bb74ebbf3f9d87d6a4cb, type: 2}
   playerCamera: {fileID: 8509107777772308368}
 --- !u!1 &2408375822940280447
 GameObject:

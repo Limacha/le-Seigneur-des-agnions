@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8a6b92ac22b44e46907b53d65e277f4, type: 3}
   m_Name: consoleKey
   m_EditorClassIdentifier: 
-  nom: open/close console
-  description: permet d'ouvrir ou de fermer la console
+  nom: Console
+  description: Ouvrir la console
   key: ','

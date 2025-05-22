@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def5f02c5a53d5d428f0d4b09a7e2fb7, type: 3}
   m_Name: boneHands
   m_EditorClassIdentifier: 
-  id: 00bb3419-c06d-440d-a16e-0a2c3efe7077
+  _id: 1722683b-5d7d-43ef-aa9c-c25945cff63c
   nom: boneHands
   description: des mains fait avec des os
   width: 1
@@ -29,7 +29,9 @@ MonoBehaviour:
   refY: 0
   canRotate: 1
   rotate: 360
-  restriction: 0000000004000000
+  restriction: 00000000
+  prefab: {fileID: 2033530487499468831, guid: 59035703aeaf76c4fab8c43da747cf50, type: 3}
+  personnalData: 
   leftHandPrefab: {fileID: 2033530487499468831, guid: 59035703aeaf76c4fab8c43da747cf50,
     type: 3}
   rightHandPrefab: {fileID: 5942373511215774409, guid: 230cfa52e8f5ad74ca9c6a0bc4a6f5c7,

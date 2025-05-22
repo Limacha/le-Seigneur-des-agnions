@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df94bb08a5af71240a5087097ff6e9bd, type: 3}
   m_Name: agnion
   m_EditorClassIdentifier: 
-  id: 0072e98d-d1ca-43fb-adfb-ddf1669092a2
+  _id: 2d9ce71d-1abf-48c6-ba46-e9b7fd2874c6
   nom: Agnion
   description: un agnion capture sauvagement alors qu'il marchait tranquilement dans
     la prairie insoutient de tout probleme
@@ -30,7 +30,7 @@ MonoBehaviour:
   rotate: 360
   restriction: 040000000100000005000000
   prefab: {fileID: 5271757095136408326, guid: 394a7ea910f004142bbe4cb49a6abc77, type: 3}
-  personnalData: 3
+  personnalData: 1
   oneHandPrefab: {fileID: 5620849681279861730, guid: bdacf054b77e11d4e918667c7af62396,
     type: 3}
   twoHandPrefab: {fileID: 6809026769749333766, guid: 269d83b801a47a2408ebe6a37e830bac,

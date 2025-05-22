@@ -5,38 +5,38 @@ using UnityEngine;
 
 public class ExcMenuController : MonoBehaviour
 {
-    public string openTriggerTouches = "openTouchesMenu"; // Animation ouverture
-    public string closeTriggerTouches = "closeTouchesMenu"; // Animation fermeture
-    private bool isOpenSettTouches = false; // si l'ui SettTouches est ouvert ou pas
+    string openTriggerTouches = "openTouchesMenu"; // Animation ouverture
+    string closeTriggerTouches = "closeTouchesMenu"; // Animation fermeture
+    bool isOpenSettTouches = false; // si l'ui SettTouches est ouvert ou pas
 
-    public string openTriggerAudio = "openAudioMenu"; // Animation ouverture
-    public string closeTriggerAudio = "closeAudioMenu"; // Animation fermeture
-    private bool isOpenSettAudio = false; // si l'ui SettAudio est ouvert ou pas
+    string openTriggerAudio = "openAudioMenu"; // Animation ouverture
+    string closeTriggerAudio = "closeAudioMenu"; // Animation fermeture
+    bool isOpenSettAudio = false; // si l'ui SettAudio est ouvert ou pas
 
-    public string openTriggerGraph = "openGraphMenu"; // Animation ouverture
-    public string closeTriggerGraph = "closeGraphMenu"; // Animation fermeture
-    private bool isOpenSettGraph = false; // si l'ui SettGrap est ouvert ou pas
+    string openTriggerGraph = "openGraphMenu"; // Animation ouverture
+    string closeTriggerGraph = "closeGraphMenu"; // Animation fermeture
+    bool isOpenSettGraph = false; // si l'ui SettGrap est ouvert ou pas
 
-    public string openTriggerSave = "openSaveMenu"; // Animation ouverture
-    public string closeTriggerSave = "closeSaveMenu"; // Animation fermeture
-    private bool isOpenSettSave = false; // si l'ui SettTouches est ouvert ou pas
+    string openTriggerSave = "openSaveMenu"; // Animation ouverture
+    string closeTriggerSave = "closeSaveMenu"; // Animation fermeture
+    bool isOpenSettSave = false; // si l'ui SettTouches est ouvert ou pas
 
     // Référence au Panel du menu - doit être assigné dans l'éditeur
-    public GameObject menu;
+    [SerializeReference] private GameObject menu;
 
     // Référence à l'Animator associé au menu - doit être assigné dans l'éditeur
-    public Animator animator;
+    [SerializeReference] private Animator animator;
 
     // Indicateur pour suivre l'état actuel du menu - ouvert ou fermé
-    private bool isMenuActive = false;
+    bool isMenuActive = false;
 
     private void Update()
     {
         // Vérifie si la touche Échap a été pressée
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             ToggleMenu(); // Appelle la méthode pour ouvrir ou fermer le menu
-        }
+        }*/
     }
 
     public void ToggleMenu()

@@ -15,4 +15,6 @@
 
 - supretion des dont destroy + surplus gamemanager
 - correction bug build
--input manager
+- input manager
+- recherche system
+- craft system

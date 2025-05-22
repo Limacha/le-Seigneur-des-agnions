@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection.Emit;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using entreprise.recherche;
+using static entreprise.recherche.RechercheSystem;
+using inventory;
 
 namespace entreprise
 {
@@ -37,7 +39,7 @@ namespace entreprise
         [SerializeField] private int batiment; //niveau du batiment
         [SerializeField] private int batimentMax; //niveau max du batiement
         [SerializeField, Range(0, 100)] private int reputation; //0-100 -> /20 -> x/5 (n etoile)
-        private readonly UpgradeRestriction[] batimentRestriction = new UpgradeRestriction[]
+        [SerializeReference, ReadOnly] private readonly UpgradeRestriction[] batimentRestriction = new UpgradeRestriction[]
         {
             new UpgradeRestriction(0, 500, 1, 0),
             new UpgradeRestriction(1, 1000, 2, 1),
@@ -48,11 +50,11 @@ namespace entreprise
 
         [SerializeField, ReadOnly] private Func<string, bool> functionInput; //function qui sera executer lors de l'entrer d'un input
 
-        private List<Employer> employers; //liste des employer
-        private List<Recherche> recherches; //liste des recherches
-        private List<Dette> dettes = new() {
-            new ("tuto", "une dette pour le tuto", 100, new DateTime(1, 1, 1), 365, 10, 365*5+1, 5),
-            new ("test", "juste pour test", 5000, new DateTime(1, 2, 3), 958, 2, 958*5, 2)
+        [SerializeReference, ReadOnly] private List<Recherche> recherches; //liste des recherches
+        [SerializeReference, ReadOnly] private List<Dette> dettes = new() {
+            new ("tuto", "une dette pour le tuto", 100, new DateTime(1, 1, 1), 365, 10, 365*5+1),
+            new ("passer", "une dette pour le passer", 100, new DateTime(1, 1, 1), 1, 10, 2),
+            new ("test", "juste pour test", 5000, new DateTime(1, 2, 3), 958, 2, 958*5)
         }; //liste des dettes
 
         private int danger; //a quel point l'entreprise semble illegal
@@ -64,6 +66,8 @@ namespace entreprise
         public int Batiment { get { return batiment; } }
         public int Reputation { get { return reputation; } }
         public int Etoile { get { return reputation / 20; } }
+        public List<Recherche> Recherches { get { return recherches; } }
+        public List<Dette> Dettes { get { return dettes; } }
 
         /// <summary>
         /// fait un modification du montant de l'argent de l'entreprise
@@ -143,7 +147,7 @@ namespace entreprise
         /// </summary>
         /// <param name="restriction">les restriction a verifier</param>
         /// <returns>si les restriction sont remplis</returns>
-        private bool VerifierRestriction(UpgradeRestriction restriction)
+        private bool VerifierBatRestriction(UpgradeRestriction restriction)
         {
             if (restriction != null)
             {
@@ -159,7 +163,7 @@ namespace entreprise
         /// applique les restriction
         /// </summary>
         /// <param name="restriction">les restriction a appliquer</param>
-        private void AppliquerRestriction(UpgradeRestriction restriction)
+        private void AppliquerBatRestriction(UpgradeRestriction restriction)
         {
             if (restriction != null)
             {
@@ -183,9 +187,9 @@ namespace entreprise
                 if (input.ToLower() == "oui")
                 {
 
-                    if (VerifierRestriction(restriction))
+                    if (VerifierBatRestriction(restriction))
                     {
-                        AppliquerRestriction(restriction);
+                        AppliquerBatRestriction(restriction);
                         batiment++;
                         //lancer animation pour le nouveau bat
                         if (batiment > batimentMax)
@@ -267,7 +271,8 @@ namespace entreprise
                 return false;
             };
         }
-
+     
+        /*
         /// <summary>
         /// affiche une liste de tout les prets
         /// </summary>
@@ -311,6 +316,43 @@ namespace entreprise
                 return true; 
             };
         }
+        */
+
+        /// <summary>
+        /// ajoute une dette a la liste encour
+        /// </summary>
+        /// <param name="nom">le nom de la dette</param>
+        /// <param name="description">la description de la dette</param>
+        /// <param name="montant">le montant de la dette</param>
+        /// <param name="jourRecu">le jour ou la dette a ete envoie</param>
+        /// <param name="durer">la durer avant arriver interet</param>
+        /// <param name="interet">les interes de la dette 0-100</param>
+        /// <param name="durerMax">la durer max avant fin du jeux</param>
+        public void CreateDette(string nom, string description, uint montant, DateTime jourRecu, ushort durer, byte interet, ushort durerMax)
+        {
+            dettes.Add(new Dette(nom, description, montant, jourRecu, durer, interet, durerMax));
+        }
+
+        /// <summary>
+        /// control toute les dettes
+        /// </summary>
+        public void ControlDette()
+        {
+            foreach (Dette dette in dettes)
+            {
+                //si durer de la dette depuis la date < la datte actuel
+                //Debug.Log(dette.Info());
+                if(dette.Durer == 0)
+                {
+                    dette.AppliquerInteret();
+                }
+                if (dette.DurerMax == 0)
+                {
+                    dette.RembourcementForcer(this);
+                }
+                //Debug.Log(dette.Info());
+            }
+        }
 
         #endregion
 
@@ -344,6 +386,7 @@ namespace entreprise
                                     if (manager.ChangeSaveName(save))
                                     {
                                         label.text = "nom changer";
+                                        SetName(label);
                                         return true;
                                     }
                                     else

@@ -9,6 +9,8 @@ TagManager:
   - Agnion
   - inventory
   - Entreprise
+  - Interface
+  - destination
   layers:
   - Default
   - TransparentFX

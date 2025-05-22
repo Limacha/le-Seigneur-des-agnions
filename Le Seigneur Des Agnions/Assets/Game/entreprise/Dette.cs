@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace entreprise
 {
+    [Serializable]
     public class Dette
     {
         //obliger payer la totaliter
 
-        private string nom; //nom de la dette
-        private string description; //description qui explique pq
-        private uint montant; //montant de la dette
-        private DateTime jourRecu; //jour ou sa a ete recu
-        private ushort durer; //durer avant payement
-        private byte interet; //les interet subi
-        private ushort durerMax; //durer max avant punition default + 1 ans
-        private byte reputEmployer; //reputation d'ou viens la dette
+        [SerializeField] private string nom; //nom de la dette
+        [SerializeField] private string description; //description qui explique pq
+        [SerializeField] private uint montant; //montant de la dette
+        [SerializeField] private DateTime jourRecu; //jour ou sa a ete recu
+        [SerializeField] private ushort durer; //durer avant payement
+        [SerializeField] private byte interet; //les interet subi
+        [SerializeField] private ushort durerMax; //durer max avant punition default + 1 ans
+        [SerializeField] private byte reputEmployer; //reputation d'ou viens la dette
 
         public string Nom
         {
@@ -57,13 +59,14 @@ namespace entreprise
             get => durerMax;
         }
 
-        public byte ReputEmployer
-        {
-            get => reputEmployer;
-        }
-
-        // Constructeur
-        public Dette(string nom, string description, uint montant, DateTime jourRecu, ushort durer, byte interet, ushort durerMax, byte reputEmployer)
+        /// <param name="nom">le nom de la dette</param>
+        /// <param name="description">la description de la dette</param>
+        /// <param name="montant">le montant de la dette</param>
+        /// <param name="jourRecu">le jour ou la dette a ete envoie</param>
+        /// <param name="durer">la durer avant arriver interet</param>
+        /// <param name="interet">les interes de la dette 0-100</param>
+        /// <param name="durerMax">la durer max avant fin du jeux</param>
+        public Dette(string nom, string description, uint montant, DateTime jourRecu, ushort durer, byte interet, ushort durerMax)
         {
             this.nom = nom;
             this.description = description;
@@ -72,19 +75,47 @@ namespace entreprise
             this.durer = durer;
             this.interet = interet;
             this.durerMax = durerMax;
-            this.reputEmployer = reputEmployer;
         }
 
+        /// <summary>
+        /// affiche toute les infos possible
+        /// </summary>
+        /// <returns>un string avec toute les infos</returns>
         public string Info()
         {
             return $"Nom : {Nom}\n" +
                    $"Description : {Description}\n" +
                    $"Montant : {Montant}€\n" +
                    $"Recue le : {JourRecu:dd/MM/yyyy}\n" +
-                   $"Duree avant paiement : {Durer} jours\n" +
+                   $"Duree avant interet : {Durer} jours\n" +
                    $"Interet : {Interet}%\n" +
-                   $"Duree max avant sanction : {DurerMax} jours\n" +
-                   $"Reputation de l'employeur : {ReputEmployer}/100";
+                   $"Duree max avant sanction : {DurerMax} jours\n";
+        }
+
+        /// <summary>
+        /// ajoute les interets au montant
+        /// </summary>
+        public void AppliquerInteret()
+        {
+            montant += montant * interet / 100;
+        }
+
+        /// <summary>
+        /// fait rembourser de force le joueur
+        /// </summary>
+        /// <param name="entreprise">l'entreprise qui rembourse</param>
+        public void RembourcementForcer(Entreprise entreprise)
+        {
+            entreprise.Transaction(-montant);
+        }
+
+        /// <summary>
+        /// supprimer 1 au durer
+        /// </summary>
+        public void NewDay()
+        {
+            if(durer != 0) durer--;
+            if(durerMax != 0) durerMax--;
         }
     }
 }

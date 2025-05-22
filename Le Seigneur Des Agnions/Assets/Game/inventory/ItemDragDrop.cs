@@ -7,46 +7,40 @@ namespace inventory
 {
     public class ItemDragDrop : MonoBehaviour, IPointerDownHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
-        [SerializeField] private KeyBiding rotateKey; //key pour rotate les item
         [SerializeField] private ItemData itemData; //item drag
         [SerializeField] private Inventory inventory; //inventory
 
         private CanvasGroup canvasGroup; //canvas group pour gere les interaction
-        private bool drag;
+        //private bool drag;
 
         public ItemData ItemData { get { return itemData; } set { itemData = value; } }
-        public KeyBiding RotateKey { get { return rotateKey; } set { rotateKey = value; } }
 
         private void Awake()
         {
             canvasGroup = GetComponent<CanvasGroup>();
             inventory = GameObject.Find("Inventory").GetComponent<Inventory>();
         }
-
-        private void Update()
+        /*
+        public void Rotate()
         {
             if (itemData != null && drag)
             {
-                if (Input.GetKeyDown(rotateKey.key.ToLower()))
+                //Debug.Log("rotate slot");
+                //func.show2DSpriteContent(itemData.patern);
+                itemData.rotatePatern();
+                itemData.Rotate = itemData.Rotate - 90;
+                if (itemData.Rotate <= 0)
                 {
-                    //Debug.Log("rotate slot");
-                    //func.show2DSpriteContent(itemData.patern);
-                    itemData.rotatePatern();
-                    itemData.Rotate = itemData.Rotate - 90;
-                    if (itemData.Rotate <= 0)
-                    {
-                        itemData.Rotate = 360;
-                    }
-                    refreshDragDropObj();
-                    //func.show2DSpriteContent(patern);
+                    itemData.Rotate = 360;
                 }
+                refreshDragDropObj();
+                //func.show2DSpriteContent(patern);}
             }
-        }
-
+        }*/
         public void OnBeginDrag(PointerEventData eventData)
         {
             //Debug.Log("OnBeginDrag");
-            drag = true;
+            //drag = true;
             canvasGroup.alpha = .6f; //transparense de l'image
             canvasGroup.blocksRaycasts = false; //active OnDrop sur itemSlot
         }
@@ -58,7 +52,7 @@ namespace inventory
         public void OnEndDrag(PointerEventData eventData)
         {
             //Debug.Log("OnEndDrag");
-            drag = false;
+            //drag = false;
             canvasGroup.alpha = 1f; //ne plus mettre l'image en transparent
             canvasGroup.blocksRaycasts = true; //reactive interaction avec item
         }
@@ -75,7 +69,6 @@ namespace inventory
 
             GetComponent<RectTransform>().sizeDelta = new Vector2(itemData.Patern.GetLength(0) * (inventory.SlotWidth + inventory.XSpacing), itemData.Patern.GetLength(1) * (inventory.SlotHeight + inventory.YSpacing));
             GetComponent<ItemDragDrop>().ItemData = itemData;
-            GetComponent<ItemDragDrop>().RotateKey = rotateKey;
             GLG.cellSize = new Vector2(inventory.SlotWidth, inventory.SlotHeight);
             GLG.spacing = new Vector2(inventory.XSpacing, inventory.YSpacing);
             for (int y = 0; y < itemData.Patern.GetLength(1); y++)

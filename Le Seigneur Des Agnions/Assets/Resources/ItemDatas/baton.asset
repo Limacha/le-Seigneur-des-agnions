@@ -9,19 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4872fc118f544041acdf1c28e2dcdb0, type: 3}
+  m_Script: {fileID: 11500000, guid: df94bb08a5af71240a5087097ff6e9bd, type: 3}
   m_Name: baton
   m_EditorClassIdentifier: 
-  id: 1d55ba57-25f1-4f8d-b095-8b5811ea3062
+  _id: 679d8c70-8790-486a-824e-e3e0856d7201
   nom: baton en bois
   description: un baton rond fait de bois et poli donc pas besoin de s'inquiter des
     echarde.
   width: 1
   height: 2
-  imgRef: {fileID: 0}
+  imgRef: {fileID: 21300000, guid: 8a8efe76313288549be0ffdd4b767148, type: 3}
   listSprite:
-  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
-  - {fileID: 21300000, guid: 7038b2b6e5e8d5a48bb51cdc69140acf, type: 3}
+  - {fileID: 21300000, guid: df6f9a7ec1364234595501515a6f5cb3, type: 3}
+  - {fileID: 21300000, guid: 5d4ca952263808b41bf80346718a98a6, type: 3}
   poids: 3.5
   stackable: 1
   stackLimit: 5
@@ -31,4 +31,7 @@ MonoBehaviour:
   canRotate: 1
   rotate: 360
   restriction: 000000000100000005000000
-  source: bipbip
+  prefab: {fileID: 0}
+  personnalData: 
+  oneHandPrefab: {fileID: 0}
+  twoHandPrefab: {fileID: 0}

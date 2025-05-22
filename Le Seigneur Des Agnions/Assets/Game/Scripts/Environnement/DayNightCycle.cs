@@ -1,9 +1,10 @@
+using entreprise;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
+using static entreprise.fisc.FiscControlSystem;
 
 public class DayNightCycle : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField] private int day = 0;
     int EntreTemps = 0;
     bool OnceOnATime = true;
+
+    [Header("new day")]
+    [SerializeField, Range(0, 1000)] private int chanceControl = 1;//chance de se faire choper sur 1000
 
 
     public int Minutes { get { return minutes; } }
@@ -71,10 +75,7 @@ public class DayNightCycle : MonoBehaviour
                 {
                     hours = 0;
                     day++;
-                    if (GameObject.Find("GameManager"))
-                    {
-                        GameObject.Find("GameManager").GetComponent<GameManager>().ThisDate = new DateTime().AddDays(day);
-                    }
+                    NewDay();
                 }
             }
 
@@ -98,5 +99,39 @@ public class DayNightCycle : MonoBehaviour
         }
 
         obj.rotation = Quaternion.Euler(targetAngle, 19, 0);
+    }
+
+    /// <summary>
+    /// lance une nouvelle journer
+    /// </summary>
+    private void NewDay()
+    {
+        GameManager manager = GameObject.Find("GameManager")?.GetComponent<GameManager>();
+        Entreprise ent = GameObject.FindWithTag("Entreprise")?.GetComponent<Entreprise>();
+        if (ent)
+        {
+            foreach (Dette dette in ent.Dettes)
+            {
+                dette.NewDay();
+            }
+            ent.ControlDette();
+        }
+        else
+        {
+            Debug.LogError("no entreprise set in cycle");
+        }
+        if (manager)
+        {
+            manager.ThisDate = new DateTime().AddDays(day);
+            if (ent)
+            {
+                if (UnityEngine.Random.Range(0, 1000) < chanceControl) LaunchCorruption(ent, manager);
+            }
+            manager.VerifAllGame(ent);
+        }
+        else
+        {
+            Debug.LogError("no gamemanager set in cycle");
+        }
     }
 }

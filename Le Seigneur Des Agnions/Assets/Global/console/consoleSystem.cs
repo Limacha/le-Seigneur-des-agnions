@@ -10,7 +10,7 @@ namespace debugCommand
 {
     public class ConsoleSystem : MonoBehaviour
     {
-        [SerializeReference] private KeyBiding openConsole; //key pour ouvrir/fermer la console
+        [SerializeReference] private GameObject canvas;
         [SerializeField] private bool showConsole = false;
         [SerializeField] private string input;
         [SerializeField] private string label;
@@ -95,7 +95,7 @@ namespace debugCommand
         {
             if (!showConsole) { return; }
 
-            CanvasScaler canvasreso = GameObject.Find("Canvas").GetComponent<CanvasScaler>(); //le canvas
+            CanvasScaler canvasreso = canvas.GetComponent<CanvasScaler>(); //le canvas
             float ratioX = Screen.width / canvasreso.referenceResolution.x;
 
             GUI.skin = defaultskin;

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fca07f42d7a3b44a8fe3b749fa3229d, type: 3}
+  m_Name: Masse
+  m_EditorClassIdentifier: 
+  ID: 1dc53cc3-ce7e-4d1e-9ffe-3584f0ab1c9e
+  result:
+  - {fileID: 11400000, guid: dec13b0be77f8f64b862e157085e5df4, type: 2}
+  rechercheRequire: {fileID: 11400000, guid: 8337798ad69352540b17723468de322e, type: 2}
+  itemsRequire:
+  - {fileID: 11400000, guid: 86bbfca9a3b15d4488d12a64866a3815, type: 2}
+  - {fileID: 11400000, guid: 26abe13782021d346bc35f4991350657, type: 2}

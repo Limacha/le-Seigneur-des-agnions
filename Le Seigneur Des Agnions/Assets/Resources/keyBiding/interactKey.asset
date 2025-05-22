@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8a6b92ac22b44e46907b53d65e277f4, type: 3}
   m_Name: interactKey
   m_EditorClassIdentifier: 
-  nom: interactKey
-  description: touche pour interagir avec les elements dans le monde
+  nom: "Int\xE9ragir"
+  description: "Int\xE9ragir avec un \xE9l\xE9ment"
   key: f

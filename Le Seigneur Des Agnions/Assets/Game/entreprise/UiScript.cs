@@ -17,8 +17,23 @@ public class UiScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currentTime.text = $"{cycle.Hours}:{cycle.Minutes}";
-        currentName.text= manager.Save;
-        currentDate.text = $"{manager.ThisDate.Date.Day}:{manager.ThisDate.Date.Month}:{manager.ThisDate.Date.Year}";
+        currentTime.text = $"{cycle.Hours:D2}:{cycle.Minutes:D2}";
+        currentName.text = manager.Save;
+        currentDate.text = $"{manager.ThisDate.Date.Day:D2}:{manager.ThisDate.Date.Month:D2}:{manager.ThisDate.Date.Year:D2}";
+    }
+
+    public void OpenInt(GameObject trans)
+    {
+        trans.SetActive(true);
+    }
+
+    public void CloseInt(GameObject trans)
+    {
+        trans.SetActive(false);
+    }
+
+    public void SwapInt(GameObject trans)
+    {
+        trans.SetActive(!trans.activeSelf);
     }
 }

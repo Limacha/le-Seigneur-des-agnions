@@ -8,6 +8,7 @@ namespace inventory
     public class InventoryPanel : MonoBehaviour, IDropHandler
     {
         [SerializeReference] private Inventory inventory;
+        [SerializeReference] private GameObject canvas;
         public Texture texture;
         public GUISkin skin;
         [Header("style text area")]
@@ -35,7 +36,7 @@ namespace inventory
                 if (elem != null)
                 {
                     RectTransform elemRt = elem.GetComponent<RectTransform>(); //rect transform de l'element
-                    CanvasScaler canvasreso = GameObject.Find("Canvas").GetComponent<CanvasScaler>(); //le canvas
+                    CanvasScaler canvasreso = canvas.GetComponent<CanvasScaler>(); //le canvas
                     RectTransform rt = GetComponent<RectTransform>(); //le rt de inventory panel
                     RectTransform rtChild = rt.GetChild(1).GetComponent<RectTransform>(); //rt de l'enfant
                     float ratioX = Screen.width / canvasreso.referenceResolution.x; //proportion taille/reference
